@@ -143,10 +143,10 @@ class AdminServer
 
       if params[:type] == "posts"
         content = site.posts.find { |p| p.slug == params[:slug] }
-        liquid :edit, locals: { post: content, autofocus: "markdown" }
+        liquid :edit_post, locals: { post: content, autofocus: "markdown" }
       elsif params[:type] == "drafts"
         content = Draft.from_slug(site, params[:slug])
-        liquid :edit, locals: { post: content, autofocus: "markdown" }
+        liquid :edit_draft, locals: { post: content, autofocus: "markdown" }
       else
         response.status = 404
         return "Nope"
