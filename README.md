@@ -13,6 +13,15 @@ Serif is a lot like Jekyll with a few extra moving parts, although it didn't sta
 
 With this in mind, you might think of Serif's aim as to merge Jekyll, [Second Crack](https://github.com/marcoarment/secondcrack) and ideas from [Svbtle](http://dcurt.is/codename-svbtle). There should be many ways of editing and publishing, such as using the web interface, `rsync`ing from a remote machine, or editing a draft file on the remote server and having everything happen for you. (This last feature doesn't quite exist as planned yet.)
 
+## Planned features
+
+Some things I'm hoping to implement one day:
+
+1. Custom hooks to fire after particular events, such as minifying CSS after publish, or committing changes and pushing to a git repository.
+2. Simple Markdown pages instead of plain HTML.
+3. Automatically detecting file changes and regenerating the site.
+4. Adding custom Liquid filters and tags.
+
 # License and contributing
 
 Serif is released under the MIT license. See LICENSE for details.
