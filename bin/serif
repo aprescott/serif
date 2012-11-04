@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
+
+require "fileutils"
+require "slop"
+
+def initialize_admin_server(source_dir)
+  # need to cd to the directory before requiring the admin
+  # server, because otherwise Dir.pwd won't be right when
+  # the admin server class is defined at require time.
+  FileUtils.cd(source_dir)
+  require "serif"
+  require "serif/admin_server"
+
+  server = Serif::AdminServer.new(source_dir)
+  server.start
+end
+
+def initialize_dev_server(source_dir)
+  FileUtils.cd(source_dir)
+  require "serif"
+  require "serif/server"
+
+  server = Serif::DevelopmentServer.new(source_dir)
+  server.start
+end
+
+def generate_site(source_dir)
+  require "serif"
+  
+  site = Serif::Site.new(source_dir)
+  site.generate
+end
+
+def verify_directory(dir)
+  unless Dir.exist?(dir)
+    puts "No such directory: #{dir}'"
+    exit 1
+  end
+end
+
+def produce_skeleton(dir)
+  if !Dir[File.join(dir, "*")].empty?
+    abort "Directory is not empty."
+  end
+
+  FileUtils.cd(File.join(File.dirname(__FILE__), "..", "statics", "skeleton"))
+  files = Dir["*"]
+  files.each do |f|
+    FileUtils.cp_r(f, dir, verbose: true)
+  end
+end
+
+commands = Slop::Commands.new do
+  on :admin do
+    add_callback :empty do
+      initialize_admin_server(Dir.pwd)
+    end
+  end
+
+  on :generate do
+    add_callback :empty do
+      generate_site(Dir.pwd)
+    end
+  end
+
+  on :dev do
+    add_callback :empty do
+      initialize_dev_server(Dir.pwd)
+    end
+  end
+
+  on :new do
+    add_callback :empty do
+      produce_skeleton(Dir.pwd)
+    end
+  end
+end
+
+commands.parse

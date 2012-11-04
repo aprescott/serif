@@ -1,0 +1,15 @@
+<h1>Drafts</h1>
+
+<ul>
+{% for draft in drafts %}
+	<li><a href="/admin/edit/drafts/{{ draft.slug }}">{% if draft.slug != empty %}{{ draft.slug }}{% else %}<em>(untitled)</em>{% endif %}</a></li>
+{% endfor %}
+</ul>
+
+<h1>Posts</h1>
+
+<ul>
+{% for post in posts %}
+	<li><a href="/admin/edit/posts/{{ post.slug }}">{% if post.title != empty %}{{ post.title }}{% else %}<em>(untitled)</em>{% endif %}</a></li>
+{% endfor %}
+</ul>

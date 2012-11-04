@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+	<title>Admin</title>
+
+	<style>
+body {
+	width: 40%;
+	margin: 0 auto;
+	padding-top: 0;
+}
+
+body > nav {
+	text-align: center;
+	opacity: 0.5;
+	margin-bottom: 2em;
+	-webkit-transition: 0.2s;
+	-moz-transition: 0.2s;
+	-o-transition: 0.2s;
+	transition: 0.2s;
+}
+
+body > nav.hidden {
+	opacity: 0;
+}
+
+body > nav ul {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+body > nav ul li {
+	display: inline;
+}
+
+body > nav ul li:last-child {
+	margin-left: 1em;
+}
+
+#edit input[disabled] {
+	color: inherit;
+	background: none;
+}
+
+#edit #slug {
+	color: #aaaaaa;
+	text-transform: lowercase;
+	margin-bottom: 0;
+}
+
+/* get the input to use up whatever remaining space there is using overflow: hidden; */
+
+#edit #slug span:first-child {
+	float: left;
+	padding: 0.15em 0;
+}
+
+#edit #slug span:last-child {
+	overflow: hidden;
+	display: block;
+	padding: 0.15em 0; /* same padding as above, to force vertical alignment */
+}
+
+#edit #slug input {
+	font: inherit;
+	border: none;
+	outline: none;
+	width: 100%;
+	text-shadow: inherit;
+	-o-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+#edit #content {
+	width: 100%;
+	max-width: 100%;
+	display: block;
+	min-height: 20em;
+	margin: 0 auto;
+	font-size: inherit;
+	font-family: inherit;
+	outline: none;
+	border: none;
+	padding: 1em;
+	margin-left: -1em;
+	color: inherit;
+	text-rendering: inherit;
+	resize: none;
+}
+
+#edit #content::-webkit-scrollbar {
+	width: 0.5em;
+}
+ 
+#edit #content::-webkit-scrollbar-track {
+	border-radius: 4px;
+	background: rgba(0,0,0,0.05);
+}
+ 
+#edit #content::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background: rgba(0,0,0,0.2);
+}
+
+#edit #heading textarea {
+	-webkit-appearance: none;
+	font-family: inherit;
+	color: inherit;
+	text-rendering: inherit;
+	font-size: inherit;
+	width: 100%;
+	display: block;
+	text-align: inherit;
+	outline: none;
+	border: none;
+	resize: none;
+	height: 1.2em;
+}
+
+#edit {
+	position: relative;
+}
+
+#edit > form {
+	position: relative;
+}
+
+#edit #save {
+	margin: 0;
+}
+
+#edit #save,
+#edit #delete input,
+#edit #delete input + label,
+#edit #publish + label,
+#render-preview + label {
+	width: 6em;
+	padding: 0.5em 1em;
+	text-align: center;
+
+	/* webkit defines box-sizing: border-box; as a UA style by default,
+	   meaning the width is of the final computed element with padding
+	   and border. */
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-o-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+#render-preview,
+#edit #publish,
+#edit #delete #confirm-delete {
+	display: none;
+}
+
+#render-preview + label,
+#edit #publish + label {
+	font-family: inherit;
+	background: #191919;
+	color: white;
+	padding: 0.5em 1em;
+	border-radius: 0.2em;
+	cursor: pointer;
+	display: inline-block;
+}
+
+#render-preview + label {
+	opacity: 0.5;
+}
+
+#render-preview + label.active {
+	opacity: 1.0;
+}
+
+#edit #content-areas {
+	position: relative;
+	min-height: 20em;
+}
+
+#edit #entry {
+	display: none;
+	width: 100%;
+	max-width: 100%;
+	min-height: 20em;
+	border: none;
+	padding: 1em;
+	margin-left: -1em;
+}
+
+#edit #writers-block {
+	color: grey;
+}
+
+#edit #save,
+#edit #delete input,
+#edit #delete input + label {
+	display: inline-block;
+	border: none;
+	font-size: inherit;
+	font-family: inherit;
+	background: #191919;
+	color: white;
+	border-radius: 0.2em;
+	cursor: pointer;
+}
+
+#edit #save:hover {
+	background: rgba(0, 0, 255, 0.5);
+}
+
+#edit #slug input::-webkit-input-placeholder,
+#edit #heading textarea::-webkit-input-placeholder {
+	color: #191919;
+	opacity: 0.4;
+}
+
+#edit #slug input:focus::-webkit-input-placeholder,
+#edit #heading textarea:focus::-webkit-input-placeholder {
+	color: #bbbbbb;
+	opacity: 1.0;
+}
+
+#error-message {
+	padding: 1em 0;
+}
+
+#error-message p {
+	font-size: 1em;
+	font-style: italic;
+}
+
+#error-message p:before {
+	content: "\26a0";
+	display: block;
+	float: left;
+	margin-left: -2em;
+	width: 2em;
+	color: #9B111E;
+	font-style: normal;
+}
+
+#edit .error {
+	color: #9B111E;
+	font-style: italic;
+	font-weight: bold;
+	border-bottom: 1px solid red !important;
+}
+
+#shortcuts {
+	display: none;
+	position: fixed;
+	top: 5%;
+	left: 5%;
+	width: 90%;
+	height: 90%;
+	background: rgba(25, 25, 25, 0.9);
+	color: white;
+	z-index: 50;
+	border-radius: 0.5em;
+}
+
+#shortcuts table {
+	margin: 10% auto;
+	height: 80%;
+}
+
+#shortcuts table td {
+	display: inline-block;
+	width: 40%;
+}
+
+#shortcuts table td:first-child {
+	text-align: right;
+	padding-right: 1em;
+}
+
+#shortcuts table td:last-child {
+	padding-left: 1em;
+	text-align: left;
+}
+
+#edit #publish + label {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: #A72525;
+}
+
+#edit #publish + label:after {
+	content: "\2715";
+	margin-left: 1em;
+}
+
+#edit #publish:checked + label {
+	background: #2ED149;
+	color: black;
+}
+
+#edit #publish:checked + label:after {
+	content: "\2713";
+}
+
+#edit #delete {
+	position: absolute;
+	bottom: 0;
+
+	/* 6em for the publish button width + 2 * 1em left/right padding + 0.25em for space */
+	right: 8.25em;
+}
+
+#edit #delete input[type=submit] {
+	margin: 0;
+}
+
+#edit #delete #confirm-delete + label {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: -2.5em;
+	background: red;
+	color: black;
+}
+
+#edit #delete #confirm-delete:checked + label {
+	background: #2ED149;
+	color: black;
+}
+	</style>
+
+	<link rel="stylesheet" type="text/css" href="/css/admin/admin.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="/admin/js/jquery.autosize.js"></script>
+	<script src="/admin/js/mousetrap.min.js"></script>
+
+	<script>
+		$("#edit").ready(function() {
+			$("#slug input").blur(function() {
+				$(this).val($(this).val().trim().replace(/\s+/g, '-').replace(/^-+|-+$/g, '').toLowerCase());
+			});
+
+			$("#slug input").keyup(function(event) {
+				var code = event.keyCode;
+				if (code == 32) {
+					$(this).val($(this).val().replace(/\s+/g, "-"));
+				}
+			});
+
+			$("#heading textarea").keyup(function(event) {
+				$(this).html($(this).html().replace(/[^\040-\176\200-\377]/gi, ""));
+			});
+
+			$("#confirm-delete + label").text("Delete");
+
+			$("#delete input[type=submit]").click(function(event) {
+				var el = $(this);
+
+				if (el.hasClass("active")) {
+					el.attr("value", "Delete");
+				} else {
+					el.attr("value", "Cancel");
+				}
+
+				event.preventDefault();
+				el.toggleClass("active");
+				$("#confirm-delete + label").fadeToggle();
+			});
+
+			$("#confirm-delete + label").click(function(event) {
+				event.preventDefault();
+				$(this).parent("form").submit();
+			});
+			
+			$("label.preview").click(function(event) {
+				var previewButton = $(this);
+
+				if ($("#entry").attr("data-state") == "hidden") {
+					if ($("#content").val().trim() == "") {
+								$("#entry").html("<p id='writers-block'>(Nothing yet. Keep trying, it'll come to you.)</p>");
+								/*
+								 * here be dragons: we have entry first so that we don't have both
+								 * the markdown source element and the preview element hidden at the
+								 * same time, since that causes a jump to the top of the page.
+								 */
+								$("#entry").toggle();
+								$("#content").toggle();
+								$("#entry").attr("data-state", "active");
+								previewButton.html("Markdown");
+								previewButton.toggleClass("active");
+					} else {
+						$.post("/admin/convert-markdown", { "content": $("#content").val() }, function(formattedContent, status, response) {
+							if (status == "success") {
+								$("#entry").html(formattedContent);
+								$("#entry").toggle();
+								$("#content").toggle();
+								$("#entry").attr("data-state", "active");
+								previewButton.toggleClass("active");
+								previewButton.html("Markdown");
+							}
+						});
+					}
+				} else {
+					previewButton.html("Preview");
+					previewButton.toggleClass("active");
+					/*
+					 * here be dragons: we have content first so that we don't have both
+					 * the markdown source element and the preview element hidden at the
+					 * same time, since that causes a jump to the top of the page.
+					 */
+					$("#content").toggle();
+					$("#entry").toggle();
+					$("#entry").empty();
+					$("#entry").attr("data-state", "hidden");
+				}
+			});
+
+			Mousetrap.bind(["ctrl+enter", "command+enter"], function(e) {
+				$("label.preview").click();
+				$("#shortcuts").hide();
+				return false;
+			});
+
+			Mousetrap.bind(["ctrl+s", "command+s"], function(e) {
+				$("#edit form input[type=submit]").click();
+				$("#shortcuts").hide();
+				return false;
+			});
+
+			Mousetrap.bind(["ctrl+h", "command+h"], function() {
+				$("#heading textarea").focus();
+				$("#heading textarea").val($("#heading textarea").val());
+				$("#shortcuts").hide();
+				return false;
+			});
+
+			Mousetrap.bind(["ctrl+u", "command+u"], function() {
+				$("#slug input").focus();
+				$("#slug input").val($("#slug input").val());
+				$("#shortcuts").hide();
+				return false;
+			});
+
+			Mousetrap.bind(["ctrl+.", "command+."], function(e) {
+				$("#delete, #save, #render-preview + label, #publish + label").fadeToggle();
+				$("#slug, .post > header time").slideToggle();
+				$("#content").focus();
+				$("body > nav").toggleClass("hidden");
+				return false;
+			});
+
+			Mousetrap.bind(["esc", "ctrl+[", "command+["], function(e) {
+				$(e.srcElement).blur();
+			});
+
+			// remove the full text selection on autofocus
+			$("input.error[autofocus]").val($("input.error[autofocus]").val());
+		});
+
+		$(document).ready(function() {
+			$("textarea").autosize();
+
+			// force Mousetrap to prevent default behaviour even in input, textarea and select
+			$("#edit input, #edit textarea").addClass("mousetrap");
+
+			Mousetrap.bind(["ctrl+/", "command+/"], function(e) {
+				$("#shortcuts").toggle();
+				return false;
+			});
+
+			Mousetrap.bind("g h", function(e) {
+				var el = e.srcElement;
+
+				if (el.type == "textarea" || el.type == "text") {
+					// skip it
+				} else {
+					window.location.href = "/admin";
+				}
+			});
+
+			Mousetrap.bind("g n", function(e) {
+				var el = e.srcElement;
+
+				if (el.type == "textarea" || el.type == "text") {
+					// skip it
+				} else {
+					window.location.href = "/admin/new/draft";
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<nav>
+		<ul>
+			<li><a href="/admin">Admin</a></li>
+			<li><a href="/admin/new/draft">New draft</a></li>
+		</ul>
+	</nav>
+
+	{{ content }}
+
+	<div id="shortcuts">
+	<table>
+	<tbody>
+		<tr><td><code>Ctrl-/ / Command-/</code></td>
+		<td>Show/hide keyboard shortcut</td></tr>
+
+		<tr><td><code>g h</code></td>
+		<td>Go to the admin homepage</td></tr>
+
+		<tr><td><code>g n</code></td>
+		<td>Go to the new draft page</td></tr>
+
+		<tr><td><code>ESC / Ctrl-[ / Command-[</code></td>
+		<td>Remove any <code>&lt;input&gt;</code> focus</td></tr>
+
+		<tr><td><code>Ctrl-. / Command-.</code></td>
+		<td>Toggle focused view</td></tr>
+
+		<tr><td><code>Ctrl-S / Command-S</code></td>
+		<td><b>S</b>ave</td></tr>
+
+		<tr><td><code>Ctrl-U / Command-U</code></td>
+		<td>Jump to <b>U</b>RL name</td></tr>
+
+		<tr><td><code>Ctrl-H / Command-H</code></td>
+		<td>Jump to title/<b>h</b>eading</td></tr>
+
+		<tr><td><code>Ctrl-Enter / Command-Enter</code></td>
+		<td>Toggle rendered preview</td></tr>
+	</tbody>
+	</table>
+	</div>
+</body>
+</html>
