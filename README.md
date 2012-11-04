@@ -36,11 +36,13 @@ $ cd path/to/site/directory
 $ serif generate
 ```
 
+(You may get warnings about "undefined method `gsub' for nil:NilClass" after a warning about trying to get headers out of a file. You should be able to ignore those.)
+
 ## Starting the admin server
 
 ```bash
 $ cd path/to/site/directory
-$ ENV=production serif generate
+$ ENV=production serif admin
 ```
 
 Once this is run, visit <http://localhost:4567/admin> and log in with whatever is in `_config.yml` as auth credentials.
@@ -228,12 +230,5 @@ The admin interface is intended to be a minimal place to focus on writing conten
 
 @import url("/css/style.css");
 
-body {
-	padding-top: 0;
-}
-
-#edit #content {
-	line-height: 1.48em;
-	text-align: justify;
-}
+/* more customisation below */
 ```
