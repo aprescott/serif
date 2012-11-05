@@ -1,5 +1,7 @@
 # Serif
 
+<iframe src="https://docs.google.com/file/d/0BxPQpxGSOOyKS1J4MmlnM3JIaXM/preview" width="780" height="480"></iframe>
+
 Serif is a file-based blogging engine intended for simple sites. It compiles Markdown content to static files, and there is a web interface for editing and publishing, because managing everything with `ssh` and `git` can be a pain, compared to having a more universally accessible editing interface.
 
 _It should be considered alpha._ I make no promises it won't all change underneath you. **It is all subject to change, and is in a rough state.**
