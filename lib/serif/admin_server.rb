@@ -112,7 +112,10 @@ class AdminServer
 
         # TODO: move the entire notion of generating a site out into
         #       a directory-change-level event.
-        site.generate if params[:publish] == "yes"
+        if params[:publish] == "yes"
+          content.publish!
+          site.generate
+        end
 
         redirect to("/admin")
       end
@@ -133,6 +136,7 @@ class AdminServer
         liquid :edit_post, locals: { error_message: error_message, post: content }
       else
         content.save(params[:markdown])
+        site.generate
 
         redirect to("/admin")
       end
