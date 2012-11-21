@@ -12,3 +12,4 @@
 admin:
   username: changethisusername
   password: changethispassword
+permalink: /:title
