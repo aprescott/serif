@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   [
     "rake", "~> 0.9",
     "rack", "~> 1.0",
-    "yui-compressor", ">= 0",
+    "rack-rewrite", "~> 1.3.0",
     "redcarpet", "~> 2.2",
     "pygments.rb", "~> 0.3",
     "sinatra", "~> 1.3",
