@@ -14,4 +14,5 @@ admin:
   password: changethispassword
 permalink: /:title
 archive:
+  enabled: yes
   url_format: /archive/:year/:month

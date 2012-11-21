@@ -229,6 +229,8 @@ class Site
       end
     end
 
+    generate_archives(layout)
+
     if Dir.exist?("_site")
       FileUtils.mv("_site", "/tmp/_site.#{Time.now.strftime("%Y-%m-%d-%H-%M-%S")}")
     end
@@ -238,6 +240,26 @@ class Site
   end
 
   private
+
+  # Uses config.archive_url_format to generate pages
+  # using the archive_page.html template.
+  def generate_archives(layout)
+    return unless config.archive_enabled?
+
+    template = Liquid::Template.parse(File.read("_templates/archive_page.html"))
+
+    months = posts.group_by { |post| Date.new(post.created.year, post.created.month) }
+
+    months.each do |month, posts|
+      archive_path = tmp_path(archive_url_for_date(month))
+      
+      FileUtils.mkdir_p(archive_path)
+
+      File.open(File.join(archive_path, "index.html"), "w") do |f|
+        f.puts layout.render!("content" => template.render!("site" => self, "month" => month, "posts" => posts))
+      end
+    end
+  end
 
   def self.stringify_keys(obj)
     return obj unless obj.is_a?(Hash) || obj.is_a?(Array)
