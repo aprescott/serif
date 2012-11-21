@@ -171,7 +171,6 @@ class Site
     }
   end
 
-  # TODO: fix all these File.join calls
   def generate
     FileUtils.cd(@source_directory)
 
