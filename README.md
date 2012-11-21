@@ -95,7 +95,8 @@ The structure of a Serif site is something like this:
 │   ├── 2012-02-28-another-post
 │   └── 2012-03-30-and-a-third
 ├── _templates
-│   └─── post.html
+│   ├─── post.html
+│   └─── archive_page.html
 ├── _trash
 ├── _config.yml
 ├── css
@@ -147,7 +148,12 @@ The headers are similar to Jekyll's YAML front matter, but here there are no for
 
 ## `_templates`
 
-This directory currently only has a single file in it, `post.html`, which is used to produce HTML content from Markdown files in `_posts`.
+Two templates are available:
+
+* `post.html`, which will be used to render individual post pages.
+* `archive_page.html`, which will be used to render individual archive pages.
+
+Both must be valid Liquid templates.
 
 ## `_trash`
 
@@ -206,6 +212,59 @@ In both cases, the output is, of course:
 ```
 
 If you have a file like `feed.xml` that you wish to _not_ be contained within a layout, specify `layout: none` in the header for the file.
+
+# Archive pages
+
+By default, archive pages are made available at `/archive/:year/month`, e.g., `/archive/2012/11`. Individual archive pages can be customised by editing the `_templates/archive_page.html` file, which is used for each month.
+
+Within the `archive_page.html` template, you have access to the variables `month`, which is a Ruby Date instance, and `posts` for the posts within that month.
+
+To disable archive pages, or configure the URL format, see the section on configuration.
+
+## Linking to archive pages
+
+To link to archive pages, there is a `site.archives` template variable available in all pages. The structure of `site.archives` is a nested map starting at years:
+
+```
+{
+  "posts" => [...],
+  "years" => [
+    {
+      "date" => Date.new(2012),
+      "posts" => [...],
+      "months" => [
+        { "date" => Date.new(2012, 12), "archive_url" => "/archive/2012/12", "posts" => [...] },
+        { "date" => Date.new(2012, 11), "archive_url" => "/archive/2012/11", "posts" => [...] },
+        ...
+      ]
+    }
+  ]
+}
+```
+
+Using `site.archives`, you can iterate over `years`, then iterate over `months` and use `archive_url` to link to the archive page for that given month within the year.
+
+# Configuration
+
+Configuration goes in `_config.yml` and must be valid YAML. Here's a sample configuration with available options:
+
+```
+admin:
+  username: myusername
+  password: mypassword
+permalink: /posts/:title
+archive:
+  enabled: yes
+  url_format: /archive/:year/:month
+```
+
+`admin` contains the credentials used when accessing the admin interface. This information is private, of course.
+
+`permalink` is the URL format for individual post pages. The default permalink value is `/:title`. For an explanation of the format of permalinks, see above.
+
+`archive` contains configuration options concerning archive pages. `enabled` can be used to toggle whether archive pages are generated. If set to `no` or `false`, no archive pages will be generated. By default, this value is `yes`.
+
+The `archive` `url_format` configuration option is the format used for archive pages. The default value is `/archive/:year/:month`. **This must include both year and month.** Visiting, e.g., `/archive/2012/11` would render posts made in November 2012. See the section on archive pages above for more details.
 
 # Deploying
 

@@ -51,8 +51,10 @@ class Site
     @source_directory
   end
 
+  # Returns all of the site's posts, in reverse chronological order
+  # by creation time.
   def posts
-    Post.all(self)
+    Post.all(self).sort_by { |entry| entry.created }.reverse
   end
 
   def drafts
@@ -80,7 +82,97 @@ class Site
     !%w[.html .xml].include?(File.extname(filename))
   end
 
-  # TODO: fix all these File.join calls
+  # Returns the relative archive URL for the given date,
+  # using the value of config.archive_url_format
+  def archive_url_for_date(date)
+    format = config.archive_url_format
+
+    parts = {
+      "year" => date.year.to_s,
+      "month" => date.month.to_s.rjust(2, "0")
+    }
+
+    output = format
+
+    parts.each do |placeholder, value|
+      output = output.gsub(Regexp.quote(":" + placeholder), value)
+    end
+
+    output
+  end
+
+  # Returns a nested hash with the following structure:
+  #
+  # {
+  #   :posts => [],
+  #   :years => [
+  #     {
+  #       :date => Date.new(2012),
+  #       :posts => [],
+  #       :months => [
+  #         { :date => Date.new(2012, 12), :archive_url => "/archive/2012/12", :posts => [] },
+  #         { :date => Date.new(2012, 11), :archive_url => "/archive/2012/11", :posts => [] },
+  #         # ...
+  #       ]
+  #     },
+  #
+  #     # ...
+  #  ]
+  # }
+  def archives
+    h = {}
+    h[:posts] = posts
+
+    # group posts by Date instances for the first day of the year
+    year_groups = posts.group_by { |post| Date.new(post.created.year) }.to_a
+
+    # collect all elements as maps for the year start date and the posts in that year
+    year_groups.map! do |year_start_date, posts_by_year|
+      {
+        :date => year_start_date,
+        :posts => posts_by_year.sort_by { |post| post.created }
+      }
+    end
+
+    year_groups.sort_by! { |year_hash| year_hash[:date] }
+    year_groups.reverse!
+
+    year_groups.each do |year_hash|
+      year_posts = year_hash[:posts]
+
+      # group the posts in the year by month
+      month_groups = year_posts.group_by { |post| Date.new(post.created.year, post.created.month) }.to_a
+
+      # collect the elements as maps for the month start date and the posts in that month
+      month_groups.map! do |month_start_date, posts_by_month|
+        {
+          :date => month_start_date,
+          :posts => posts_by_month.sort_by { |post| post.created },
+          :archive_url => archive_url_for_date(month_start_date)
+        }
+      end
+
+      month_groups.sort_by! { |month_hash| month_hash[:date] }
+      month_groups.reverse!
+
+      # set the months for the current year
+      year_hash[:months] = month_groups
+    end
+
+    h[:years] = year_groups
+
+    # return the final hash
+    h
+  end
+
+  def to_liquid
+    {
+      "posts" => posts,
+      "latest_update_time" => latest_update_time,
+      "archive" => self.class.stringify_keys(archives)
+    }
+  end
+
   def generate
     FileUtils.cd(@source_directory)
 
@@ -90,7 +182,7 @@ class Site
     files = Dir["**/*"].select { |f| f !~ /\A_/ && File.file?(f) }
 
     layout = Liquid::Template.parse(File.read("_layouts/default.html"))
-    posts = self.posts.sort_by { |entry| entry.created }.reverse
+    posts = self.posts
 
     files.each do |path|
       puts "Processing file: #{path}"
@@ -121,9 +213,9 @@ class Site
           end
 
           if layout_option == "none"
-            f.puts Liquid::Template.parse(file.to_s).render!("site" => { "posts" => posts, "latest_update_time" => latest_update_time })
+            f.puts Liquid::Template.parse(file.to_s).render!("site" => self)
           else
-            f.puts layout.render!("page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => { "posts" => posts, "latest_update_time" => latest_update_time }))
+            f.puts layout.render!("page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
           end
         end
       end
@@ -139,12 +231,52 @@ class Site
       end
     end
 
+    generate_archives(layout)
+
     if Dir.exist?("_site")
       FileUtils.mv("_site", "/tmp/_site.#{Time.now.strftime("%Y-%m-%d-%H-%M-%S")}")
     end
 
     FileUtils.mv("tmp/_site", ".") && FileUtils.rm_rf("tmp/_site")
     FileUtils.rmdir("tmp")
+  end
+
+  private
+
+  # Uses config.archive_url_format to generate pages
+  # using the archive_page.html template.
+  def generate_archives(layout)
+    return unless config.archive_enabled?
+
+    template = Liquid::Template.parse(File.read("_templates/archive_page.html"))
+
+    months = posts.group_by { |post| Date.new(post.created.year, post.created.month) }
+
+    months.each do |month, posts|
+      archive_path = tmp_path(archive_url_for_date(month))
+      
+      FileUtils.mkdir_p(archive_path)
+
+      File.open(File.join(archive_path, "index.html"), "w") do |f|
+        f.puts layout.render!("content" => template.render!("site" => self, "month" => month, "posts" => posts))
+      end
+    end
+  end
+
+  def self.stringify_keys(obj)
+    return obj unless obj.is_a?(Hash) || obj.is_a?(Array)
+
+    if obj.is_a?(Array)
+      return obj.map do |el|
+        stringify_keys(el)
+      end
+    end
+
+    result = {}
+    obj.each do |key, value|
+      result[key.to_s] = stringify_keys(value)
+    end
+    result
   end
 end
 end

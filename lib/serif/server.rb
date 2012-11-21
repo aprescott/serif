@@ -13,7 +13,16 @@ class DevelopmentServer
 
     # it seems Rack::Rewrite doesn't like public_folder files, so here we are
     get "*" do
-      File.read(Dir[File.expand_path("_site#{params[:splat].join("/")}.*")].first)
+      # attempt the exact name + an extension
+      file = Dir[File.expand_path("_site#{params[:splat].join("/")}.*")].first
+
+      # try index.html under the directory if it failed. useful for archive directory requests.
+      file ||= Dir[File.expand_path("_site#{params[:splat].join("/")}/index.html")].first
+
+      # make a naive assumption that there's a 404 file at 404.html
+      file ||= Dir[File.expand_path("_site/404.html")].first
+
+      File.read(file)
     end
   end
 

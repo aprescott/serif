@@ -1,0 +1,9 @@
+<h1>{{ month | date: "%b %Y" }} ({{ posts | size }})</h1>
+
+<ul>
+	{% for post in posts %}
+		<li>
+			<a href="{{ post.url }}">{{ post.title }}</a>
+		</li>
+	{% endfor %}
+</ul>
