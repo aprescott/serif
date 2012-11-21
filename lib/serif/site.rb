@@ -19,6 +19,7 @@ else
   end
 end
 
+module Serif
 module Filters
   def strip(input)
     input.strip
@@ -36,8 +37,9 @@ module Filters
     input.xmlschema
   end
 end
+end
 
-Liquid::Template.register_filter(Filters)
+Liquid::Template.register_filter(Serif::Filters)
 
 module Serif
 class Site
