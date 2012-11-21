@@ -21,5 +21,19 @@ class Config
   def permalink
     yaml["permalink"] || "/:title"
   end
+
+  def archive_enabled?
+    a = yaml["archive"]
+
+    if a
+      a["enabled"]
+    else
+      false
+    end
+  end
+
+  def archive_url_format
+    (yaml["archive"] || {})["url_format"] || "/archive/:year/:month"
+  end
 end
 end
