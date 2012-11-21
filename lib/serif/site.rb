@@ -80,6 +80,25 @@ class Site
     !%w[.html .xml].include?(File.extname(filename))
   end
 
+  # Returns the relative archive URL for the given date,
+  # using the value of config.archive_url_format
+  def archive_url_for_date(date)
+    format = config.archive_url_format
+
+    parts = {
+      "year" => date.year.to_s,
+      "month" => date.month.to_s.rjust(2, "0")
+    }
+
+    output = format
+
+    parts.each do |placeholder, value|
+      output = output.gsub(Regexp.quote(":" + placeholder), value)
+    end
+
+    output
+  end
+
   # Returns a nested hash with the following structure:
   #
   # {
@@ -89,8 +108,8 @@ class Site
   #       :date => Date.new(2012),
   #       :posts => [],
   #       :months => [
-  #         { :date => Date.new(2012, 12), :posts => [] },
-  #         { :date => Date.new(2012, 11), :posts => [] },
+  #         { :date => Date.new(2012, 12), :archive_url => "/archive/2012/12", :posts => [] },
+  #         { :date => Date.new(2012, 11), :archive_url => "/archive/2012/11", :posts => [] },
   #         # ...
   #       ]
   #     },
@@ -126,7 +145,8 @@ class Site
       month_groups.map! do |month_start_date, posts_by_month|
         {
           :date => month_start_date,
-          :posts => posts_by_month.sort_by { |post| post.created }
+          :posts => posts_by_month.sort_by { |post| post.created },
+          :archive_url => archive_url_for_date(month_start_date)
         }
       end
 

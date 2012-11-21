@@ -13,3 +13,5 @@ admin:
   username: changethisusername
   password: changethispassword
 permalink: /:title
+archive:
+  url_format: /archive/:year/:month
