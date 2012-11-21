@@ -223,7 +223,7 @@ To disable archive pages, or configure the URL format, see the section on config
 
 ## Linking to archive pages
 
-To link to archive pages, there is a `site.archives` template variable available in all pages. The structure of `site.archives` is a nested map starting at years:
+To link to archive pages, there is a `site.archive` template variable available in all pages. The structure of `site.archive` is a nested map starting at years:
 
 ```
 {
@@ -242,7 +242,7 @@ To link to archive pages, there is a `site.archives` template variable available
 }
 ```
 
-Using `site.archives`, you can iterate over `years`, then iterate over `months` and use `archive_url` to link to the archive page for that given month within the year.
+Using `site.archive`, you can iterate over `years`, then iterate over `months` and use `archive_url` to link to the archive page for that given month within the year.
 
 # Configuration
 
