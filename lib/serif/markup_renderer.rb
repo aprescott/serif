@@ -1,10 +1,12 @@
 module Serif
 class MarkupRenderer < Redcarpet::Render::SmartyHTML
   def block_code(code, language)
-    # bypass it all to avoid sticking higlihting markup on stuff with no language
-    return Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true).render(%Q{```
-#{code}
-```}).strip unless language
+    # bypass it all to avoid sticking highlighting markup on stuff with no language.
+    # 
+    # note that we add a new line after the initial ``` but not before the closing
+    # ``` because otherwise it introduces an extra \n.
+    return Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true).render(p %Q{```
+#{code}```}).strip unless language
 
     out = Pygments.highlight(code, lexer: language)
 
