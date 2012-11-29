@@ -5,7 +5,7 @@ class MarkupRenderer < Redcarpet::Render::SmartyHTML
     # 
     # note that we add a new line after the initial ``` but not before the closing
     # ``` because otherwise it introduces an extra \n.
-    return Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true).render(p %Q{```
+    return Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true).render(%Q{```
 #{code}```}).strip unless language
 
     out = Pygments.highlight(code, lexer: language)
