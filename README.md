@@ -276,7 +276,7 @@ error_page 404 @not_found_page;
 location / {
 	index  index.html index.htm;
 
-	try_files $uri.html $uri $uri/ @not_found_page;
+	try_files $uri.html $uri $uri/ 404;
 }
 
 location @not_found_page {
