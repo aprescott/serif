@@ -19,9 +19,7 @@ class ContentFile
     if @path
       # we have to parse out the source first so that we get necessary
       # metadata like published vs. draft.
-      source = File.read(path).gsub(/\r?\n/, "\n")
-      source.force_encoding("UTF-8")
-      @source = Redhead::String[source]
+      load_source
 
       dirname = File.basename(File.dirname(@path))
       basename = File.basename(@path)
@@ -121,6 +119,9 @@ class ContentFile
 #{markdown}}.strip
     end
 
+    # after every save, ensure we've re-loaded the saved content
+    load_source
+
     true # always return true for now
   end
   
@@ -149,6 +150,14 @@ class ContentFile
 
   def set_updated_time(time)
     @source.headers[:updated] = time.xmlschema
+  end
+
+  private
+
+  def load_source
+    source = File.read(path).gsub(/\r?\n/, "\n")
+    source.force_encoding("UTF-8")
+    @source = Redhead::String[source]
   end
 end
 end
