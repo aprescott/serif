@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.homepage     = "https://github.com/aprescott/serif"
   s.summary      = "Simple file-based blogging system."
   s.description  = "Serif is a simple file-based blogging system which generates static content and allows dynamic editing through an interface."
-  s.files        = Dir["{lib/**/*,statics/**/*,bin/*,test/**/*}"] + %w[serif.gemspec LICENSE Gemfile Gemfile.lock README.md]
+  s.files        = Dir["{lib/**/*,statics/**/*,bin/*,test/**/*}"] + %w[serif.gemspec rakefile LICENSE Gemfile Gemfile.lock README.md]
   s.require_path = "lib"
   s.bindir       = "bin"
   s.executables  = "serif"
