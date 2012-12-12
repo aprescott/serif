@@ -1,3 +1,6 @@
+require "simplecov"
+SimpleCov.start
+
 require "serif"
 require "fileutils"
 require "pathname"
