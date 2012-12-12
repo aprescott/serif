@@ -18,7 +18,7 @@ With this in mind, you might think of Serif's aim as to merge Jekyll, [Second Cr
 Some things I'm hoping to implement one day:
 
 1. Custom hooks to fire after particular events, such as minifying CSS after publish, or committing changes and pushing to a git repository.
-2. Simple Markdown pages instead of plain HTML.
+2. Simple Markdown pages instead of plain HTML for non-post content.
 3. Automatically detecting file changes and regenerating the site.
 4. Adding custom Liquid filters and tags.
 
