@@ -1,0 +1,11 @@
+require "rake"
+require "rspec/core/rake_task"
+
+RSpec::Core::RakeTask.new(:test) do |t|
+  t.rspec_opts = "-I test --color --format nested"
+  t.pattern = "test/**/*_spec.rb"
+  t.verbose = false
+  t.fail_on_error = true
+end
+
+task :default => :test

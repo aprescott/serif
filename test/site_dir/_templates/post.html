@@ -1,0 +1,5 @@
+<h2>{{ post.title }}</h2>
+
+{{ post.content | markdown }}
+
+<p><a href="http://twitter.com/share?text={{ post.title | encode_uri_component }}&amp;url={{ 'http://www.mysite.com' | encode_uri_component }}{{ post.url | encode_uri_component }}">Submit this to Twitter.</p>

@@ -6,10 +6,6 @@ class Config
     @config_file = config_file
   end
 
-  def yaml
-    YAML.load_file(@config_file)
-  end
-
   def admin_username
     yaml["admin"]["username"]
   end
@@ -34,6 +30,12 @@ class Config
 
   def archive_url_format
     (yaml["archive"] || {})["url_format"] || "/archive/:year/:month"
+  end
+
+  private
+
+  def yaml
+    YAML.load_file(@config_file)
   end
 end
 end
