@@ -53,6 +53,13 @@ describe Serif::Site do
     end
   end
 
+  describe "#archive_url_for_date" do
+    it "uses the archive URL format from the config to construct an archive URL string" do
+      date = Date.parse("2012-01-02")
+      subject.archive_url_for_date(date).should == "/test-archive/2012/01"
+    end
+  end
+
   describe "#bypass?" do
     it "is false if the filename has a .html extension" do
       subject.bypass?("foo.html").should be_false

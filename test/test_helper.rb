@@ -5,6 +5,7 @@ require "serif"
 require "fileutils"
 require "pathname"
 require "time"
+require "date"
 
 def testing_dir(path = nil)
   full_path = File.join(File.dirname(__FILE__), "site_dir")
