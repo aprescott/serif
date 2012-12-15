@@ -51,7 +51,6 @@ class Draft < ContentFile
 
   def self.from_slug(site, slug)
     path = File.expand_path(File.join(site.directory, dirname, slug))
-    p path
     new(site, path)
   end
 end
