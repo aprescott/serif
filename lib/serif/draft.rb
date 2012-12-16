@@ -5,8 +5,8 @@ class Draft < ContentFile
   end
 
   def delete!
-    FileUtils.mkdir_p("_trash")
-    File.rename(@path, File.expand_path("_trash/#{Time.now.to_i}-#{slug}"))
+    FileUtils.mkdir_p("#{site.directory}/_trash")
+    File.rename(@path, File.expand_path("#{site.directory}/_trash/#{Time.now.to_i}-#{slug}"))
   end
 
   def publish!

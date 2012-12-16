@@ -34,7 +34,7 @@ class ContentFile
     # this will run for new drafts
 
     if !@path
-      @path = File.expand_path("#{self.class.dirname}/#{@slug}")
+      @path = File.expand_path("#{site.directory}/#{self.class.dirname}/#{@slug}")
     end
   end
 
