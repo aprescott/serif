@@ -1,3 +1,4 @@
 /serif-*.gem
 /coverage
 /test/*/_site
+/test/*/_trash
