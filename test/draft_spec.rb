@@ -30,6 +30,22 @@ describe Serif::Draft do
     end
   end
 
+  describe "publish!" do
+    it "moves the file to the _posts directory" do
+      draft = D.new(@site)
+      draft.slug = "test-draft"
+      draft.title = "Some draft title"
+      draft.save("some content")
+      draft.publish!
+
+      published_path = testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
+      File.exist?(published_path).should be_true
+
+      # clean up
+      FileUtils.rm_f(published_path)
+    end
+  end
+
   describe "#save" do
     it "saves the file to _drafts" do
       draft = D.new(@site)
