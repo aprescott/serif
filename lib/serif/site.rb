@@ -203,6 +203,7 @@ class Site
             file_with_headers = Redhead::String[file]
             title = file_with_headers.headers[:title] && file_with_headers.headers[:title].value
             layout_option = file_with_headers.headers[:layout] && file_with_headers.headers[:layout].value
+            layout_option ||= :default
 
             # all good? use the headered string
             file = file_with_headers
