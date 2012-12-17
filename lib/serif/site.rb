@@ -181,7 +181,7 @@ class Site
 
     files = Dir["**/*"].select { |f| f !~ /\A_/ && File.file?(f) }
 
-    layout = Liquid::Template.parse(File.read("_layouts/default.html"))
+    default_layout = Liquid::Template.parse(File.read("_layouts/default.html"))
     posts = self.posts
 
     files.each do |path|
@@ -211,7 +211,7 @@ class Site
           if layout_option == "none"
             f.puts Liquid::Template.parse(file.to_s).render!("site" => self)
           else
-            f.puts layout.render!("page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
+            f.puts default_layout.render!("page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
           end
         end
       end
@@ -223,11 +223,11 @@ class Site
       FileUtils.mkdir_p(tmp_path(File.dirname(post.url)))
 
       File.open(tmp_path(post.url + ".html"), "w") do |f|
-        f.puts layout.render!("page" => { "title" => ["Posts", "#{post.title}"] }, "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!("post" => post))
+        f.puts default_layout.render!("page" => { "title" => ["Posts", "#{post.title}"] }, "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!("post" => post))
       end
     end
 
-    generate_archives(layout)
+    generate_archives(default_layout)
 
     if Dir.exist?("_site")
       FileUtils.mv("_site", "/tmp/_site.#{Time.now.strftime("%Y-%m-%d-%H-%M-%S")}")
