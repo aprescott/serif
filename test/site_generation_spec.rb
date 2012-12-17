@@ -13,4 +13,12 @@ describe Serif::Site do
     subject.generate
     File.exist?(testing_dir("_site/test-blog/sample-post.html")).should be_true
   end
+
+  it "reads the layout header for a non-post file and uses the appropriate layout file" do
+    subject.generate
+
+    # check it actually got generated
+    File.exist?(testing_dir("_site/page-alt-layout.html")).should be_true
+    File.read("_site/page-alt-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
+  end
 end
