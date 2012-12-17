@@ -52,8 +52,6 @@ $ cd path/to/site/directory
 $ serif generate
 ```
 
-(You may get warnings about "undefined method `gsub' for nil:NilClass" after a warning about trying to get headers out of a file. You should be able to ignore those.)
-
 ## Starting the admin server
 
 ```bash
