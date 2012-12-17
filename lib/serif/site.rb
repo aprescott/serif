@@ -199,17 +199,13 @@ class Site
           title = nil
           layout_option = :default
 
-          begin
-            file_with_headers = Redhead::String[File.read(path)]
+          if Redhead::String.has_headers?(file)
+            file_with_headers = Redhead::String[file]
             title = file_with_headers.headers[:title] && file_with_headers.headers[:title].value
             layout_option = file_with_headers.headers[:layout] && file_with_headers.headers[:layout].value
 
             # all good? use the headered string
             file = file_with_headers
-          rescue => e
-            puts "Warning! Problem trying to get headers out of #{path}"
-            puts e
-            # stick with what we've got!
           end
 
           if layout_option == "none"

@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
     "redcarpet", "~> 2.2",
     "pygments.rb", "~> 0.3",
     "sinatra", "~> 1.3",
-    "redhead", "~> 0.0.6",
+    "redhead", "~> 0.0.8",
     "liquid", "~> 2.4",
     "slop", "~> 3.3"
   ].each_slice(2) do |name, version|
