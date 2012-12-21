@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    serif (0.1.5)
+    serif (0.1.6)
       liquid (~> 2.4)
       pygments.rb (~> 0.3)
       rack (~> 1.0)
@@ -18,7 +18,7 @@ GEM
     liquid (2.4.1)
     multi_json (1.5.0)
     posix-spawn (0.3.6)
-    pygments.rb (0.3.2)
+    pygments.rb (0.3.3)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
     rack (1.4.1)
