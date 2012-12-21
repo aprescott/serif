@@ -53,6 +53,7 @@ describe Serif::Draft do
       draft.publish!
 
       draft.path.should == testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
+      draft.delete! # still deleteable, even though it's been moved
     end
   end
 
