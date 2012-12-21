@@ -21,6 +21,9 @@ class Draft < ContentFile
     save
 
     File.rename(path, full_published_path)
+
+    # update the path since the file has now changed
+    @path = Post.from_slug(site, slug).path
   end
 
   def to_liquid

@@ -44,6 +44,16 @@ describe Serif::Draft do
       # clean up
       FileUtils.rm_f(published_path)
     end
+
+    it "changes the #path to be _posts not _drafts" do
+      draft = D.new(@site)
+      draft.slug = "test-draft"
+      draft.title = "Some draft title"
+      draft.save("some content")
+      draft.publish!
+
+      draft.path.should == testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
+    end
   end
 
   describe "#save" do
