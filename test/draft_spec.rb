@@ -57,6 +57,24 @@ describe Serif::Draft do
     end
   end
 
+  describe "#autopublish?" do
+    it "returns true if there is a 'publish: now' header, otherwise false" do
+      draft = D.new(@site)
+      draft.autopublish?.should be_false
+      headers = draft.headers
+      draft.stub(:headers) { headers.merge(:publish => "now") }
+      draft.autopublish?.should be_true
+    end
+
+    it "ignores leading and trailing whitespace around the value of the 'publish' header" do
+      draft = D.new(@site)
+      draft.autopublish?.should be_false
+      headers = draft.headers
+      draft.stub(:headers) { headers.merge(:publish => " now  ") }
+      draft.autopublish?.should be_true
+    end
+  end
+
   describe "#save" do
     it "saves the file to _drafts" do
       draft = D.new(@site)

@@ -26,6 +26,14 @@ class Draft < ContentFile
     @path = Post.from_slug(site, slug).path
   end
 
+  # Checks the value of the "publish" header, and returns
+  # true if the value is "now", ignoring trailing and leading
+  # whitespace. Returns false, otherwise.
+  def autopublish?
+    publish_header = headers[:publish]
+    publish_header && publish_header.strip == "now"
+  end
+
   def to_liquid
     h = {
       "title" => title,
