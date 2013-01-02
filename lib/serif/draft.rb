@@ -1,5 +1,7 @@
 module Serif
 class Draft < ContentFile
+  attr_reader :autopublish
+
   def self.dirname
     "_drafts"
   end
@@ -18,9 +20,37 @@ class Draft < ContentFile
     raise "conflict, post exists already" if File.exist?(full_published_path)
 
     set_publish_time(publish_time)
+
+    @source.headers.delete(:publish) if autopublish?
+
     save
 
     File.rename(path, full_published_path)
+
+    # update the path since the file has now changed
+    @path = Post.from_slug(site, slug).path
+  end
+
+  # sets the autopublish flag to the given value.
+  #
+  # if the assigned value is truthy, the "publish" header
+  # is set to "now", otherwise the header is removed.
+  def autopublish=(value)
+    @autopublish = value
+
+    if value
+      @source.headers[:publish] = "now"
+    else
+      @source.headers.delete(:publish)
+    end
+  end
+
+  # Checks the value of the "publish" header, and returns
+  # true if the value is "now", ignoring trailing and leading
+  # whitespace. Returns false, otherwise.
+  def autopublish?
+    publish_header = headers[:publish]
+    publish_header && publish_header.strip == "now"
   end
 
   def to_liquid

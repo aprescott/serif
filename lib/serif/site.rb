@@ -182,6 +182,11 @@ class Site
     files = Dir["**/*"].select { |f| f !~ /\A_/ && File.file?(f) }
 
     default_layout = Liquid::Template.parse(File.read("_layouts/default.html"))
+
+    # preprocess any drafts marked for autopublish, before grabbing the posts
+    # to operate on.
+    preprocess_autopublish_drafts
+
     posts = self.posts
 
     files.each do |path|
@@ -241,6 +246,18 @@ class Site
   end
 
   private
+
+  # goes through all draft posts that have "publish: now" headers and
+  # calls #publish! on each one
+  def preprocess_autopublish_drafts
+    puts "Beginning pre-process step for drafts."
+    drafts.each do |d|
+      if d.autopublish?
+        puts "Autopublishing draft: #{d.title} / #{d.slug}"
+        d.publish!
+      end
+    end
+  end
 
   # Uses config.archive_url_format to generate pages
   # using the archive_page.html template.
