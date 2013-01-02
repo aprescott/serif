@@ -218,6 +218,19 @@ In both cases, the output is, of course:
 
 If you have a file like `feed.xml` that you wish to _not_ be contained within a layout, specify `layout: none` in the header for the file.
 
+# Publishing drafts
+
+To publish a draft, either do so through the admin interface available with `serif admin`, or add a `publish: now` header to the draft:
+
+```
+title: A draft that will be published
+publish: now
+
+This is a draft that will be published now.
+```
+
+On the next site generation (`serif generate`) this draft will be automatically published, using the current time as the creation timestamp.
+
 # Archive pages
 
 By default, archive pages are made available at `/archive/:year/month`, e.g., `/archive/2012/11`. Individual archive pages can be customised by editing the `_templates/archive_page.html` file, which is used for each month.
