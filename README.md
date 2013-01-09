@@ -37,6 +37,23 @@ The quickest way to get changes contributed:
 
 # Basics
 
+## First time use
+
+To get started with Serif based on a site skeleton:
+
+```bash
+gem install serif     # install serif
+cd path/to/some/place # go to where you'll be creating your site directory
+serif new             # create an initial site skeleton
+
+# ... edit your files how you want them ...
+
+serif generate        # generate the site based on the source files
+serif dev             # serve up the site for local testing purposes
+```
+
+Now visit <http://localhost:8000/> to view the site.
+
 ## Installing
 
 Installation is via [RubyGems](https://rubygems.org/). If you don't have Ruby installed, I recommend using [RVM](https://rvm.io/).
