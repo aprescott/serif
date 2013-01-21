@@ -23,6 +23,12 @@ describe Serif::Site do
       File.read("_site/page-alt-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
     end
 
+    it "correctly handles file_digest calls" do
+      subject.generate
+
+      File.read("_site/file-digest-test.html").strip.should == "f8390232f0c354a871f9ba0ed306163c"
+    end
+
     context "for drafts with a publish: now header" do
       before :all do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)

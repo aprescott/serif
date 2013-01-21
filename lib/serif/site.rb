@@ -21,6 +21,8 @@ end
 
 module Serif
 module Filters
+  DIGEST_CACHE = {}
+
   def strip(input)
     input.strip
   end
@@ -35,6 +37,26 @@ module Filters
 
   def xmlschema(input)
     input.xmlschema
+  end
+
+  # Takes the given path and returns the MD5
+  # hex digest of the file's contents.
+  #
+  # The path argument is first stripped, and any leading
+  # "/" has no effect.
+  #
+  # TODO: implement this as a tag, not a filter.
+  def file_digest(path, directory, prefix="")
+    return "" unless ENV["ENV"] == "production"
+
+    full_path = File.join(directory, path.strip)
+    
+    return prefix + DIGEST_CACHE[full_path] if DIGEST_CACHE[full_path]
+
+    digest = Digest::MD5.hexdigest(File.read(full_path))
+    DIGEST_CACHE[full_path] = digest
+
+    prefix + digest
   end
 end
 end
@@ -169,7 +191,8 @@ class Site
     {
       "posts" => posts,
       "latest_update_time" => latest_update_time,
-      "archive" => self.class.stringify_keys(archives)
+      "archive" => self.class.stringify_keys(archives),
+      "directory" => directory
     }
   end
 
@@ -219,7 +242,7 @@ class Site
           else
             layout_file = File.join(self.directory, "_layouts", "#{layout_option}.html")
             layout = Liquid::Template.parse(File.read(layout_file))
-            f.puts layout.render!("page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
+            f.puts layout.render!("site" => self, "page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
           end
         end
       end
@@ -231,7 +254,7 @@ class Site
       FileUtils.mkdir_p(tmp_path(File.dirname(post.url)))
 
       File.open(tmp_path(post.url + ".html"), "w") do |f|
-        f.puts default_layout.render!("page" => { "title" => ["Posts", "#{post.title}"] }, "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!("post" => post))
+        f.puts default_layout.render!("site" => self, "page" => { "title" => ["Posts", "#{post.title}"] }, "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!("post" => post))
       end
     end
 

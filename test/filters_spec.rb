@@ -45,6 +45,20 @@ describe Serif::Filters do
     end
   end
 
+  describe "#file_digest" do
+    it "returns the md5 hex digest of the finally deployed site path" do
+      subject.file_digest("test-stylesheet.css", testing_dir).should == "f8390232f0c354a871f9ba0ed306163c"
+    end
+
+    it "ignores leading slashes" do
+      subject.file_digest("/test-stylesheet.css", testing_dir).should == "f8390232f0c354a871f9ba0ed306163c"
+    end
+
+    it "ignores surrounding whitespace" do
+      subject.file_digest("             test-stylesheet.css      ", testing_dir).should == "f8390232f0c354a871f9ba0ed306163c"
+    end
+  end
+
   describe "#xmlschema" do
     it "calls xmlschema on its input" do
       d = double("")
