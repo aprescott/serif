@@ -26,7 +26,7 @@ describe Serif::Site do
     it "correctly handles file_digest calls" do
       subject.generate
 
-      File.read("_site/file-digest-test.html").strip.should == "f8390232f0c354a871f9ba0ed306163c"
+      File.read("_site/file-digest-test.html").strip.should == "f8390232f0c354a871f9ba0ed306163c\n.f8390232f0c354a871f9ba0ed306163c"
     end
 
     context "for drafts with a publish: now header" do

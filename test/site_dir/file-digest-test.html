@@ -1,3 +1,4 @@
 layout: none
 
-{{ "test-stylesheet.css" | file_digest: site.directory }}
+{% file_digest test-stylesheet.css %}
+{% file_digest test-stylesheet.css prefix:. %}
