@@ -26,5 +26,9 @@ describe Serif::FileDigest do
     it "includes a prefix if one is specified" do
       file_digest("test-stylesheet.css prefix:.").render(@context).should == ".f8390232f0c354a871f9ba0ed306163c"
     end
+
+    it "ignores trailing whitespace on the prefix" do
+      file_digest("test-stylesheet.css prefix:. ").render(@context).should == ".f8390232f0c354a871f9ba0ed306163c"
+    end
   end
 end
