@@ -5,15 +5,6 @@ describe Serif::FileDigest do
     Serif::FileDigest.new("file_digest", markup, "no tokens needed")
   end
 
-  before :all do
-    @original_env = ENV["ENV"]
-    ENV["ENV"] = "production"
-  end
-
-  after :all do
-    ENV["ENV"] = @original_env
-  end
-
   before :each do
     site = Serif::Site.new(testing_dir)
     @context = { "site" => { "directory" => site.directory }}
