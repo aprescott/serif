@@ -335,3 +335,19 @@ The admin interface is intended to be a minimal place to focus on writing conten
 
 /* more customisation below */
 ```
+
+# Custom tags
+
+These tags can be used in templates. For example:
+
+```
+{% file_digest foo.css prefix:- %}
+```
+
+## List of tags
+
+* `file_digest <path> [prefix:<prefix>]`
+  
+  Computes a hex digest of the contents of `<path>`, optionally prefixed with `<prefix>`. `<path>` is delimited by whitespace.
+
+  Useful for URL fingerprinting for long-lived caching.
