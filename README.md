@@ -15,7 +15,7 @@ Serif is a lot like Jekyll with a few extra moving parts, although it didn't sta
 1. Simplicity: the source and generated content are just files that can be served by any web server.
 2. Ease of publishing, wherever you are: having everything based on files that you edit in a text editor is a nice idea, but what if you're on a machine that doesn't give you ssh access to your server? What if you need to edit creation timestamps? What about editing drafts without having to make commits and push to git repos?
 
-With this in mind, you might think of Serif's aim as to merge Jekyll, [Second Crack](https://github.com/marcoarment/secondcrack) and ideas from [Svbtle](http://dcurt.is/codename-svbtle). There should be many ways of editing and publishing, such as using the web interface, `rsync`ing from a remote machine, or editing a draft file on the remote server and having everything happen for you. (This last feature doesn't quite exist as planned yet.)
+With this in mind, you might think of Serif's aim as to merge Jekyll, [Second Crack](https://github.com/marcoarment/secondcrack) and ideas from [Svbtle](http://dcurt.is/codename-svbtle). There should be many ways of editing and publishing, such as using the web interface, `rsync`ing from a remote machine, or editing a draft file on the remote server and having everything happen for you.
 
 ## Planned features
 
@@ -323,6 +323,10 @@ location @not_found_page {
 }
 ```
 
+## Generating the site
+
+Use `ENV=production serif generate` to regenerate the site for production.
+
 ## Admin interface
 
 The admin server can be started on the live server the same way it's started locally (with `ENV=production`). To access it from anywhere on the web, you will need to proxy/forward `/admin` HTTP requests to port 4567 to let the admin web server handle it. As an alternative, you could forward a local port with SSH --- you might use this if you didn't want to rely on just HTTP basic auth, which isn't very secure over non-HTTPS connections.
@@ -351,6 +355,8 @@ These tags can be used in templates. For example:
 ## List of tags
 
 * `file_digest <path> [prefix:<prefix>]`
+  
+  (Note: For this tag to return anything, `ENV=production` must be set as an environment variable.)
   
   Computes a hex digest of the contents of `<path>`, optionally prefixed with `<prefix>`. `<path>` is delimited by whitespace.
 
