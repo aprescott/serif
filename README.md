@@ -8,6 +8,19 @@ Serif is a file-based blogging engine intended for simple sites. It compiles Mar
 
 See `CHANGELOG` for what's new.
 
+# Contents of this README
+
+* [Intro](#intro)
+* [License and contributing](#license_and_contributing)
+* [Basic usage](#basics)
+* [Content and site structure](#content_and_site_structure)
+* [Publishing drafts](#publishing_drafts)
+* [Archive pages](#archive_pages)
+* [Configuration](#configuration)
+* [Deploying](#deploying)
+* [Customising the admin interface](#customising_the_admin_interface)
+* [Custom tags](#custom_tags)
+
 # Intro
 
 Serif is a lot like Jekyll with a few extra moving parts, although it didn't start that way. It went through two reworkings before being converted into something based on generated Markdown files. The aim for Serif is to provide two things:
