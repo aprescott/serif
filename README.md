@@ -11,15 +11,15 @@ See `CHANGELOG` for what's new.
 # Contents of this README
 
 * [Intro](#intro)
-* [License and contributing](#license_and_contributing)
+* [License and contributing](#license-and-contributing)
 * [Basic usage](#basics)
-* [Content and site structure](#content_and_site_structure)
-* [Publishing drafts](#publishing_drafts)
-* [Archive pages](#archive_pages)
+* [Content and site structure](#content-and-site-structure)
+* [Publishing drafts](#publishing-drafts)
+* [Archive pages](#archive-pages)
 * [Configuration](#configuration)
 * [Deploying](#deploying)
-* [Customising the admin interface](#customising_the_admin_interface)
-* [Custom tags](#custom_tags)
+* [Customising the admin interface](#customising-the-admin-interface)
+* [Custom tags](#custom-tags)
 
 # Intro
 
