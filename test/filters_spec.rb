@@ -44,7 +44,7 @@ describe Serif::Filters do
       end
     end
   end
-
+  
   describe "#xmlschema" do
     it "calls xmlschema on its input" do
       d = double("")

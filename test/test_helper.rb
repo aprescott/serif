@@ -3,6 +3,9 @@ SimpleCov.start do
   add_filter "/test/"
 end
 
+# run tests in production mode so that file digests are enabled
+ENV["ENV"] = "production"
+
 require "serif"
 require "fileutils"
 require "pathname"
