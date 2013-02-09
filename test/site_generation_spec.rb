@@ -33,7 +33,7 @@ describe Serif::Site do
       before :all do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)
 
-        draft = D.new(subject)
+        draft = Serif::Draft.new(subject)
         draft.slug = "post-to-be-published-on-generate"
         draft.title = "Some draft title"
         draft.autopublish = true
