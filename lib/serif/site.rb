@@ -268,7 +268,12 @@ class Site
       end
     end
 
-    posts.each do |post|
+    # the posts are iterated over in reverse chrological order
+    next_post = nil
+
+    # run through the posts + nil so we can keep |a, b| such that a hits every element
+    # while iterating.
+    [*posts, nil].each_cons(2) do |post, prev_post|
       puts "Processing post: #{post.path}"
 
       FileUtils.mkdir_p(tmp_path(File.dirname(post.url)))
@@ -276,7 +281,9 @@ class Site
       File.open(tmp_path(post.url + ".html"), "w") do |f|
         # variables available in the post template
         post_template_variables = {
-          "post" => post
+          "post" => post,
+          "prev_post" => prev_post,
+          "next_post" => next_post
         }
 
         f.puts default_layout.render!(
@@ -285,6 +292,8 @@ class Site
           "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!(post_template_variables)
         )
       end
+
+      next_post = post
     end
 
     generate_archives(default_layout)

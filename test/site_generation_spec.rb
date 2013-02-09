@@ -29,6 +29,26 @@ describe Serif::Site do
       File.read("_site/file-digest-test.html").strip.should == "f8390232f0c354a871f9ba0ed306163c\n.f8390232f0c354a871f9ba0ed306163c"
     end
 
+    it "makes the previous and next posts available" do
+      subject.generate
+
+      contents = File.read("_site/test-blog/sample-post.html")
+      previous_title = contents[/^Previous post: .+?$/]
+      next_title = contents[/^Next post: .+?$/]
+
+      previous_title.should be_nil
+      next_title.should_not be_nil
+      next_title[/(?<=: ).+/].should == "Second post"
+
+      contents = File.read("_site/test-blog/second-post.html")
+      previous_title = contents[/Previous post: .+?$/]
+      next_title = contents[/Next post: .+?$/]
+      
+      previous_title.should_not be_nil
+      next_title.should be_nil
+      previous_title[/(?<=: ).+/].should == "Sample post"
+    end
+
     context "for drafts with a publish: now header" do
       before :all do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)
