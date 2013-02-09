@@ -274,7 +274,16 @@ class Site
       FileUtils.mkdir_p(tmp_path(File.dirname(post.url)))
 
       File.open(tmp_path(post.url + ".html"), "w") do |f|
-        f.puts default_layout.render!("site" => self, "page" => { "title" => ["Posts", "#{post.title}"] }, "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!("post" => post))
+        # variables available in the post template
+        post_template_variables = {
+          "post" => post
+        }
+
+        f.puts default_layout.render!(
+          "site" => self,
+          "page" => { "title" => ["Posts", "#{post.title}"] },
+          "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!(post_template_variables)
+        )
       end
     end
 
