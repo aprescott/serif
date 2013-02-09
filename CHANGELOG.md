@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.2.2
+
 * Make the previous and next posts available from individual post pages. (#3)
 
 # v0.2.1
