@@ -20,6 +20,7 @@ See `CHANGELOG` for what's new.
 * [Deploying](#deploying)
 * [Customising the admin interface](#customising-the-admin-interface)
 * [Custom tags](#custom-tags)
+* [Template variables)(#template-variables)
 
 # Intro
 
