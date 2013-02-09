@@ -374,3 +374,15 @@ These tags can be used in templates. For example:
   Computes a hex digest of the contents of `<path>`, optionally prefixed with `<prefix>`. `<path>` is delimited by whitespace.
 
   Useful for URL fingerprinting for long-lived caching.
+
+# Template variables
+
+In addition to those mentioned above, such as the archive page variables, there are others. *This is not exhaustive.*
+
+## Post template variables
+
+These are available on individual post pages.
+
+* `{{ post }}` --- the post being processed. Allows access to variables like `post.url`, `post.title`, `post.slug`, `post.created` and `post.content`.
+* `{{ prev_post }}` --- the post published chronologically before `post`.
+* `{{ next_post }}` --- the post published chronologically after `post`.
