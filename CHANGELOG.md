@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Warn about _config.yml auth details after `serif new` skeleton (#23)
 
 # v0.2.2
 
