@@ -50,6 +50,12 @@ def produce_skeleton(dir)
   files.each do |f|
     FileUtils.cp_r(f, dir, verbose: true)
   end
+
+  puts
+  puts "*** NOTE ***"
+  puts
+  puts "You should now edit the username and password in _config.yml"
+  puts
 end
 
 commands = Slop::Commands.new do
