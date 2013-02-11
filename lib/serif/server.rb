@@ -7,6 +7,8 @@ class DevelopmentServer
   class DevApp < Sinatra::Base
     set :public_folder, Dir.pwd
 
+    not_found { "Resource not found" }
+
     get "/" do
       File.read(File.expand_path("_site/index.html"))
     end
@@ -22,7 +24,7 @@ class DevelopmentServer
       # make a naive assumption that there's a 404 file at 404.html
       file ||= Dir[File.expand_path("_site/404.html")].first
 
-      File.read(file)
+      file ? File.read(file) : 404
     end
   end
 
