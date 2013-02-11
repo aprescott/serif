@@ -1,5 +1,6 @@
 # next release
 
+* `serif dev` server serves 404s on missing files instead of 500 exceptions. (#22)
 * Warn about _config.yml auth details after `serif new` skeleton (#23)
 
 # v0.2.2
