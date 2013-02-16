@@ -12,4 +12,10 @@ describe Serif::Post do
   it "uses the config file's permalink value" do
     @posts.all? { |p| p.url == "/test-blog/#{p.slug}" }.should be_true
   end
+
+  describe "#inspect" do
+    it "includes headers" do
+      @posts.all? { |p| p.inspect.should include(p.headers.inspect) }
+    end
+  end
 end
