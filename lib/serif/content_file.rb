@@ -100,11 +100,6 @@ class ContentFile
     converted_headers
   end
 
-  def self.rename(original_slug, new_slug)
-    raise if File.exist?("#{dirname}/#{new_slug}")
-    File.rename("#{dirname}/#{original_slug}", "#{dirname}/#{new_slug}")
-  end
-
   def save(markdown = nil)
     markdown ||= content if !new?
     
