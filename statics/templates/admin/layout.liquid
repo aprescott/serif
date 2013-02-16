@@ -182,6 +182,11 @@ body > nav ul li:last-child {
 	min-height: 20em;
 }
 
+#edit > aside {
+	margin-top: 2em;
+	opacity: 0.5;
+}
+
 #edit #entry {
 	display: none;
 	width: 100%;
@@ -472,7 +477,7 @@ body > nav ul li:last-child {
 			});
 
 			Mousetrap.bind(["ctrl+.", "command+."], function(e) {
-				$("#delete, #save, #render-preview + label, #publish + label").fadeToggle();
+				$("#delete, #save, #render-preview + label, #publish + label, #edit > aside").fadeToggle();
 				$("#slug, .post > header time").slideToggle();
 				$("#content").focus();
 				$("body > nav").toggleClass("hidden");
