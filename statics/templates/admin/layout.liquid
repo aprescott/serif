@@ -338,6 +338,25 @@ body > nav ul li:last-child {
 	<script src="/admin/js/mousetrap.min.js"></script>
 
 	<script>
+		function setDepartureCheck(enable) {
+			if (enable) {
+				window.onbeforeunload = function() {
+					return "You may lose unsaved changes if you leave this page.";
+				}
+			} else {
+				window.onbeforeunload = null;
+			}
+		}
+
+		setDepartureCheck(false);
+
+		$(function() {
+			$("input, textarea").change(function(event) {
+				setDepartureCheck(true);
+				console.log("hi");
+			});
+		});
+
 		$("#edit").ready(function() {
 			$("#slug input").blur(function() {
 				$(this).val($(this).val().trim().replace(/\s+/g, '-').replace(/^-+|-+$/g, '').toLowerCase());
@@ -356,6 +375,10 @@ body > nav ul li:last-child {
 
 			$("#confirm-delete + label").text("Delete");
 
+			$("#edit form input[type=submit]").click(function(event) {
+				setDepartureCheck(false);
+			});
+
 			$("#delete input[type=submit]").click(function(event) {
 				var el = $(this);
 
@@ -372,6 +395,7 @@ body > nav ul li:last-child {
 
 			$("#confirm-delete + label").click(function(event) {
 				event.preventDefault();
+				setDepartureCheck(false);
 				$(this).parent("form").submit();
 			});
 			
@@ -425,6 +449,7 @@ body > nav ul li:last-child {
 			});
 
 			Mousetrap.bind(["ctrl+s", "command+s"], function(e) {
+				setDepartureCheck(false);
 				$("#edit form input[type=submit]").click();
 				$("#shortcuts").hide();
 				return false;

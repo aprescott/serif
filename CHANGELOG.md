@@ -3,6 +3,7 @@
 * Generate private preview files for drafts, and generate the site on every draft change. (#19, #24)
 * `serif dev` server serves 404s on missing files instead of 500 exceptions. (#22)
 * Warn about _config.yml auth details after `serif new` skeleton (#23)
+* Smarter onbeforeunload warnings that only fire if changes have been made. (#17)
 
 # v0.2.2
 
