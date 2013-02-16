@@ -26,6 +26,7 @@ module Filters
   end
 
   def encode_uri_component(string)
+    return "" unless string
     CGI.escape(string)
   end
 
