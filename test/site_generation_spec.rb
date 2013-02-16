@@ -49,6 +49,42 @@ describe Serif::Site do
       previous_title[/(?<=: ).+/].should == "Sample post"
     end
 
+    it "sets a draft_preview flag for preview urls" do
+      preview_flag_pattern = /draftpreviewflagexists/
+
+      subject.generate
+
+      d = Serif::Draft.from_slug(subject, "sample-draft")
+      preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
+      preview_contents =~ preview_flag_pattern
+
+      # does not exist on live published pages
+      (File.read(testing_dir("_site/test-blog/second-post.html")) =~ preview_flag_pattern).should be_false
+    end
+
+    it "creates draft preview files" do
+      subject.generate
+
+      Dir.exist?(testing_dir("_site/drafts")).should be_true
+      Dir[File.join(testing_dir("_site/drafts/*"))].size.should == subject.drafts.size
+
+      Dir.exist?(testing_dir("_site/drafts/sample-draft")).should be_true
+      Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
+
+      d = Serif::Draft.from_slug(subject, "sample-draft")
+      subject.private_url(d).should_not be_nil
+
+      # absolute paths
+      (subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/.*\z/).should be_true
+
+      # 60 characters long (30 bytes as hex chars)
+      (subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/[a-z0-9]{60}\z/).should be_true
+
+      # does not create more than one
+      subject.generate
+      Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
+    end
+
     context "for drafts with a publish: now header" do
       before :all do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)

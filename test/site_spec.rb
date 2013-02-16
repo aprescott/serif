@@ -23,6 +23,14 @@ describe Serif::Site do
     end
   end
 
+  describe "#private_url" do
+    it "returns nil for a draft without an existing file" do
+      d = double("")
+      d.stub(:slug) { "foo" }
+      subject.private_url(d).should be_nil
+    end
+  end
+
   describe "#latest_update_time" do
     it "is the latest time that a post was updated" do
       subject.latest_update_time.should == Serif::Post.all(subject).max_by { |p| p.updated }.updated

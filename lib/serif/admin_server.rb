@@ -106,7 +106,7 @@ class AdminServer
           error_message = "You must pick a URL to use"
         end
 
-        liquid :edit_draft, locals: { error_message: error_message, post: content }
+        liquid :edit_draft, locals: { error_message: error_message, post: content, private_url: site.private_url(content) }
       else
         content.save(params[:markdown])
 
@@ -150,7 +150,7 @@ class AdminServer
         liquid :edit_post, locals: { post: content, autofocus: "markdown" }
       elsif params[:type] == "drafts"
         content = Draft.from_slug(site, params[:slug])
-        liquid :edit_draft, locals: { post: content, autofocus: "markdown" }
+        liquid :edit_draft, locals: { post: content, autofocus: "markdown", private_url: site.private_url(content) }
       else
         response.status = 404
         return "Nope"

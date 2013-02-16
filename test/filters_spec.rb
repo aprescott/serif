@@ -43,6 +43,10 @@ describe Serif::Filters do
         subject.encode_uri_component(char).should == enc_char
       end
     end
+
+    it "returns an empty string on nil input" do
+      subject.encode_uri_component(nil).should == ""
+    end
   end
   
   describe "#xmlschema" do
