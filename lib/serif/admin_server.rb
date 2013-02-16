@@ -183,6 +183,8 @@ class AdminServer
 
       relative_path =  "/images/#{uid}#{File.extname(filename)}"
 
+      FileUtils.mkdir_p(File.join(site.directory, "images"))
+
       # move to the source directory
       FileUtils.mv(tempfile.path, File.join(site.directory, relative_path))
 
