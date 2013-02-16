@@ -346,6 +346,15 @@ body > nav ul li:last-child {
 	<script src="/admin/js/attachment.js"></script>
 
 	<script>
+		var Serif = {
+			"variables": {
+				"imageUploadPattern": "{{ images_path }}",
+				"currentSlug": {% if post.slug %}"{{ post.slug }}"{% else %}null{% endif %}
+			}
+		};
+	</script>
+
+	<script>
 		function setDepartureCheck(enable) {
 			if (enable) {
 				window.onbeforeunload = function() {
@@ -366,7 +375,9 @@ body > nav ul li:last-child {
 
 		$("#edit").ready(function() {
 			$("#slug input").blur(function() {
-				$(this).val($(this).val().trim().replace(/\s+/g, '-').replace(/^-+|-+$/g, '').toLowerCase());
+				$(this).val($(this).val().trim().replace(/\s+/g, '-').replace(/"/g, "-").replace(/^-+|-+$/g, '').toLowerCase());
+
+				Serif.variables["currentSlug"] = $(this).val();
 			});
 
 			$("#slug input").keyup(function(event) {
