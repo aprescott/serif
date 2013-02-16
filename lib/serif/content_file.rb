@@ -51,10 +51,6 @@ class ContentFile
     end
   end
   
-  def modified
-    File.mtime(@path)
-  end
-
   def draft?
     !published?
   end
