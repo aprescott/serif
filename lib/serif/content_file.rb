@@ -120,10 +120,6 @@ class ContentFile
     %Q{<#{self.class} #{headers.inspect}>}
   end
   
-  def self.all
-    Post.all + Draft.all
-  end
-
   protected
 
   def set_publish_time(time)
