@@ -115,15 +115,6 @@ class ContentFile
 
     true # always return true for now
   end
-  
-  def [](header)
-    h = headers[header]
-    if h
-      h
-    else
-      raise "no such header #{header}"
-    end
-  end
     
   def inspect
     %Q{<#{self.class} #{headers.inspect}>}
