@@ -26,6 +26,7 @@ module Filters
   end
 
   def encode_uri_component(string)
+    return "" unless string
     CGI.escape(string)
   end
 
@@ -118,6 +119,18 @@ class Site
   def latest_update_time
     most_recent = posts.max_by { |p| p.updated }
     most_recent ? most_recent.updated : Time.now
+  end
+
+  # Gives the URL absolute path to a private draft preview.
+  #
+  # If the draft has no such preview available, returns nil.
+  def private_url(draft)
+    private_draft_pattern = site_path("/drafts/#{draft.slug}/*")
+    file = Dir[private_draft_pattern].first
+
+    return nil unless file
+
+    "/drafts/#{draft.slug}/#{File.basename(file, ".html")}"
   end
 
   def bypass?(filename)
@@ -296,6 +309,8 @@ class Site
       next_post = post
     end
 
+    generate_draft_previews(default_layout)
+
     generate_archives(default_layout)
 
     if Dir.exist?("_site")
@@ -307,6 +322,47 @@ class Site
   end
 
   private
+
+  # generates draft preview files for any unpublished drafts.
+  #
+  # uses the same template as live posts.
+  def generate_draft_previews(layout)
+    drafts = self.drafts
+
+    template = Liquid::Template.parse(File.read("_templates/post.html"))
+
+    # publish each draft under a randomly generated name, or use the
+    # existing file if one is present.
+    drafts.each do |draft|
+      url = private_url(draft)
+      if url
+        # take our existing URL like /drafts/foo/<random> (without .html)
+        # and give the filename
+        file = File.basename(url)
+      else
+        # create a new name
+        file = SecureRandom.hex(30)
+      end
+
+      # convert the name into a relative path
+      file = "drafts/#{draft.slug}/#{file}"
+
+      # the absolute path in the site's tmp path, where we create the file
+      # ready to be deployed.
+      live_preview_file = tmp_path(file)
+      FileUtils.mkdir_p(File.dirname(live_preview_file))
+
+      puts "#{url ? "Updating" : "Creating"} draft preview: #{file}"
+
+      File.open(live_preview_file + ".html", "w") do |f|
+        f.puts layout.render!(
+          "draft_preview" => true,
+          "page" => { "title" => [ "Draft Preview", draft.title ] },
+          "content" => template.render!("site" => self, "post" => draft)
+        )
+      end
+    end
+  end
 
   # goes through all draft posts that have "publish: now" headers and
   # calls #publish! on each one

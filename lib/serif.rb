@@ -8,6 +8,8 @@ require "redhead"
 require "cgi"
 require "digest"
 
+require "securerandom"
+
 require "serif/content_file"
 require "serif/post"
 require "serif/draft"
