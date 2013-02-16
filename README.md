@@ -382,7 +382,7 @@ In addition to those mentioned above, such as the archive page variables, there 
 
 ## Post template variables
 
-These are available on individual post pages.
+These are available on individual post pages, in `_template/post.html`.
 
 * `{{ post }}` --- the post being processed. Allows access to variables like `post.url`, `post.title`, `post.slug`, `post.created` and `post.content`.
 * `{{ prev_post }}` --- the post published chronologically before `post`.
