@@ -17,14 +17,14 @@
 	<div class="post draft">
 		<header>
 			<h1 id="heading" class="post">
-				<textarea spellcheck="false" placeholder="It was a dark and stormy night" name="title" autofocus>{{ post.title | escape }}</textarea>
+				<textarea data-attachify spellcheck="false" placeholder="It was a dark and stormy night" name="title" autofocus>{{ post.title | escape }}</textarea>
 			</h1>
 
 			<time datetime="{{ post.created | date: "%Y-%m-%d" }}">{{ post.created | date: "%B %d %Y" }}</time>
 		</header>
 	</div>
 	<div id="content-areas">
-		<textarea spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown">{{ post.content | strip | escape }}</textarea>
+		<textarea data-attachify spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown">{{ post.content | strip | escape }}</textarea>
 
 		<article id="entry" class="post" data-state="hidden"></article>
 	</div>

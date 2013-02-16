@@ -173,6 +173,24 @@ class AdminServer
         Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true).render(content).strip
       end
     end
+
+    post "/admin/attachment" do
+      attachment = params["attachment"]
+      filename = attachment["name"]
+      file = attachment["file"]
+      tempfile = file[:tempfile]
+      uid = attachment["uid"]
+
+      relative_path =  "/images/#{uid}#{File.extname(filename)}"
+
+      # move to the source directory
+      FileUtils.mv(tempfile.path, File.join(site.directory, relative_path))
+
+      # copy to production to avoid the need to generate right now
+      FileUtils.copy(File.join(site.directory, relative_path), site.site_path(relative_path))
+
+      "File uploaded"
+    end
   end
 
   def initialize(source_directory)

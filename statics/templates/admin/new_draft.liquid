@@ -17,7 +17,7 @@
 	<div class="post draft">
 		<header>
 			<h1 id="heading" class="post">
-				<textarea spellcheck="false" placeholder="It was a dark and stormy night" name="title"{% if autofocus == "title" %}{{ " autofocus" }}{% endif %}>{% if post.title %}{{ post.title | escape }}{% endif %}</textarea>
+				<textarea data-attachify spellcheck="false" placeholder="It was a dark and stormy night" name="title"{% if autofocus == "title" %}{{ " autofocus" }}{% endif %}>{% if post.title %}{{ post.title | escape }}{% endif %}</textarea>
 			</h1>
 		</header>
 	</div>
