@@ -104,6 +104,13 @@ class ContentFile
     markdown ||= content if !new?
     
     save_path = path || "#{self.class.dirname}/#{@slug}"
+
+    if new?
+      set_publish_time(Time.now)
+    else
+      set_updated_time(Time.now)
+    end
+
     File.open(save_path, "w") do |f|
       f.puts %Q{#{raw_headers}
 

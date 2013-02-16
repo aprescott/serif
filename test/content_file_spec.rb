@@ -13,4 +13,27 @@ describe Serif::ContentFile do
       end
     end
   end
+
+  describe "#save(markdown)" do
+    it "sets the underlying updated time value for posts" do
+      draft = Serif::Draft.new(subject)
+      draft.title = "Testing"
+      draft.slug = "hi"
+
+      begin
+        draft.save("# Some content")
+        draft.publish!
+
+        post = Serif::Post.from_slug(subject, draft.slug)
+
+        t = Time.now
+        Timecop.freeze(t + 30) do
+          post.save("# Heading content")
+          post.updated.to_i.should == (t + 30).to_i
+        end
+      ensure
+        FileUtils.rm(post.path)
+      end
+    end
+  end
 end
