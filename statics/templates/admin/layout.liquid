@@ -469,7 +469,7 @@ body > nav ul li:last-child {
 			});
 
 			Mousetrap.bind(["ctrl+.", "command+."], function(e) {
-				$("#delete, #save, #render-preview + label, #publish + label").fadeToggle();
+				$("#delete, #save, #render-preview + label, #publish + label, #private-url").fadeToggle();
 				$("#slug, .post > header time").slideToggle();
 				$("#content").focus();
 				$("body > nav").toggleClass("hidden");
