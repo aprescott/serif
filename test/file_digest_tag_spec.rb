@@ -30,5 +30,9 @@ describe Serif::FileDigest do
     it "ignores trailing whitespace on the prefix" do
       file_digest("test-stylesheet.css prefix:. ").render(@context).should == ".f8390232f0c354a871f9ba0ed306163c"
     end
+
+    it "raises a SyntaxError on invalid syntax" do
+      expect { file_digest("test-stylesheet.css pefoiejw").render(@context) }.to raise_error(SyntaxError)
+    end
   end
 end

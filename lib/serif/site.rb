@@ -43,7 +43,7 @@ class FileDigest < Liquid::Tag
   DIGEST_CACHE = {}
 
   # file_digest "file.css" [prefix:.]
-  Syntax = /^\s*(\S+)\s*(?:(prefix\s*:\s*\S+)\s*)?/
+  Syntax = /^\s*(\S+)\s*(?:(prefix\s*:\s*\S+)\s*)?$/
 
   def initialize(tag_name, markup, tokens)
     super
