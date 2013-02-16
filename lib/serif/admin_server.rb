@@ -67,6 +67,7 @@ class AdminServer
           liquid :new_draft, locals: { error_message: error_message, post: content, autofocus: autofocus }
         else
           content.save(params[:markdown])
+          site.generate
           redirect to("/admin")
         end
       end
@@ -114,8 +115,9 @@ class AdminServer
         #       a directory-change-level event.
         if params[:publish] == "yes"
           content.publish!
-          site.generate
         end
+
+        site.generate
 
         redirect to("/admin")
       end
