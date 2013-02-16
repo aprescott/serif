@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Generate private preview files for drafts. (#19)
 
 # v0.2.2
 
