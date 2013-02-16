@@ -223,7 +223,11 @@ Placeholder | Value
 
 ## Other files
 
-Any other file in the directory's root will be copied over exactly as-is, with two caveats for any file ending in `.html` or `.xml`:
+Any other file in the directory's root will be copied over exactly as-is, with two caveats.
+
+First, `images/` is used for the drag-and-drop file uploads from the admin interface. Files are named with `<unix_timestamp>.<extension>`.
+
+Second, for any file ending in `.html` or `.xml`:
 
 1. These files are assumed to contain [Liquid markup](http://liquidmarkup.org/) and will be processed as such.
 2. Any header data will not be included in the processed output.
