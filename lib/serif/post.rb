@@ -36,12 +36,6 @@ class Post < ContentFile
     all(site).find { |p| p.slug == slug }
   end
 
-  def save(markdown)
-    # update the timestamp if the content has actually changed
-    set_updated_time(Time.now) unless markdown.strip == content.strip
-    super
-  end
-
   def to_liquid
     h = {
       "title" => title,
