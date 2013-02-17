@@ -218,7 +218,7 @@ admin:
   username: username
   password: password
 permalink: /blog/:year/:month/:title
-images_upload_path: /images/:timestamp_:name
+image_upload_path: /images/:timestamp_:name
 ```
 
 If a permalink setting is not given in the configuration, the default is `/:title`. There are the following options available for permalinks:
@@ -232,7 +232,7 @@ Placeholder | Value
 
 ### Admin drag-and-drop upload path
 
-The `images_upload_path` configuration setting is an _absolute path_ and will be relative to the base directory of your site, used in the admin interface to control where files are sent. The default value is `/images/:timestamp_:name`. Similar to permalinks, the following placeholders are available:
+The `image_upload_path` configuration setting is an _absolute path_ and will be relative to the base directory of your site, used in the admin interface to control where files are sent. The default value is `/images/:timestamp_:name`. Similar to permalinks, the following placeholders are available:
 
 Placeholder | Value
 ----------- |:-----
@@ -243,7 +243,7 @@ Placeholder | Value
 `:name`     | Original filename string of the image being uploaded
 `:timestamp`| Unix timestamp, e.g., "1361057832685"
 
-Any slashes in `images_upload_path` are converted to directories.
+Any slashes in `image_upload_path` are converted to directories.
 
 ## Other files
 
