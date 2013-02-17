@@ -249,7 +249,7 @@ Any slashes in `image_upload_path` are converted to directories.
 
 Any other file in the directory's root will be copied over exactly as-is, with two caveats.
 
-First, `images/` is used for the drag-and-drop file uploads from the admin interface. Files are named with `<unix_timestamp>.<extension>`.
+First, `images/` (by default) is used for the drag-and-drop file uploads from the admin interface. Files are named with `<timestamp>_ <name>.<extension>`. This is configurable, see the section on configuration.
 
 Second, for any file ending in `.html` or `.xml`:
 
