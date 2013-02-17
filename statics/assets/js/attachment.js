@@ -18,6 +18,12 @@ var createAttachment = function(file, element) {
 	var processedName = file.name.replace(/[^a-zA-Z0-9_]/g, "_").replace(/__+/g, "_");
 
 	var s = Serif.variables["imageUploadPattern"];
+
+	if (/:slug/.test(s) && !(Serif.variables["currentSlug"] && Serif.variables["currentSlug"])) {
+		alert("Your image upload path is set to use a slug, but no such slug exists yet.");
+		return null;
+	}
+
 	var placeholderValues = {
 		":slug": Serif.variables["currentSlug"],
 		":timestamp": uid.toString(),
