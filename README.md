@@ -386,13 +386,53 @@ The admin interface is intended to be a minimal place to focus on writing conten
 /* more customisation below */
 ```
 
-# Custom tags
+# Custom tags and filters
 
-These tags can be used in templates. For example:
+These tags can be used in templates, in addition to the [standard Liquid filters and tags](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers). For example:
 
 ```
+{{ post.title | smarty | escape }}
+
+{{ post.content | markdown }}
+
 {% file_digest foo.css prefix:- %}
 ```
+
+## List of filters
+
+* `date` with `'now'`
+  
+  This is a standard filter, but there is a [workaround](https://github.com/Shopify/liquid/pull/117) for
+  `{{ 'now' | date: "%Y" }}` to work, so you can use this in templates.
+
+* `markdown`
+  
+  e.g., `{{ post.content | markdown }}`.
+
+  This runs the given input through a Markdown + SmartyPants renderer, with fenced codeblocks enabled.
+
+* `strip`
+  
+  Strips trailing and leading whitespace.
+
+  e.g., `{{ " hello " | strip }}` will render as `hello`.
+
+* `xmlschema`
+  
+  e.g., `{{ post.created | xmlschema }}`.
+
+  Takes a Time value and returns an ISO8601-format string, as per Ruby's `Time#xmlschema` definition.
+
+  Example output: 2013-02-16T23:55:22+01:00
+
+  If the time value is in UTC: 2013-02-16T22:55:22Z
+
+* `encode_uri_component`
+  
+  e.g., `example.com/foo?url=http://mysite.com{{ post.url | encode_uri_component }}`
+
+  Intended to provide the functionality of JavaScript's `encode_uri_component()` function. Essentially:
+  encodes the entire input so it is usable as a query string parameter.
 
 ## List of tags
 
