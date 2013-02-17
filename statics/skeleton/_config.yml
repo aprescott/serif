@@ -17,6 +17,8 @@
 # This should be an ABSOLUTE PATH, relative to your base site. The
 # value used will have the relevant extension appended AUTOMATICALLY.
 #
+# The default value is: /images/:timestamp_:name
+#
 # Possible placeholders for the image upload path:
 #
 #     :year
