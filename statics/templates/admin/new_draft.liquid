@@ -22,7 +22,7 @@
 		</header>
 	</div>
 	<div id="content-areas">
-		<textarea spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown"{% if autofocus == "markdown" %}{{ " autofocus" }}{% endif %}>{{ post.content | strip | escape }}</textarea>
+		<textarea data-attachify spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown"{% if autofocus == "markdown" %}{{ " autofocus" }}{% endif %}>{{ post.content | strip | escape }}</textarea>
 
 		<article id="entry" class="post" data-state="hidden"></article>
 	</div>
@@ -32,12 +32,8 @@
 	<input type="checkbox" id="render-preview"> <label class="preview" for="render-preview">Preview</label>
 </form>
 
-</div>
+<aside>
+	<p>Drag and drop images into the form above to upload them.</p>
+</aside>
 
-<script>
-$(function() {
-	window.onbeforeunload = function() {
-		return "You may lose unsaved changes if you leave this page.";
-	}
-});
-</script>
+</div>

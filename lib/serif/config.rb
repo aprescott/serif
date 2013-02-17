@@ -14,6 +14,10 @@ class Config
     yaml["admin"]["password"]
   end
 
+  def image_upload_path
+    yaml["image_upload_path"] || "/images/:timestamp_:name"
+  end
+
   def permalink
     yaml["permalink"] || "/:title"
   end
