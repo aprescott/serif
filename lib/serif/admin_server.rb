@@ -42,7 +42,7 @@ class AdminServer
     get "/admin/new/draft" do
       content = Draft.new(site)
       autofocus = "slug"
-      liquid :new_draft, locals: { post: content, autofocus: autofocus }
+      liquid :new_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: autofocus }
     end
 
     post "/admin/new/draft" do
@@ -61,10 +61,10 @@ class AdminServer
         autofocus = "title" unless params[:title]
         autofocus = "slug" unless params[:slug]
 
-        liquid :new_draft, locals: { error_message: error_message, post: content, autofocus: autofocus }
+        liquid :new_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
       else
         if Draft.exist?(site, params[:slug])
-          liquid :new_draft, locals: { error_message: error_message, post: content, autofocus: autofocus }
+          liquid :new_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
         else
           content.save(params[:markdown])
           site.generate
@@ -107,7 +107,7 @@ class AdminServer
           error_message = "You must pick a URL to use"
         end
 
-        liquid :edit_draft, locals: { error_message: error_message, post: content, private_url: site.private_url(content) }
+        liquid :edit_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
       else
         content.save(params[:markdown])
 
@@ -135,7 +135,7 @@ class AdminServer
         error_message = "Content must not be blank." if params[:markdown].empty?
         error_message = "Title must not be blank." if params[:title].empty?
 
-        liquid :edit_post, locals: { error_message: error_message, post: content }
+        liquid :edit_post, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content }
       else
         content.save(params[:markdown])
         site.generate
@@ -149,10 +149,10 @@ class AdminServer
 
       if params[:type] == "posts"
         content = site.posts.find { |p| p.slug == params[:slug] }
-        liquid :edit_post, locals: { post: content, autofocus: "markdown" }
+        liquid :edit_post, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown" }
       elsif params[:type] == "drafts"
         content = Draft.from_slug(site, params[:slug])
-        liquid :edit_draft, locals: { post: content, autofocus: "markdown", private_url: site.private_url(content) }
+        liquid :edit_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown", private_url: site.private_url(content) }
       else
         response.status = 404
         return "Nope"
@@ -172,6 +172,26 @@ class AdminServer
       if request.xhr?
         Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true).render(content).strip
       end
+    end
+
+    post "/admin/attachment" do
+      attachment = params["attachment"]
+      filename = attachment["final_name"]
+      file = attachment["file"]
+      uid = attachment["uid"]
+
+      tempfile = file[:tempfile]
+
+      FileUtils.mkdir_p(File.join(site.directory, File.dirname(filename)))
+      FileUtils.mkdir_p(File.dirname(site.site_path(filename)))
+
+      # move to the source directory
+      FileUtils.mv(tempfile.path, File.join(site.directory, filename))
+
+      # copy to production to avoid the need to generate right now
+      FileUtils.copy(File.join(site.directory, filename), site.site_path(filename))
+
+      "File uploaded"
     end
   end
 

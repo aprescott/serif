@@ -210,6 +210,7 @@ admin:
   username: username
   password: password
 permalink: /blog/:year/:month/:title
+images_upload_path: /images/:timestamp_:name
 ```
 
 If a permalink setting is not given in the configuration, the default is `/:title`. There are the following options available for permalinks:
@@ -221,9 +222,28 @@ Placeholder | Value
 `:month`    | Month as given in the filename, e.g., "01"
 `:day`      | Day as given in the filename, e.g., "28"
 
+### Admin drag-and-drop upload path
+
+The `images_upload_path` configuration setting is an _absolute path_ and will be relative to the base directory of your site, used in the admin interface to control where files are sent. The default value is `/images/:timestamp_:name`. Similar to permalinks, the following placeholders are available:
+
+Placeholder | Value
+----------- |:-----
+`:slug`     | URL "slug" at the time of upload, e.g., "your-post-title"
+`:year`     | Year at the time of upload, e.g., "2013"
+`:month`    | Month at the time of upload, e.g., "02"
+`:day`      | Day at the time of upload, e.g., "16"
+`:name`     | Original filename string of the image being uploaded
+`:timestamp`| Unix timestamp, e.g., "1361057832685"
+
+Any slashes in `images_upload_path` are converted to directories.
+
 ## Other files
 
-Any other file in the directory's root will be copied over exactly as-is, with two caveats for any file ending in `.html` or `.xml`:
+Any other file in the directory's root will be copied over exactly as-is, with two caveats.
+
+First, `images/` is used for the drag-and-drop file uploads from the admin interface. Files are named with `<unix_timestamp>.<extension>`.
+
+Second, for any file ending in `.html` or `.xml`:
 
 1. These files are assumed to contain [Liquid markup](http://liquidmarkup.org/) and will be processed as such.
 2. Any header data will not be included in the processed output.

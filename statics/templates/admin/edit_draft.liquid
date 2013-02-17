@@ -32,7 +32,7 @@
 		</header>
 	</div>
 	<div id="content-areas">
-		<textarea spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown"{% if autofocus == "markdown" %}{{ " autofocus" }}{% endif %}>{{ post.content | strip | escape }}</textarea>
+		<textarea data-attachify spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown"{% if autofocus == "markdown" %}{{ " autofocus" }}{% endif %}>{{ post.content | strip | escape }}</textarea>
 
 		<article id="entry" class="post" data-state="hidden"></article>
 	</div>
@@ -54,5 +54,9 @@
 		<input type="submit" value="Delete">
 	</form>
 {% endif %}
+
+<aside>
+	<p>Drag and drop images into the form above to upload them.</p>
+</aside>
 
 </div>
