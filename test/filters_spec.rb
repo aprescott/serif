@@ -18,6 +18,23 @@ describe Serif::Filters do
     end
   end
 
+  describe "#smarty" do
+    it "runs the input through a SmartyPants processor" do
+      subject.smarty("Testing").should == "Testing"
+      subject.smarty("Testing's").should == "Testing&rsquo;s"
+      subject.smarty("\"Testing\" some \"text's\" input...").should == "&ldquo;Testing&rdquo; some &ldquo;text&rsquo;s&rdquo; input&hellip;"
+    end
+
+    it "does not do any markdown processing" do
+      subject.smarty("# Heading").should == "# Heading"
+      subject.smarty("Testing `code blocks` input").should == "Testing `code blocks` input"
+    end
+
+    it "deals with HTML appropriately" do
+      subject.smarty("<p>Testing's <span>span</span> testing</p>").should == "<p>Testing&rsquo;s <span>span</span> testing</p>"
+    end
+  end
+
   describe "#encode_uri_component" do
     it "percent-encodes various characters for use in a URI" do
       {

@@ -23,6 +23,11 @@ describe Serif::Site do
       File.read("_site/page-alt-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
     end
 
+    it "supports a smarty filter" do
+      subject.generate
+      File.read("_site/test-smarty-filter.html").should =~ /testing&rsquo;s for a &ldquo;heading&rsquo;s&rdquo; `with code` in it&hellip;/
+    end
+
     it "correctly handles file_digest calls" do
       subject.generate
 
