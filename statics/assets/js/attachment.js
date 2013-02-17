@@ -67,6 +67,39 @@ var createAttachment = function(file, element) {
 	});
 
 	var absText = '![' + file.name + '](' + finalName + ')';
+
+	// for some reason this is necessary to avoid the following
+	// giving an undefined result:
+	//
+	//   1. load a new draft page with an empty textarea
+	//   2. at this point element.value is undefined.
+	//   3. drag an image, calling insertAtCaret
+	//   4. element.value (3) in this method is still undefined (confusing!)
+	//   5. in the browser console, $("[data-attachify]").get(0).value
+	//      is correct. (confusing!)
+	//   6. on a _second drag_, element.value is undefined (very confusing)
+	//   7. in the same second drag event, $(element).get(0).value is
+	//      correct, hence this "reloading" to allow element.value
+	//      below to not be undefined.
+	element = $(element).get(0);
+
+	if (typeof element.value != "undefined") {
+		var pos    = element.selectionStart;
+		var text   = element.value;
+		var before = text.slice(0, pos);
+		var after  = text.slice(pos);
+		
+		// if there is only a single newline, add one more for a blank
+		// line.
+		if (/[^\n]\n$/.test(before)) {
+			absText = "\n" + absText;
+		// if there aren't two new lines, add a full two
+		} else if (! /\n\n$/.test(before)) {
+			absText = "\n\n" + absText;
+		}
+
+	}
+	
 	$(element).insertAtCaret(absText);
 };
 
