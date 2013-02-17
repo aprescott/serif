@@ -29,6 +29,7 @@ See `CHANGELOG` for more.
 * [Customising the admin interface](#customising-the-admin-interface)
 * [Custom tags](#custom-tags)
 * [Template variables](#template-variables)
+* [Developing Serif](#developing-serif)
 
 # Intro
 
@@ -60,6 +61,8 @@ The quickest way to get changes contributed:
 2. [Fork the repository](https://help.github.com/articles/fork-a-repo).
 3. Check out a branch on the latest master for your change: `git checkout -b master new-feature` --- do not make changes on `master`! Make sure that anything added or changed has a test in the `test/` directory. Use the existing files as examples. All tests for new/changed behaviour should pass.
 4. [Send a pull request on GitHub](https://help.github.com/articles/fork-a-repo), including a description of what you've changed. (Note: your contribution will be assumed to be under the same terms of the project by default.)
+
+For more info on development, see the section at the bottom of this README.
 
 # Basics
 
@@ -455,3 +458,16 @@ These are available on individual post pages, in `_template/post.html`.
 * `{{ post }}` --- the post being processed. Allows access to variables like `post.url`, `post.title`, `post.slug`, `post.created` and `post.content`.
 * `{{ prev_post }}` --- the post published chronologically before `post`.
 * `{{ next_post }}` --- the post published chronologically after `post`.
+
+# Developing Serif
+
+## Broad outline
+
+* `./bin/serif {dev,admin,generate}` to run Serif commands.
+* `rake test` to run the tests.
+* Unit tests are written in RSpec.
+
+## Directory structure
+
+* `lib/serif/` is generally where files go.
+* `test/` contains the test files. Any new files should have `require "test_helper"` at the top of the, which pulls in `test/test_helper.rb`.
