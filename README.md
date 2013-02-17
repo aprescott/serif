@@ -224,7 +224,7 @@ Placeholder | Value
 
 ### Admin drag-and-drop upload path
 
-The `images_upload_path` configuration setting is an _absolute path_ relative to the base directory of your site, used in the admin interface to control where files are sent. The default value is `/images/:timestamp_:name`. Similar to permalinks, the following placeholders are available:
+The `images_upload_path` configuration setting is an _absolute path_ and will be relative to the base directory of your site, used in the admin interface to control where files are sent. The default value is `/images/:timestamp_:name`. Similar to permalinks, the following placeholders are available:
 
 Placeholder | Value
 ----------- |:-----

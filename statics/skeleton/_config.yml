@@ -14,8 +14,9 @@
 #
 #     image_upload_path: [/some/absolute/path/:with/:placeholders]
 #
-# This should be an ABSOLUTE PATH, relative to your base site. The
-# value used will have the relevant extension appended AUTOMATICALLY.
+# This should be an ABSOLUTE PATH and will be relative to your
+# base site (e.g., mysite.com). The value used will have the
+# relevant extension appended AUTOMATICALLY.
 #
 # The default value is: /images/:timestamp_:name
 #
