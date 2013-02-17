@@ -391,7 +391,7 @@ The admin interface is intended to be a minimal place to focus on writing conten
 These tags can be used in templates, in addition to the [standard Liquid filters and tags](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers). For example:
 
 ```
-{{ post.title | smarty | escape }}
+{{ post.title | smarty }}
 
 {{ post.content | markdown }}
 
