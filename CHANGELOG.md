@@ -1,6 +1,7 @@
 # next release
 
 * Make `site` available to both preview templates and archive templates. (c3e2f28)
+* Intelligently add blank lines before the markdown image text strings. (#27)
 
 # v0.2.3 
 
