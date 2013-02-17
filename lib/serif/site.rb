@@ -356,6 +356,7 @@ class Site
 
       File.open(live_preview_file + ".html", "w") do |f|
         f.puts layout.render!(
+          "site" => self,
           "draft_preview" => true,
           "page" => { "title" => [ "Draft Preview", draft.title ] },
           "content" => template.render!("site" => self, "post" => draft)
@@ -391,7 +392,7 @@ class Site
       FileUtils.mkdir_p(archive_path)
 
       File.open(File.join(archive_path, "index.html"), "w") do |f|
-        f.puts layout.render!("content" => template.render!("site" => self, "month" => month, "posts" => posts))
+        f.puts layout.render!("site" => self, "content" => template.render!("site" => self, "month" => month, "posts" => posts))
       end
     end
   end

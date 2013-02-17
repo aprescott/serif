@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Make `site` available to both preview templates and archive templates.
 
 # v0.2.3 
 
