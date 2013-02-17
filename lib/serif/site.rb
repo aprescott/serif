@@ -30,6 +30,11 @@ module Filters
     CGI.escape(string)
   end
 
+  def smarty(text)
+    text.gsub!('`', '\\\\`')
+    Redcarpet::Render::SmartyPants.render(text)
+  end
+
   def markdown(body)
     Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true).render(body).strip
   end
