@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    serif (0.2.2)
+    serif (0.2.3)
       liquid (~> 2.4)
       pygments.rb (~> 0.3)
       rack (~> 1.0)

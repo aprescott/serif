@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.2.3 
+
 * Support drag-and-drop image uploading in the admin interface, with customisable paths. (#18)
 * Generate private preview files for drafts, and generate the site on every draft change. (#19, #24)
 * `serif dev` server serves 404s on missing files instead of 500 exceptions. (#22)
