@@ -1,10 +1,10 @@
 # next release
 
+* Add some caching to improve performance of post generation. (#29)
+* Remove super-linear performance cost of file_digest, reducing site generation time by > 85% for 50+ posts. (#30 -- charts available in the issue)
 * Make `site` available to both preview templates and archive templates. (c3e2f28)
 * Intelligently add blank lines before the markdown image text strings. (#27)
 * Add a `smarty` filter to do smarty processing without full Markdown. (#28)
-* Add some caching to improve performance of post generation. (#29)
-* Remove super-linear performance cost of file_digest. (#30)
 
 # v0.2.3 
 
