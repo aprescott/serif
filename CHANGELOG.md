@@ -3,6 +3,7 @@
 * Make `site` available to both preview templates and archive templates. (c3e2f28)
 * Intelligently add blank lines before the markdown image text strings. (#27)
 * Add a `smarty` filter to do smarty processing without full Markdown. (#28)
+* Add some caching to improve performance of post generation. (#29)
 
 # v0.2.3 
 
