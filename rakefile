@@ -1,6 +1,7 @@
 require "rake"
 require "time"
 require "rspec/core/rake_task"
+require "benchmark"
 
 RSpec::Core::RakeTask.new(:test) do |t|
   t.rspec_opts = "-I test --color --format nested"
@@ -34,5 +35,5 @@ Dummy content #{n}}
     end
   end
 
-  system({ "ENV" => ENV["ENV"] }, "time -p #{d}/bin/serif generate")
+  puts Benchmark.realtime { system({ "ENV" => ENV["ENV"] }, "#{d}/bin/serif generate") }
 end
