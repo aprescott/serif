@@ -278,8 +278,12 @@ class Site
           if layout_option == "none"
             f.puts Liquid::Template.parse(file.to_s).render!("site" => self)
           else
-            layout_file = File.join(self.directory, "_layouts", "#{layout_option}.html")
-            layout = Liquid::Template.parse(File.read(layout_file))
+            if layout_option == :default
+              layout = default_layout
+            else
+              layout_file = File.join(self.directory, "_layouts", "#{layout_option}.html")
+              layout = Liquid::Template.parse(File.read(layout_file))
+            end
             f.puts layout.render!("site" => self, "page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
           end
         end
