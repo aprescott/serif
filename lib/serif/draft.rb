@@ -6,6 +6,11 @@ class Draft < ContentFile
     "_drafts"
   end
 
+  def self.rename(original_slug, new_slug)
+    raise if File.exist?("#{dirname}/#{new_slug}")
+    File.rename("#{dirname}/#{original_slug}", "#{dirname}/#{new_slug}")
+  end
+
   def delete!
     FileUtils.mkdir_p("#{site.directory}/_trash")
     File.rename(@path, File.expand_path("#{site.directory}/_trash/#{Time.now.to_i}-#{slug}"))
