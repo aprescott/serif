@@ -7,6 +7,39 @@ describe Serif::Draft do
     FileUtils.rm_rf(testing_dir("_trash"))
   end
 
+  describe ".rename" do
+    it "moves the draft to a new file" do
+      draft = D.new(@site)
+      draft.slug = "test-draft"
+      draft.title = "Some draft title"
+      draft.save("some content")
+
+      D.rename(@site, "test-draft", "foo-bar")
+      d = D.from_slug(@site, "foo-bar")
+      d.should_not be_nil
+      File.exist?(testing_dir("_drafts/foo-bar")).should be_true
+
+      d.delete!
+    end
+
+    it "raises if there is an existing draft" do
+      draft = D.new(@site)
+      draft.slug = "test-draft"
+      draft.title = "Some draft title"
+      draft.save("some content")
+
+      draft2 = D.new(@site)
+      draft2.slug = "test-draft-2"
+      draft2.title = "Some draft title"
+      draft2.save("some content")
+
+      expect { D.rename(@site, draft2.slug, draft.slug) }.to raise_error
+
+      draft.delete!
+      draft2.delete!
+    end
+  end
+
   describe "#delete!" do
     it "moves the file to _trash" do
       draft = D.new(@site)
