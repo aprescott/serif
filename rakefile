@@ -1,5 +1,7 @@
 require "rake"
+require "time"
 require "rspec/core/rake_task"
+require "benchmark"
 
 RSpec::Core::RakeTask.new(:test) do |t|
   t.rspec_opts = "-I test --color --format nested"
@@ -9,3 +11,29 @@ RSpec::Core::RakeTask.new(:test) do |t|
 end
 
 task :default => :test
+
+task :stress, [:n] do |t, args|
+  iterations = args[:n] || 250
+  iterations = iterations.to_i
+
+  d = Dir.pwd
+  cd "/tmp"
+  rm_rf ".test-site"
+  mkdir ".test-site"
+  cd ".test-site"
+  `#{d}/bin/serif new`
+
+  File.open("_layouts/default.html", "a") { |f| f.puts "\n\ndigest: {% file_digest style.css prefix:- %}" }
+  File.open("style.css", "w") { |f| f.puts("body {}") }
+
+  iterations.times do |n|
+    File.open("_posts/#{Date.today + n}-sample-post-#{n}", "w") do |f|
+      f.puts %Q{title: sample-post
+created: #{(Time.now + 60*n).xmlschema}
+
+Dummy content #{n}}
+    end
+  end
+
+  puts Benchmark.realtime { system({ "ENV" => ENV["ENV"] }, "#{d}/bin/serif generate") }
+end

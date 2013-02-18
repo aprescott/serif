@@ -110,7 +110,7 @@ class Site
   end
 
   def config
-    Serif::Config.new(File.join(@source_directory, "_config.yml"))
+    @config ||= Serif::Config.new(File.join(@source_directory, "_config.yml"))
   end
 
   def site_path(path)
@@ -226,7 +226,12 @@ class Site
   end
 
   def to_liquid
-    {
+    @liquid_cache_store ||= TimeoutCache.new
+
+    cached_value = @liquid_cache_store[:liquid]
+    return cached_value if cached_value
+
+    @liquid_cache_store[:liquid] = {
       "posts" => posts,
       "latest_update_time" => latest_update_time,
       "archive" => self.class.stringify_keys(archives),
@@ -278,8 +283,12 @@ class Site
           if layout_option == "none"
             f.puts Liquid::Template.parse(file.to_s).render!("site" => self)
           else
-            layout_file = File.join(self.directory, "_layouts", "#{layout_option}.html")
-            layout = Liquid::Template.parse(File.read(layout_file))
+            if layout_option == :default
+              layout = default_layout
+            else
+              layout_file = File.join(self.directory, "_layouts", "#{layout_option}.html")
+              layout = Liquid::Template.parse(File.read(layout_file))
+            end
             f.puts layout.render!("site" => self, "page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
           end
         end
