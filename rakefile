@@ -19,6 +19,9 @@ task :stress do
   cd ".test-site"
   `#{d}/bin/serif new`
 
+  File.open("_layouts/default.html", "a") { |f| f.puts "\n\ndigest: {% file_digest style.css prefix:- %}" }
+  File.open("style.css", "w") { |f| f.puts("body {}") }
+
   250.times do |n|
     File.open("_posts/#{Date.today + n}-sample-post-#{n}", "w") do |f|
       f.puts %Q{title: sample-post
@@ -28,5 +31,5 @@ Dummy content #{n}}
     end
   end
 
-  system("time #{d}/bin/serif generate")
+  system({ "ENV" => ENV["ENV"] }, "time -p #{d}/bin/serif generate")
 end
