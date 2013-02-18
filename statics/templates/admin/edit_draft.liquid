@@ -15,7 +15,7 @@
 	</h2>
 
 	<h2 id="private-url">
-		<code><span>preview:</span> <a href="{{ private_url }}">{{ private_url | escape }}</a></code>
+		<code><span>preview:</span> <a href="{{ private_url }}">{% assign parts = private_url | split:"/" %}/{{ parts[1] }}/{{ parts[2] }}/{{ parts[3] | truncate: 10, '' }}&hellip;</a></code>
 	</h2>
 
 	<div class="post{% if post.draft %} draft{% endif %}">
