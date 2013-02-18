@@ -110,7 +110,7 @@ class Site
   end
 
   def config
-    Serif::Config.new(File.join(@source_directory, "_config.yml"))
+    @config ||= Serif::Config.new(File.join(@source_directory, "_config.yml"))
   end
 
   def site_path(path)
