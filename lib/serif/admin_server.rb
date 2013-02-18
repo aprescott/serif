@@ -87,7 +87,7 @@ class AdminServer
           # not the new one that was attempted to be saved.
           content = Draft.from_slug(site, params[:original_slug])
         else
-          Draft.rename(params[:original_slug], params[:slug])
+          Draft.rename(site, params[:original_slug], params[:slug])
 
           # re-load after the rename
           content = Draft.from_slug(site, params[:slug])
