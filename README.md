@@ -6,7 +6,16 @@ Serif is a file-based blogging engine intended for simple sites. It compiles Mar
 
 # Changes and what's new
 
-## Latest release
+## Latest release (v0.3)
+
+* Add some caching to improve performance of post generation. (#29)
+* Remove super-linear performance cost of file_digest, reducing site generation time by > 85% for 50+ posts. (#30 -- charts available in the issue)
+* Make `site` available to both preview templates and archive templates. (c3e2f28)
+* Intelligently add blank lines before the markdown image text strings. (#27)
+* Add a `smarty` filter to do smarty processing without full Markdown. (#28)
+* Fix broken URL renames for drafts in the admin interface. (#31)
+
+## v0.2.3
 
 * Support drag-and-drop image uploading in the admin interface, with customisable paths. (#18)
 * Generate private preview files for drafts, and generate the site on every draft change. (#19, #24)

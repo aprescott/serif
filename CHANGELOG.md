@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.3
+
 * Add some caching to improve performance of post generation. (#29)
 * Remove super-linear performance cost of file_digest, reducing site generation time by > 85% for 50+ posts. (#30 -- charts available in the issue)
 * Make `site` available to both preview templates and archive templates. (c3e2f28)
