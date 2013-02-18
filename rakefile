@@ -11,7 +11,10 @@ end
 
 task :default => :test
 
-task :stress do
+task :stress, [:n] do |t, args|
+  iterations = args[:n] || 250
+  iterations = iterations.to_i
+
   d = Dir.pwd
   cd "/tmp"
   rm_rf ".test-site"
@@ -22,7 +25,7 @@ task :stress do
   File.open("_layouts/default.html", "a") { |f| f.puts "\n\ndigest: {% file_digest style.css prefix:- %}" }
   File.open("style.css", "w") { |f| f.puts("body {}") }
 
-  250.times do |n|
+  iterations.times do |n|
     File.open("_posts/#{Date.today + n}-sample-post-#{n}", "w") do |f|
       f.puts %Q{title: sample-post
 created: #{(Time.now + 60*n).xmlschema}
