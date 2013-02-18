@@ -4,6 +4,7 @@ require "liquid"
 require "redcarpet"
 require "pygments.rb"
 require "redhead"
+require "timeout_cache"
 
 require "cgi"
 require "digest"

@@ -39,7 +39,7 @@ class Config
   private
 
   def yaml
-    YAML.load_file(@config_file)
+    @yaml ||= YAML.load_file(@config_file)
   end
 end
 end

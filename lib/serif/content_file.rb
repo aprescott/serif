@@ -49,6 +49,8 @@ class ContentFile
     else
       @source.headers[:title] = new_title
     end
+
+    @cached_headers = nil
   end
   
   def draft?
@@ -82,7 +84,9 @@ class ContentFile
   end
   
   def headers
-    return {} unless @source
+    return @cached_headers if @cached_headers
+
+    return (@cached_headers = {}) unless @source
 
     headers = @source.headers
     converted_headers = {}
@@ -97,7 +101,7 @@ class ContentFile
       converted_headers[key] = value
     end
 
-    converted_headers
+    @cached_headers = converted_headers
   end
 
   def save(markdown = nil)
@@ -131,10 +135,12 @@ class ContentFile
 
   def set_publish_time(time)
     @source.headers[:created] = time.xmlschema
+    @cached_headers = nil
   end
 
   def set_updated_time(time)
     @source.headers[:updated] = time.xmlschema
+    @cached_headers = nil
   end
 
   private
@@ -143,6 +149,7 @@ class ContentFile
     source = File.read(path).gsub(/\r?\n/, "\n")
     source.force_encoding("UTF-8")
     @source = Redhead::String[source]
+    @cached_headers = nil
   end
 end
 end
