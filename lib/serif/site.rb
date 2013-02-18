@@ -226,7 +226,12 @@ class Site
   end
 
   def to_liquid
-    {
+    @liquid_cache_store ||= TimeoutCache.new
+
+    cached_value = @liquid_cache_store[:liquid]
+    return cached_value if cached_value
+
+    @liquid_cache_store[:liquid] = {
       "posts" => posts,
       "latest_update_time" => latest_update_time,
       "archive" => self.class.stringify_keys(archives),

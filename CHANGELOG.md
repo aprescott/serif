@@ -4,6 +4,7 @@
 * Intelligently add blank lines before the markdown image text strings. (#27)
 * Add a `smarty` filter to do smarty processing without full Markdown. (#28)
 * Add some caching to improve performance of post generation. (#29)
+* Remove super-linear performance cost of file_digest. (#30)
 
 # v0.2.3 
 
