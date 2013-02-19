@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Be kinder about the space used by the private URL characters. (#32)
 
 # v0.3
 
