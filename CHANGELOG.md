@@ -1,7 +1,7 @@
 # next release
 
 * Be kinder about the space used by the private URL characters. (#32)
-* The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events.
+* The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events. (e0df1375dd)
 
 # v0.3
 
