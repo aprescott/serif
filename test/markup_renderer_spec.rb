@@ -32,4 +32,12 @@ END_SOURCE
 </code></pre>
 END_OUTPUT
   end
+
+  it "renders quote marks properly" do
+    subject.render(<<END_SOURCE).should == <<END_OUTPUT
+This "very" sentence's structure "isn't" necessary.
+END_SOURCE
+<p>This &ldquo;very&rdquo; sentence&#39;s structure &ldquo;isn&#39;t&rdquo; necessary.</p>
+END_OUTPUT
+  end
 end
