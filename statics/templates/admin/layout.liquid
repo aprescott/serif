@@ -369,7 +369,7 @@ body > nav ul li:last-child {
 		setDepartureCheck(false);
 
 		$(function() {
-			$("input, textarea").change(function(event) {
+			$("input, textarea").keyup(function(event) {
 				setDepartureCheck(true);
 			});
 		});
