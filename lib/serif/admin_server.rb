@@ -30,7 +30,7 @@ class AdminServer
 
     get "/admin/?" do
       posts = site.posts.sort_by { |p| p.created }.reverse
-      drafts = site.drafts.sort_by { |p| p.slug }.reverse
+      drafts = site.drafts.sort_by { |p| File.mtime(p.path) }.reverse
 
       liquid :index, locals: { posts: posts, drafts: drafts }
     end

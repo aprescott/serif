@@ -1,5 +1,7 @@
 <h1>Drafts</h1>
 
+<p>(Most recently modified first.)</p>
+
 <ul>
 {% for draft in drafts %}
 	<li><a href="/admin/edit/drafts/{{ draft.slug }}">{% if draft.slug != empty %}{{ draft.slug }}{% else %}<em>(untitled)</em>{% endif %}</a></li>
@@ -7,6 +9,8 @@
 </ul>
 
 <h1>Posts</h1>
+
+<p>(Most recently published first.)</p>
 
 <ul>
 {% for post in posts %}
