@@ -3,6 +3,7 @@
 * Be kinder about the space used by the private URL characters. (#32)
 * The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events. (e0df1375dd)
 * Order the list of drafts by most-recently-modified first, clarify draft and post ordering above each list. (#33)
+* Support custom layouts for posts as well as non-post files. (#35)
 
 # v0.3
 
