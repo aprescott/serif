@@ -13,7 +13,7 @@ describe Serif::Site do
 
   describe "#posts" do
     it "is the number of posts in the site" do
-      subject.posts.length.should == 2
+      subject.posts.length.should == 5
     end
   end
 
