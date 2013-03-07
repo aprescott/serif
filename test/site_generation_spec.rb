@@ -23,6 +23,14 @@ describe Serif::Site do
       File.read("_site/page-alt-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
     end
 
+    it "reads the layout header for a post file and uses the appropriate layout file" do
+      subject.generate
+
+      # check it actually got generated
+      File.exist?(testing_dir("_site/test-blog/post-with-custom-layout.html")).should be_true
+      File.read("_site/test-blog/post-with-custom-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
+    end
+
     it "supports a smarty filter" do
       subject.generate
       File.read("_site/test-smarty-filter.html").should =~ /testing&rsquo;s for a &ldquo;heading&rsquo;s&rdquo; `with code` in it&hellip;/
@@ -45,13 +53,13 @@ describe Serif::Site do
       next_title.should_not be_nil
       next_title[/(?<=: ).+/].should == "Second post"
 
-      contents = File.read("_site/test-blog/second-post.html")
+      contents = File.read("_site/test-blog/final-post.html")
       previous_title = contents[/Previous post: .+?$/]
       next_title = contents[/Next post: .+?$/]
       
       previous_title.should_not be_nil
       next_title.should be_nil
-      previous_title[/(?<=: ).+/].should == "Sample post"
+      previous_title[/(?<=: ).+/].should == "Penultimate post"
     end
 
     it "sets a draft_preview flag for preview urls" do

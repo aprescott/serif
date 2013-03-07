@@ -309,6 +309,12 @@ class Site
 
       FileUtils.mkdir_p(tmp_path(File.dirname(post.url)))
 
+      post_layout = default_layout
+
+      if post.headers[:layout]
+        post_layout = Liquid::Template.parse(File.read(File.join(self.directory, "_layouts", "#{post.headers[:layout]}.html")))
+      end
+
       File.open(tmp_path(post.url + ".html"), "w") do |f|
         # variables available in the post template
         post_template_variables = {
@@ -317,7 +323,7 @@ class Site
           "next_post" => next_post
         }
 
-        f.puts default_layout.render!(
+        f.puts post_layout.render!(
           "site" => self,
           "page" => { "title" => ["Posts", "#{post.title}"] },
           "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!(post_template_variables)
