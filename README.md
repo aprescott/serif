@@ -418,6 +418,12 @@ These tags can be used in templates, in addition to the [standard Liquid filters
 
   This runs the given input through a Markdown + SmartyPants renderer, with fenced codeblocks enabled.
 
+* `smarty`
+  
+  e.g., `{{ post.title | smarty }}`.
+
+  This runs the given input through a SmartyPants processor, so quotes, dashes and ellipses come out better. Note that the **`markdown` filter already does SmartyPants** processing.
+
 * `strip`
   
   Strips trailing and leading whitespace.
