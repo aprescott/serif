@@ -42,24 +42,16 @@ See `CHANGELOG` for more.
 * [Custom tags](#custom-tags)
 * [Template variables](#template-variables)
 * [Developing Serif](#developing-serif)
+* [Planned features](#planned-features)
 
 # Intro
 
-Serif is a lot like Jekyll with a few extra moving parts, although it didn't start that way. It went through two reworkings before being converted into something based on generated Markdown files. The aim for Serif is to provide two things:
+Serif is a lot like Jekyll with a few extra moving parts. Its main aim is to provide two things:
 
 1. Simplicity: the source and generated content are just files that can be served by any web server.
-2. Ease of publishing, wherever you are: having everything based on files that you edit in a text editor is a nice idea, but what if you're on a machine that doesn't give you ssh access to your server? What if you need to edit creation timestamps? What about editing drafts without having to make commits and push to git repos?
+2. Ease of publishing, wherever you are.
 
-With this in mind, you might think of Serif's aim as to merge Jekyll, [Second Crack](https://github.com/marcoarment/secondcrack) and ideas from [Svbtle](http://dcurt.is/codename-svbtle). There should be many ways of editing and publishing, such as using the web interface, `rsync`ing from a remote machine, or editing a draft file on the remote server and having everything happen for you.
-
-## Planned features
-
-Some things I'm hoping to implement one day:
-
-1. Custom hooks to fire after particular events, such as minifying CSS after publish, or committing changes and pushing to a git repository.
-2. Simple Markdown pages instead of plain HTML for non-post content.
-3. Automatically detecting file changes and regenerating the site.
-4. Adding custom Liquid filters and tags.
+Serif is sort of a blend between Jekyll, [Second Crack](https://github.com/marcoarment/secondcrack) and ideas from [Svbtle](http://dcurt.is/codename-svbtle). There should be flexibility with writing content, such as using the web interface, `rsync`ing from a remote machine, or editing a draft file on the remote server and having everything happen for you.
 
 # License and contributing
 
@@ -507,3 +499,12 @@ Variable    | Value
 
 * `lib/serif/` is generally where files go.
 * `test/` contains the test files. Any new files should have `require "test_helper"` at the top of the, which pulls in `test/test_helper.rb`.
+
+# Planned features
+
+Some things I'm hoping to implement one day:
+
+1. Custom hooks to fire after particular events, such as minifying CSS after publish, or committing changes and pushing to a git repository.
+2. Simple Markdown pages instead of plain HTML for non-post content.
+3. Automatically detecting file changes and regenerating the site.
+4. Adding custom Liquid filters and tags.
