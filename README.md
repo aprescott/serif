@@ -177,7 +177,7 @@ This is where generated content gets saved. You should serve files out of here, 
 
 ## `_layouts`
 
-This is where layouts for the site go. The file `default.html` is used by default, and any file outside of `_posts` can override this by setting a `Layout: foo` header, which will use `_layouts/foo.html` instead.
+This is where layouts for the site go. The file `default.html` is used by default, and individual files can override this by setting a `Layout: foo` header, which will use `_layouts/foo.html` instead.
 
 ## `_drafts` and `_posts`
 
