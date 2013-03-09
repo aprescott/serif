@@ -230,7 +230,7 @@ class Site
   end
 
   def to_liquid
-    @liquid_cache_store ||= TimeoutCache.new
+    @liquid_cache_store ||= TimeoutCache.new(1)
 
     cached_value = @liquid_cache_store[:liquid]
     return cached_value if cached_value
