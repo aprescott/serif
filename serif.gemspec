@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name         = "serif"
-  s.version      = "0.3"
+  s.version      = "0.3.1"
   s.authors      = ["Adam Prescott"]
   s.email        = ["adam@aprescott.com"]
   s.homepage     = "https://github.com/aprescott/serif"
