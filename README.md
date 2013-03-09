@@ -461,15 +461,39 @@ These tags can be used in templates, in addition to the [standard Liquid filters
 
 # Template variables
 
-In addition to those mentioned above, such as the archive page variables, there are others. *This is not exhaustive.*
+In addition to those mentioned above, such as the archive page variables, there are others. *This may not be an exhaustive list.*
 
-## Post template variables
+## General template variables
+
+These should be available in any template:
+
+* `{{ site }}` --- a container for the site itself, containing:
+    * `{{ site.posts }}` --- the published posts of the site
+    * `{{ site.latest_update_time }}` --- a [Ruby `Time`](http://ruby-doc.org/core/Time.html) instance for the latest time that any post was updated. Useful for RSS/Atom feeds.
+    * `{{ site.archives }}` --- a nested hash structure that groups posts by month. See above for how to use it.
+
+## Post variables
+
+A published post has variables like `post.url` and `post.title`. Here's a list of what's available wherever `{{ post }}` is available. If the variable is, e.g., `post.url`, use as `{{ post.url }}`.
+
+Name           | Value
+------------   |:-----
+`post.title`   | Title of the post
+`post.url`     | Permalink to the post based on the config or any `permalink` header on the post
+`post.slug`    | URL slug of the post. A filename like `2013-06-02-my-post` will correspond to a `{{ post.slug }}` value of `my-post`
+`post.created` | A [Ruby `Time`](http://ruby-doc.org/core/Time.html) instance for the time the post was first published.
+`post.updated` | A [Ruby `Time`](http://ruby-doc.org/core/Time.html) instance for the time the post was last updated.
+`post.content` | The raw post content. Example use: `{{ post.content | markdown }}`.
+
+## Variables available within post templates
 
 These are available on individual post pages, in `_template/post.html`.
 
-* `{{ post }}` --- the post being processed. Allows access to variables like `post.url`, `post.title`, `post.slug`, `post.created` and `post.content`.
-* `{{ prev_post }}` --- the post published chronologically before `post`.
-* `{{ next_post }}` --- the post published chronologically after `post`.
+Variable    | Value
+----------- |:----
+`post`      | The post being processed. See above for what values (`post.url`, ...) are available.
+`prev_post` | The post published chronologically before `post`.
+`next_post` | The post published chronologically after `post`.
 
 # Developing Serif
 
