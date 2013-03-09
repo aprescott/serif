@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.authors      = ["Adam Prescott"]
   s.email        = ["adam@aprescott.com"]
   s.homepage     = "https://github.com/aprescott/serif"
-  s.summary      = "Simple file-based blogging system."
-  s.description  = "Serif is a simple file-based blogging system which generates static content and allows dynamic editing through an interface."
+  s.summary      = "Markdown-powered blogging with an optional admin interface with drag-and-drop image uploading."
+  s.description  = "Serif is a blogging system powered by markdown files and an optional admin interface complete with drag-and-drop image uploading."
   s.files        = Dir["{lib/**/*,statics/**/*,bin/*,test/**/*}"] + %w[serif.gemspec rakefile LICENSE Gemfile Gemfile.lock README.md]
   s.require_path = "lib"
   s.bindir       = "bin"
