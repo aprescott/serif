@@ -78,7 +78,7 @@ describe Serif::Draft do
       FileUtils.rm_f(published_path)
     end
 
-    it "makes the post available in Site#to_liquid even soon after a generate" do
+    it "makes the post available in Site#posts and Site#to_liquid even straight after a generate" do
       draft = D.new(@site)
       draft.slug = "test-draft-to-go-into-liquid"
       draft.title = "Some draft title"
@@ -87,9 +87,11 @@ describe Serif::Draft do
 
       begin
         @site.generate
+        @site.posts.first.slug.should_not == draft.slug
         @site.to_liquid["posts"].first.slug.should_not == draft.slug
         draft.publish!
         @site.generate
+        @site.posts.first.slug.should == draft.slug
         @site.to_liquid["posts"].first.slug.should == draft.slug
       rescue
         # clean up
