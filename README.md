@@ -6,13 +6,14 @@ Serif is a file-based blogging engine intended for simple sites. It compiles Mar
 
 # Changes and what's new
 
-## Latest release (v0.3.1)
+## Latest release (v0.3.1 and v0.3.2)
 
 * Be kinder about the space used by the private URL characters. (#32)
 * The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events. (e0df1375dd)
 * Order the list of drafts by most-recently-modified first, clarify draft and post ordering above each list. (#33)
 * Support custom layouts for posts as well as non-post files. (#35)
 * Drag-and-drop image uploads no longer use exclusively rw------- permissions, now rely on umask. (605487d98)
+# (v0.3.2) Fix caching problems caused by #30, allowing the most recently published to appear in files that use `site.posts`. (#36)
 
 ## v0.3
 
