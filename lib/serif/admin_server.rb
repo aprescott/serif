@@ -185,11 +185,18 @@ class AdminServer
       FileUtils.mkdir_p(File.join(site.directory, File.dirname(filename)))
       FileUtils.mkdir_p(File.dirname(site.site_path(filename)))
 
+      source_file = File.join(site.directory, filename)
+      deployed_file = site.site_path(filename)
+
       # move to the source directory
-      FileUtils.mv(tempfile.path, File.join(site.directory, filename))
+      FileUtils.mv(tempfile.path, source_file)
 
       # copy to production to avoid the need to generate right now
-      FileUtils.copy(File.join(site.directory, filename), site.site_path(filename))
+      FileUtils.copy(source_file, deployed_file)
+
+      # no executable permissions, and whatever the umask is
+      perms = 0777 & ~0111 & ~File.umask
+      File.chmod(perms, source_file, deployed_file)
 
       "File uploaded"
     end
