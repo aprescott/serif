@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Fix caching problems caused by #30, allowing the most recently published to appear in files that use `site.posts`. (#36)
 
 # v0.3.1
 
