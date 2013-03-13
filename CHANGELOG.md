@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Allow drag-and-drop to work on posts as well as drafts. (9ea3bebf)
 
 # v0.3.2
 
