@@ -17,7 +17,7 @@
 	<div class="post draft">
 		<header>
 			<h1 id="heading" class="post">
-				<textarea data-attachify spellcheck="false" placeholder="It was a dark and stormy night" name="title" autofocus>{{ post.title | escape }}</textarea>
+				<textarea spellcheck="false" placeholder="It was a dark and stormy night" name="title" autofocus>{{ post.title | escape }}</textarea>
 			</h1>
 
 			<time datetime="{{ post.created | date: "%Y-%m-%d" }}">{{ post.created | date: "%B %d %Y" }}</time>
