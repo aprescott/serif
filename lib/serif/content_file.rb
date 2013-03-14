@@ -39,12 +39,12 @@ class ContentFile
   end
 
   def title
-    return nil if new?
+    return nil if !@source
     headers[:title]
   end
 
   def title=(new_title)
-    if new?
+    if !@source
       @source = Redhead::String["title: #{new_title}\n\n"]
     else
       @source.headers[:title] = new_title
@@ -64,18 +64,14 @@ class ContentFile
   def content(include_headers = false)
     include_headers ? "#{@source.headers.to_s}\n\n#{@source.to_s}" : @source.to_s
   end
-  
-  def new?
-    !@source
-  end
 
   def created
-    return nil if new?
+    return nil if !@source
     headers[:created].utc
   end
 
   def updated
-    return nil if new?
+    return nil if !@source
     (headers[:updated] || created).utc
   end
   
@@ -101,16 +97,17 @@ class ContentFile
   end
 
   def save(markdown = nil)
-    markdown ||= content if !new?
+    markdown ||= content if @source
     
     save_path = path || "#{self.class.dirname}/#{@slug}"
 
-    if new?
-      set_publish_time(Time.now)
-    else
-      set_updated_time(Time.now)
-    end
-
+    # TODO: when a draft is being saved, it will call set_publish_time
+    # and then the #save call will execute this line, which will mean
+    # there is a very, very slight difference (fraction of a second)
+    # between the update time of a brand new published post and the
+    # creation time.
+    set_updated_time(Time.now)
+    
     File.open(save_path, "w") do |f|
       f.puts %Q{#{@source.headers.to_s}
 
