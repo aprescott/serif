@@ -383,7 +383,7 @@ class Site
           "site" => self,
           "draft_preview" => true,
           "page" => { "title" => [ "Draft Preview", draft.title ] },
-          "content" => template.render!("site" => self, "post" => draft)
+          "content" => template.render!("site" => self, "post" => draft, "draft_preview" => true)
         )
       end
     end

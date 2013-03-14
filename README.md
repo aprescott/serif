@@ -469,6 +469,7 @@ These should be available in any template:
     * `{{ site.posts }}` --- the published posts of the site
     * `{{ site.latest_update_time }}` --- a [Ruby `Time`](http://ruby-doc.org/core/Time.html) instance for the latest time that any post was updated. Useful for RSS/Atom feeds.
     * `{{ site.archives }}` --- a nested hash structure that groups posts by month. See above for how to use it.
+* `{{ draft_preview }}` -- Set to true if this is part of generating a draft preview.
 
 ## Post variables
 
