@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* The 'markdown' filter now properly turns single quotes in Markdown into curly quotes. (#40)
 
 # v0.3.3
 
