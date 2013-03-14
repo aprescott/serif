@@ -1,25 +1,8 @@
-class StandardFilterCheck
-  include Liquid::StandardFilters
+module Liquid::StandardFilters
+  alias_method :date_orig, :date
 
-  def date_supports_now?
-    begin
-      date("now", "%Y") == Time.now.year
-    rescue
-      false
-    end
-  end
-end
-
-if StandardFilterCheck.new.date_supports_now?
-  puts "NOTICE! 'now' is supported by 'date' filter. Remove the patch"
-  sleep 5 # incur a penalty
-else
-  module Liquid::StandardFilters
-    alias_method :date_orig, :date
-
-    def date(input, format)
-      input == "now" ? date_orig(Time.now, format) : date_orig(input, format)
-    end
+  def date(input, format)
+    input == "now" ? date_orig(Time.now, format) : date_orig(input, format)
   end
 end
 
