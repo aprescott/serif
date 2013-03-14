@@ -2,6 +2,7 @@
 
 * Allow drag-and-drop to work on posts as well as drafts. (9ea3bebf)
 * `serif new` no longer creates a sample published post. (#37)
+* Pygments.rb is replaced with Rouge for code highlighting. (#34)
 
 # v0.3.2
 
