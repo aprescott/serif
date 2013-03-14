@@ -51,6 +51,8 @@ def produce_skeleton(dir)
     FileUtils.cp_r(f, dir, verbose: true)
   end
 
+  generate_site(dir)
+
   puts
   puts "*** NOTE ***"
   puts
