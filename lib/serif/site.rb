@@ -336,7 +336,7 @@ class Site
     generate_archives(default_layout)
 
     if Dir.exist?("_site")
-      FileUtils.mv("_site", "/tmp/_site.#{Time.now.strftime("%Y-%m-%d-%H-%M-%S")}")
+      FileUtils.mv("_site", "/tmp/_site.#{Time.now.strftime("%Y-%m-%d-%H-%M-%S.%6N")}")
     end
 
     FileUtils.mv("tmp/_site", ".") && FileUtils.rm_rf("tmp/_site")
