@@ -80,7 +80,11 @@ describe Serif::Filters do
   describe "#markdown" do
     it "processes its input as markdown" do
       # bit of a stub test
-      subject.markdown("# Hi!").should == "<h1>Hi!</h1>"
+      subject.markdown("# Hi!").should == "<h1>Hi!</h1>\n"
+    end
+
+    it "uses curly single quotes properly" do
+      subject.markdown("# something's test").should include("something&rsquo;s")
     end
   end
 end

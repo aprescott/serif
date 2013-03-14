@@ -33,6 +33,10 @@ END_SOURCE
 END_OUTPUT
   end
 
+  # NOTE: The output here is not the desired output.
+  #
+  # See vmg/redcarpet#57 and note that any filters that use this renderer
+  # are tested elsewhere.
   it "renders quote marks properly" do
     subject.render(<<END_SOURCE).should == <<END_OUTPUT
 This "very" sentence's structure "isn't" necessary.
