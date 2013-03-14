@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
 
   [
     "rack", "~> 1.0",
-    "rack-rewrite", "~> 1.3.0",
     "redcarpet", "~> 2.2",
     "rouge", "~> 0.3.2",
     "sinatra", "~> 1.3",

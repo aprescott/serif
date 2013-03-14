@@ -1,6 +1,5 @@
 require "sinatra/base"
 require "fileutils"
-require "rack/rewrite"
 
 module Serif
 class DevelopmentServer
