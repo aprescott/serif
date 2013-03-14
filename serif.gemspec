@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
     "rack", "~> 1.0",
     "rack-rewrite", "~> 1.3.0",
     "redcarpet", "~> 2.2",
-    "pygments.rb", "~> 0.3",
+    "rouge", "~> 0.3.2",
     "sinatra", "~> 1.3",
     "redhead", "~> 0.0.8",
     "liquid", "~> 2.4",
