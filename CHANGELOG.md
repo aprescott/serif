@@ -1,5 +1,6 @@
 # next release
 
+* Test coverage is now at 100%.
 * The 'markdown' filter now properly turns single quotes in Markdown into curly quotes. (#40)
 
 # v0.3.3
