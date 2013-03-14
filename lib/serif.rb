@@ -2,7 +2,7 @@ require "time"
 
 require "liquid"
 require "redcarpet"
-require "pygments.rb"
+require "rouge"
 require "redhead"
 require "timeout_cache"
 
