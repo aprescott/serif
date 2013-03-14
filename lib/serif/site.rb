@@ -23,7 +23,19 @@ module Filters
   end
 
   def markdown(body)
-    Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true).render(body).strip
+    renderer = Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true)
+    html = renderer.render(body).strip
+
+    # make sure we aren't overriding unless we need to.
+    # causes the workaround to automatically turn off.
+    if !(renderer.render("a 'quoted' word").include?("&rsquo;"))
+      # fix the broken single curly quotes by putting them back
+      # as unescaped characters and then re-running the renderer.
+      html.gsub!("&#39;", "'")
+      html = renderer.render(html)
+    end
+
+    html
   end
 
   def xmlschema(input)
