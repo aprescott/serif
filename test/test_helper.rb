@@ -22,7 +22,7 @@ describe "curly quote patch" do
   # if this test fails, the workaround for the "markdown" filter can be removed
   it "is necessary" do
     renderer = Redcarpet::Markdown.new(Serif::MarkupRenderer)
-    renderer.render("something's here").should include("something&#39;s here")
+    renderer.render("something's here").should_not include("something&rsquo;s here")
   end
 end
 
