@@ -5,19 +5,14 @@ class MarkupRenderer < Redcarpet::Render::SmartyHTML
     # 
     # note that we add a new line after the initial ``` but not before the closing
     # ``` because otherwise it introduces an extra \n.
-    return Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true).render(%Q{```
-#{code}```}).strip unless language
+    if !language
+        simple_code = %Q{```\n#{code}```}
+        renderer = Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true)
+        return renderer.render(simple_code).strip
+    end
 
-    out = Pygments.highlight(code, lexer: language)
-
-    # first, get rid of the div, since we want
-    # to stick the class onto the <pre>, to stay
-    # clean markup-wise.
-    out.sub!(/^<div[^>]*>/, "")
-    out.strip!
-    out.sub!(/<\/div>\z/, "")
-    
-    out.sub!(/^<pre>/, "<pre#{" class=\"highlight\""}><code>")
+    out = Rouge.highlight(code, language, "html")
+    out.sub!(/^(<pre class=\"highlight\">)/, '\1<code>')
     out.sub!(/<\/pre>\z/, "</code></pre>\n")
     
     out
