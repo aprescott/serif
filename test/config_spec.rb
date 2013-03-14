@@ -17,6 +17,13 @@ describe Serif::Config do
     end
   end
 
+  describe "#image_upload_path" do
+    it "defaults to /images/:timestamp/_name" do
+      subject.stub(:yaml) { {} }
+      subject.image_upload_path.should == "/images/:timestamp_:name"
+    end
+  end
+
   describe "#permalink" do
     it "is the permalink format defined in the config file" do
       subject.permalink.should == "/test-blog/:title"
