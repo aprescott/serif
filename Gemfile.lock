@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    serif (0.3.2)
+    serif (0.3.3)
       liquid (~> 2.4)
       rack (~> 1.0)
       redcarpet (~> 2.2)

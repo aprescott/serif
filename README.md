@@ -8,7 +8,13 @@ Having problems with Serif? [Open an issue on GitHub](https://github.com/apresco
 
 # Changes and what's new
 
-## Latest release (v0.3.1 and v0.3.2)
+# Latest release (v0.3.3)
+
+* Allow drag-and-drop to work on posts as well as drafts. (9ea3bebf)
+* `serif new` no longer creates a sample published post (#37) and generates immediately. (#39)
+* Pygments.rb is replaced with Rouge for code highlighting. (#34)
+
+## v0.3.1 and v0.3.2
 
 * Be kinder about the space used by the private URL characters. (#32)
 * The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events. (e0df1375dd)
@@ -16,15 +22,6 @@ Having problems with Serif? [Open an issue on GitHub](https://github.com/apresco
 * Support custom layouts for posts as well as non-post files. (#35)
 * Drag-and-drop image uploads no longer use exclusively `rw-------` permissions, now rely on umask. (605487d98)
 * (v0.3.2) Fix caching problems caused by #30, allowing the most recently published to appear in files that use `site.posts`. (#36)
-
-## v0.3
-
-* Add some caching to improve performance of post generation. (#29)
-* Remove super-linear performance cost of file_digest, reducing site generation time by > 85% for 50+ posts. (#30 -- charts available in the issue)
-* Make `site` available to both preview templates and archive templates. (c3e2f28)
-* Intelligently add blank lines before the markdown image text strings. (#27)
-* Add a `smarty` filter to do smarty processing without full Markdown. (#28)
-* Fix broken URL renames for drafts in the admin interface. (#31)
 
 See `CHANGELOG` for more.
 
