@@ -299,12 +299,17 @@ class Site
       end
     end
 
-    # the posts are iterated over in reverse chrological order
-    next_post = nil
-
     # run through the posts + nil so we can keep |a, b| such that a hits every element
     # while iterating.
-    [*posts, nil].each_cons(2) do |post, prev_post|
+    posts.each.with_index do |post, i|
+      # the posts are iterated over in reverse chrological order, and
+      # next_post here is post published chronologically after than
+      # the post in the iteration.
+      #
+      # if i == 0, we don't want posts.last, so return nil if i - 1 == -1
+      next_post = (i == 0 ? nil : posts[i - 1])
+      prev_post = posts[i + 1]
+
       puts "Processing post: #{post.path}"
 
       FileUtils.mkdir_p(tmp_path(File.dirname(post.url)))
@@ -329,8 +334,6 @@ class Site
           "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!(post_template_variables)
         )
       end
-
-      next_post = post
     end
 
     generate_draft_previews(default_layout)
