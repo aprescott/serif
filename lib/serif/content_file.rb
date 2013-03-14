@@ -62,15 +62,11 @@ class ContentFile
   end
   
   def content(include_headers = false)
-    include_headers ? "#{raw_headers}\n\n#{@source.to_s}" : @source.to_s
+    include_headers ? "#{@source.headers.to_s}\n\n#{@source.to_s}" : @source.to_s
   end
   
   def new?
     !@source
-  end
-
-  def raw_headers
-    @source.headers.to_s
   end
 
   def created
@@ -116,7 +112,7 @@ class ContentFile
     end
 
     File.open(save_path, "w") do |f|
-      f.puts %Q{#{raw_headers}
+      f.puts %Q{#{@source.headers.to_s}
 
 #{markdown}}.strip
     end
