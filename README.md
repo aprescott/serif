@@ -491,6 +491,16 @@ Variable    | Value
 `prev_post` | The post published chronologically before `post`.
 `next_post` | The post published chronologically after `post`.
 
+## Archive page variables
+
+These are set when processing archive pages.
+
+Variable       | Value
+-------------- |:-----
+`month`        | The month for the archive page being rendered. This is a Ruby `Date` instance.
+`posts`        | The list of posts for the month. Ordered by most-recently-published-first.
+`archive_page` | A flag set to `true`.
+
 # Developing Serif
 
 ## Broad outline
