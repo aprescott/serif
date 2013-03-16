@@ -428,7 +428,7 @@ class Site
       FileUtils.mkdir_p(archive_path)
 
       File.open(File.join(archive_path, "index.html"), "w") do |f|
-        f.puts layout.render!("site" => self, "content" => template.render!("site" => self, "month" => month, "posts" => posts))
+        f.puts layout.render!("archive_page" => true, "month" => month, "site" => self, "content" => template.render!("archive_page" => true, "site" => self, "month" => month, "posts" => posts))
       end
     end
   end

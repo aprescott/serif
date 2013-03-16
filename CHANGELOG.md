@@ -2,6 +2,8 @@
 
 * Test coverage is now at 100%.
 * The 'markdown' filter now properly turns single quotes in Markdown into curly quotes. (#40)
+* Add `archive_page` template flag set to true when processing archive pages. (#41)
+* Make the `month` archive variable available to layouts as well as the archive template. (#41)
 
 # v0.3.3
 
