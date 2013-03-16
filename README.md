@@ -6,24 +6,22 @@ Serif is a file-based blogging engine intended for simple sites. It compiles Mar
 
 Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), or use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb)
 
-# Changes and what's new
+## First time use
 
-# Latest release (v0.3.3)
+To get started with Serif based on a site skeleton:
 
-* Allow drag-and-drop to work on posts as well as drafts. (9ea3bebf)
-* `serif new` no longer creates a sample published post (#37) and generates immediately. (#39)
-* Pygments.rb is replaced with Rouge for code highlighting. (#34)
+```bash
+gem install serif     # install serif
+cd path/to/some/place # go to where you'll be creating your site directory
+serif new             # create an initial site skeleton
 
-## v0.3.1 and v0.3.2
+# ... edit your files how you want them ...
 
-* Be kinder about the space used by the private URL characters. (#32)
-* The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events. (e0df1375dd)
-* Order the list of drafts by most-recently-modified first, clarify draft and post ordering above each list. (#33)
-* Support custom layouts for posts as well as non-post files. (#35)
-* Drag-and-drop image uploads no longer use exclusively `rw-------` permissions, now rely on umask. (605487d98)
-* (v0.3.2) Fix caching problems caused by #30, allowing the most recently published to appear in files that use `site.posts`. (#36)
+serif generate        # generate the site based on the source files
+serif dev             # serve up the site for local testing purposes
+```
 
-See `CHANGELOG` for more.
+Now visit <http://localhost:8000/> to view the site.
 
 # Contents of this README
 
@@ -39,6 +37,7 @@ See `CHANGELOG` for more.
 * [Custom tags](#custom-tags)
 * [Template variables](#template-variables)
 * [Developing Serif](#developing-serif)
+* [Changes and what's new](#changes-and-whats-new)
 * [Planned features](#planned-features)
 
 # Intro
@@ -66,23 +65,6 @@ The quickest way to get changes contributed:
 For more info on development, see the section at the bottom of this README.
 
 # Basics
-
-## First time use
-
-To get started with Serif based on a site skeleton:
-
-```bash
-gem install serif     # install serif
-cd path/to/some/place # go to where you'll be creating your site directory
-serif new             # create an initial site skeleton
-
-# ... edit your files how you want them ...
-
-serif generate        # generate the site based on the source files
-serif dev             # serve up the site for local testing purposes
-```
-
-Now visit <http://localhost:8000/> to view the site.
 
 ## Installing
 
@@ -503,6 +485,25 @@ Variable    | Value
 
 * `lib/serif/` is generally where files go.
 * `test/` contains the test files. Any new files should have `require "test_helper"` at the top of the, which pulls in `test/test_helper.rb`.
+
+# Changes and what's new
+
+## Latest release (v0.3.3)
+
+* Allow drag-and-drop to work on posts as well as drafts. (9ea3bebf)
+* `serif new` no longer creates a sample published post (#37) and generates immediately. (#39)
+* Pygments.rb is replaced with Rouge for code highlighting. (#34)
+
+## v0.3.1 and v0.3.2
+
+* Be kinder about the space used by the private URL characters. (#32)
+* The keyup event on any input or textarea now marks the page as having changed. Previously only on blur events. (e0df1375dd)
+* Order the list of drafts by most-recently-modified first, clarify draft and post ordering above each list. (#33)
+* Support custom layouts for posts as well as non-post files. (#35)
+* Drag-and-drop image uploads no longer use exclusively `rw-------` permissions, now rely on umask. (605487d98)
+* (v0.3.2) Fix caching problems caused by #30, allowing the most recently published to appear in files that use `site.posts`. (#36)
+
+See `CHANGELOG` for more.
 
 # Planned features
 
