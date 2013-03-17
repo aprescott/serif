@@ -38,3 +38,15 @@ def testing_dir(path = nil)
 
   path ? File.join(full_path, path) : full_path
 end
+
+def capture_stdout
+  begin
+    $orig_stdout = $stdout
+    $stdout = StringIO.new
+    yield
+    $stdout.rewind
+    return $stdout.string
+  ensure
+    $stdout = $orig_stdout
+  end
+end
