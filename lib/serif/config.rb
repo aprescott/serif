@@ -36,6 +36,15 @@ class Config
     (yaml["archive"] || {})["url_format"] || "/archive/:year/:month"
   end
 
+  def base_url
+    yaml["base_url"]
+  end
+
+  def feed
+    feed_config = yaml["feed"] || {}
+    { "enabled" => false }.merge!(feed_config)
+  end
+
   private
 
   def yaml

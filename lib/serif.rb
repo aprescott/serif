@@ -17,6 +17,8 @@ require "serif/draft"
 require "serif/markup_renderer"
 require "serif/site"
 require "serif/config"
+require "serif/config_validity_checker"
+require "serif/feed"
 
 module Serif
 end

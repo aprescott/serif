@@ -122,6 +122,10 @@ class Site
     Draft.all(self)
   end
 
+  def base_url
+    config.base_url
+  end
+
   def config
     @config ||= Serif::Config.new(File.join(@source_directory, "_config.yml"))
   end
@@ -355,6 +359,8 @@ class Site
 
     FileUtils.mv("tmp/_site", ".") && FileUtils.rm_rf("tmp/_site")
     FileUtils.rmdir("tmp")
+
+    Serif::Feed.generate(self)
   end
 
   private
