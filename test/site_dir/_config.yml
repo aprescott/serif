@@ -1,14 +1,3 @@
-# This is the Serif config file. It must be a valid YAML document.
-#
-# Some configuration options:
-#
-#     admin:
-#       username: [a username for the admin web interface]
-#       password: [a password for the admin web interface]
-#     permalink: [permalink format for generated posts]
-#
-# See the README for information on permalink formats.
-
 admin:
   username: test-changethisusername
   password: test-changethispassword
@@ -16,3 +5,13 @@ permalink: /test-blog/:title
 archive:
   enabled: yes
   url_format: /test-archive/:year/:month
+feed:
+  enabled: yes
+  path: /test-feed
+  title: "Test Feed"
+  # this should never change for a published feed
+  permanent_unique_id: 2013:random-unique-permanent-id
+  author_name: "J. Smith"
+  # this should never change for a published feed
+  domain: test-blog.com
+base_url: http://test-blog.com

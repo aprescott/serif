@@ -3,14 +3,28 @@
 $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
 
 require "fileutils"
-require "slop"
+require "securerandom"
+require "date"
+
+require "serif"
+
+def new_feed_config
+  %Q{feed:
+  enabled: no
+  path: /feed
+  title: "My Feed"
+  # this should never change for a published feed
+  permanent_unique_id: #{Date.today.year}:#{SecureRandom.hex(30)}
+  author_name: "J. Smith"
+  # this should never change for a published feed
+  domain: example.com}
+end
 
 def initialize_admin_server(source_dir)
   # need to cd to the directory before requiring the admin
   # server, because otherwise Dir.pwd won't be right when
   # the admin server class is defined at require time.
   FileUtils.cd(source_dir)
-  require "serif"
   require "serif/admin_server"
 
   server = Serif::AdminServer.new(source_dir)
@@ -19,7 +33,6 @@ end
 
 def initialize_dev_server(source_dir)
   FileUtils.cd(source_dir)
-  require "serif"
   require "serif/server"
 
   server = Serif::DevelopmentServer.new(source_dir)
@@ -27,8 +40,6 @@ def initialize_dev_server(source_dir)
 end
 
 def generate_site(source_dir)
-  require "serif"
-  
   site = Serif::Site.new(source_dir)
   site.generate
 end
@@ -37,6 +48,17 @@ def verify_directory(dir)
   unless Dir.exist?(dir)
     puts "No such directory: #{dir}'"
     exit 1
+  end
+end
+
+def run_config_check(dir)
+  site = Serif::Site.new(dir)
+  valid = Serif::Config::ValidityChecker.valid?(site.config)
+
+  if valid
+    puts "_config.yml is valid!"
+  else
+    abort "_config.yml is invalid"
   end
 end
 
@@ -51,39 +73,57 @@ def produce_skeleton(dir)
     FileUtils.cp_r(f, dir, verbose: true)
   end
 
+  puts "Generating _config.yml..."
+
+  File.open(File.join(dir, "_config.yml"), "w") do |f|
+    f.puts(<<-END_NEW_CONFIG)
+#
+# This is the Serif config file. It must be a valid YAML document.
+#
+# For detailed information, please see the documentation.
+#
+base_url: http://example.com
+admin:
+  username: changethisusername
+  password: changethispassword
+permalink: /:title
+archive:
+  enabled: yes
+  url_format: /archive/:year/:month
+#{new_feed_config}
+END_NEW_CONFIG
+  end
+
   generate_site(dir)
 
   puts
   puts "*** NOTE ***"
   puts
-  puts "You should now edit the username and password in _config.yml"
+  puts "You should now edit _config.yml"
   puts
 end
 
-commands = Slop::Commands.new do
-  on :admin do
-    add_callback :empty do
-      initialize_admin_server(Dir.pwd)
-    end
-  end
+if __FILE__ == $0
+  command = ARGV.shift
+  args = ARGV
 
-  on :generate do
-    add_callback :empty do
-      generate_site(Dir.pwd)
-    end
-  end
-
-  on :dev do
-    add_callback :empty do
-      initialize_dev_server(Dir.pwd)
-    end
-  end
-
-  on :new do
-    add_callback :empty do
-      produce_skeleton(Dir.pwd)
+  case command
+  when "admin"
+    initialize_admin_server(Dir.pwd)
+  when "generate"
+    generate_site(Dir.pwd)
+  when "dev"
+    initialize_dev_server(Dir.pwd)
+  when "new"
+    produce_skeleton(Dir.pwd)
+  when "config"
+    case args.first
+    when "-c", "--check"
+      run_config_check(Dir.pwd)
+    when "--feed"
+      puts new_feed_config
+    else
+      abort "Usage: serif config [-c | --feed]"
     end
   end
 end
-
-commands.parse

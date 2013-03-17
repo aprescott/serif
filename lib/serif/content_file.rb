@@ -3,10 +3,6 @@
 # which contains the contents of a post, be it in
 # draft form or otherwise.
 #
-# A ContentFile can determine its type based on
-# the presence or absence of a "published"
-# timestamp value.
-#
 
 module Serif
 class ContentFile
@@ -33,9 +29,7 @@ class ContentFile
     # if we're adding a slug and there's no path yet, then create the path.
     # this will run for new drafts
 
-    if !@path
-      @path = File.expand_path("#{site.directory}/#{self.class.dirname}/#{@slug}")
-    end
+    @path ||= File.expand_path("#{site.directory}/#{self.class.dirname}/#{@slug}")
   end
 
   def title

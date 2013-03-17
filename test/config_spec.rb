@@ -46,6 +46,24 @@ describe Serif::Config do
     end
   end
 
+  describe "#feed" do
+    it "defaults to a hash with enabled set to false" do
+      subject.stub(:yaml) { {} }
+      subject.feed.should == { "enabled" => false }
+    end
+  end
+
+  describe "#base_url" do
+    it "is nil if nothing is in the config" do
+      subject.stub(:yaml) { {} }
+      subject.base_url.should be_nil
+    end
+
+    it "returns the value from the config file" do
+      subject.base_url.should == "http://test-blog.com"
+    end
+  end
+
   describe "#archive_enabled?" do
     it "defaults to false" do
       subject.stub(:yaml) { {} }
