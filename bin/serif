@@ -60,30 +60,18 @@ def produce_skeleton(dir)
   puts
 end
 
-commands = Slop::Commands.new do
-  on :admin do
-    add_callback :empty do
-      initialize_admin_server(Dir.pwd)
-    end
-  end
+if __FILE__ == $0
+  command = ARGV.shift
+  args = ARGV
 
-  on :generate do
-    add_callback :empty do
-      generate_site(Dir.pwd)
-    end
-  end
-
-  on :dev do
-    add_callback :empty do
-      initialize_dev_server(Dir.pwd)
-    end
-  end
-
-  on :new do
-    add_callback :empty do
-      produce_skeleton(Dir.pwd)
-    end
+  case command
+  when "admin"
+    initialize_admin_server(Dir.pwd)
+  when "generate"
+    generate_site(Dir.pwd)
+  when "dev"
+    initialize_dev_server(Dir.pwd)
+  when "new"
+    produce_skeleton(Dir.pwd)
   end
 end
-
-commands.parse

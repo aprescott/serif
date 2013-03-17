@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
     "sinatra", "~> 1.3",
     "redhead", "~> 0.0.8",
     "liquid", "~> 2.4",
-    "slop", "~> 3.3",
     "timeout_cache"
   ].each_slice(2) do |name, version|
     s.add_runtime_dependency(name, version)
