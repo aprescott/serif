@@ -3,11 +3,22 @@
 $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
 
 require "fileutils"
-require "slop"
 require "securerandom"
 require "date"
 
 require "serif"
+
+def new_feed_config
+  %Q{feed:
+  enabled: no
+  path: /feed
+  title: "My Feed"
+  # this should never change for a published feed
+  permanent_unique_id: #{Date.today.year}:#{SecureRandom.hex(30)}
+  author_name: "J. Smith"
+  # this should never change for a published feed
+  domain: example.com}
+end
 
 def initialize_admin_server(source_dir)
   # need to cd to the directory before requiring the admin
@@ -40,6 +51,17 @@ def verify_directory(dir)
   end
 end
 
+def run_config_check(dir)
+  site = Serif::Site.new(dir)
+  valid = Serif::Config::ValidityChecker.valid?(site.config)
+
+  if valid
+    puts "_config.yml is valid!"
+  else
+    abort "_config.yml is invalid"
+  end
+end
+
 def produce_skeleton(dir)
   if !Dir[File.join(dir, "*")].empty?
     abort "Directory is not empty."
@@ -68,15 +90,7 @@ permalink: /:title
 archive:
   enabled: yes
   url_format: /archive/:year/:month
-feed:
-  enabled: no
-  path: /feed
-  title: "My Feed"
-  # this should never change for a published feed
-  permanent_unique_id: #{Date.today.year}:#{SecureRandom.hex(30)}
-  author_name: "J. Smith"
-  # this should never change for a published feed
-  domain: example.com
+#{new_feed_config}
 END_NEW_CONFIG
   end
 
@@ -89,30 +103,27 @@ END_NEW_CONFIG
   puts
 end
 
-commands = Slop::Commands.new do
-  on :admin do
-    add_callback :empty do
-      initialize_admin_server(Dir.pwd)
-    end
-  end
+if __FILE__ == $0
+  command = ARGV.shift
+  args = ARGV
 
-  on :generate do
-    add_callback :empty do
-      generate_site(Dir.pwd)
-    end
-  end
-
-  on :dev do
-    add_callback :empty do
-      initialize_dev_server(Dir.pwd)
-    end
-  end
-
-  on :new do
-    add_callback :empty do
-      produce_skeleton(Dir.pwd)
+  case command
+  when "admin"
+    initialize_admin_server(Dir.pwd)
+  when "generate"
+    generate_site(Dir.pwd)
+  when "dev"
+    initialize_dev_server(Dir.pwd)
+  when "new"
+    produce_skeleton(Dir.pwd)
+  when "config"
+    case args.first
+    when "-c", "--check"
+      run_config_check(Dir.pwd)
+    when "--feed"
+      puts new_feed_config
+    else
+      abort "Usage: serif config [-c | --feed]"
     end
   end
 end
-
-commands.parse
