@@ -3,7 +3,7 @@ class StandardFilterCheck
 
   def date_supports_now?
     begin
-      date("now", "%Y") == Time.now.year
+      date("now", "%Y") == Time.now.year.to_s
     rescue
       false
     end
