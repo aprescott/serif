@@ -3,7 +3,6 @@
 $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
 
 require "fileutils"
-require "slop"
 
 def initialize_admin_server(source_dir)
   # need to cd to the directory before requiring the admin
