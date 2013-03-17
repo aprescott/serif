@@ -14,7 +14,7 @@ describe "date 'now' patch" do
   it "is necessary" do
     liquid_filter = Object.new
     liquid_filter.extend(Liquid::StandardFilters)
-    liquid_filter.date_orig("now", "%Y").should_not == Time.now.year.to_s
+    (liquid_filter.date_orig("now", "%Y") rescue "").should_not == Time.now.year.to_s
   end
 end
 
