@@ -29,9 +29,7 @@ class ContentFile
     # if we're adding a slug and there's no path yet, then create the path.
     # this will run for new drafts
 
-    if !@path
-      @path = File.expand_path("#{site.directory}/#{self.class.dirname}/#{@slug}")
-    end
+    @path ||= File.expand_path("#{site.directory}/#{self.class.dirname}/#{@slug}")
   end
 
   def title
