@@ -11,12 +11,12 @@ describe Serif::Site do
 
   describe "site generation" do
     it "uses the permalinks in the config file for site generation" do
-      subject.generate
+      capture_stdout { subject.generate }
       File.exist?(testing_dir("_site/test-blog/sample-post.html")).should be_true
     end
 
     it "reads the layout header for a non-post file and uses the appropriate layout file" do
-      subject.generate
+      capture_stdout { subject.generate }
 
       # check it actually got generated
       File.exist?(testing_dir("_site/page-alt-layout.html")).should be_true
@@ -24,7 +24,7 @@ describe Serif::Site do
     end
 
     it "reads the layout header for a post file and uses the appropriate layout file" do
-      subject.generate
+      capture_stdout { subject.generate }
 
       # check it actually got generated
       File.exist?(testing_dir("_site/test-blog/post-with-custom-layout.html")).should be_true
@@ -32,18 +32,18 @@ describe Serif::Site do
     end
 
     it "supports a smarty filter" do
-      subject.generate
+      capture_stdout { subject.generate }
       File.read("_site/test-smarty-filter.html").should =~ /testing&rsquo;s for a &ldquo;heading&rsquo;s&rdquo; `with code` in it&hellip;/
     end
 
     it "correctly handles file_digest calls" do
-      subject.generate
+      capture_stdout { subject.generate }
 
       File.read("_site/file-digest-test.html").strip.should == "f8390232f0c354a871f9ba0ed306163c\n.f8390232f0c354a871f9ba0ed306163c"
     end
 
     it "makes the previous and next posts available" do
-      subject.generate
+      capture_stdout { subject.generate }
 
       contents = File.read("_site/test-blog/sample-post.html")
       previous_title = contents[/^Previous post: .+?$/]
@@ -65,7 +65,7 @@ describe Serif::Site do
     it "sets a draft_preview flag for preview urls" do
       preview_flag_pattern = /draftpreviewflagexists/
 
-      subject.generate
+      capture_stdout { subject.generate }
 
       d = Serif::Draft.from_slug(subject, "sample-draft")
       preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
@@ -76,7 +76,7 @@ describe Serif::Site do
     end
 
     it "creates draft preview files" do
-      subject.generate
+      capture_stdout { subject.generate }
 
       Dir.exist?(testing_dir("_site/drafts")).should be_true
       Dir[File.join(testing_dir("_site/drafts/*"))].size.should == subject.drafts.size
@@ -94,7 +94,7 @@ describe Serif::Site do
       (subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/[a-z0-9]{60}\z/).should be_true
 
       # does not create more than one
-      subject.generate
+      capture_stdout { subject.generate }
       Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
     end
 
@@ -132,12 +132,12 @@ describe Serif::Site do
       end
 
       it "places the file in the published posts folder" do
-        subject.generate
+        capture_stdout { subject.generate }
         File.exist?(testing_dir("_site/test-blog/#{@post.slug}.html")).should be_true
       end
 
       it "marks the creation time as the current time" do
-        subject.generate
+        capture_stdout { subject.generate }
         Serif::Post.from_slug(subject, @post.slug).created.should == @time
       end
     end

@@ -14,7 +14,7 @@ describe "date 'now' patch" do
   it "is necessary" do
     liquid_filter = Object.new
     liquid_filter.extend(Liquid::StandardFilters)
-    liquid_filter.date("now", "%Y").should_not == Time.now.year
+    (liquid_filter.date_orig("now", "%Y") rescue "").should_not == Time.now.year.to_s
   end
 end
 
@@ -37,4 +37,16 @@ def testing_dir(path = nil)
   full_path = File.join(File.dirname(__FILE__), "site_dir")
 
   path ? File.join(full_path, path) : full_path
+end
+
+def capture_stdout
+  begin
+    $orig_stdout = $stdout
+    $stdout = StringIO.new
+    yield
+    $stdout.rewind
+    return $stdout.string
+  ensure
+    $stdout = $orig_stdout
+  end
 end
