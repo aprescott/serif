@@ -2,11 +2,7 @@ class StandardFilterCheck
   include Liquid::StandardFilters
 
   def date_supports_now?
-    begin
-      date("now", "%Y") == Time.now.year
-    rescue
-      false
-    end
+    date("now", "%Y") == Time.now.year
   end
 end
 
