@@ -59,18 +59,16 @@ def produce_skeleton(dir)
   puts
 end
 
-if __FILE__ == $0
-  command = ARGV.shift
-  args = ARGV
+command = ARGV.shift
+args = ARGV
 
-  case command
-  when "admin"
-    initialize_admin_server(Dir.pwd)
-  when "generate"
-    generate_site(Dir.pwd)
-  when "dev"
-    initialize_dev_server(Dir.pwd)
-  when "new"
-    produce_skeleton(Dir.pwd)
-  end
+case command
+when "admin"
+  initialize_admin_server(Dir.pwd)
+when "generate"
+  generate_site(Dir.pwd)
+when "dev"
+  initialize_dev_server(Dir.pwd)
+when "new"
+  produce_skeleton(Dir.pwd)
 end
