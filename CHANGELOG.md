@@ -4,6 +4,7 @@
 * Add `archive_page` template flag set to true when processing archive pages. (#41)
 * Make the `month` archive variable available to layouts as well as the archive template. (#41)
 * Slop warnings on any `serif` command have been removed.
+* List of posts for all archive data are correctly in reverse chronological order. (#48)
 
 # v0.3.3
 

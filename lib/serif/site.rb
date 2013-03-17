@@ -190,7 +190,7 @@ class Site
     year_groups.map! do |year_start_date, posts_by_year|
       {
         :date => year_start_date,
-        :posts => posts_by_year.sort_by { |post| post.created }
+        :posts => posts_by_year.sort_by { |post| post.created }.reverse
       }
     end
 
@@ -207,7 +207,7 @@ class Site
       month_groups.map! do |month_start_date, posts_by_month|
         {
           :date => month_start_date,
-          :posts => posts_by_month.sort_by { |post| post.created },
+          :posts => posts_by_month.sort_by { |post| post.created }.reverse,
           :archive_url => archive_url_for_date(month_start_date)
         }
       end

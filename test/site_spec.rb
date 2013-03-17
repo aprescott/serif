@@ -61,6 +61,34 @@ describe Serif::Site do
     end
   end
 
+  describe "#archives" do
+    it "contains posts given in reverse chronological order" do
+      archives = subject.archives
+      archives[:posts].each_cons(2) do |a, b|
+        (a.created >= b.created).should be_true
+      end
+
+      archives[:years].each do |year|
+        year[:posts].each_cons(2) do |a, b|
+          (a.created >= b.created).should be_true
+        end
+        
+        year[:months].each do |month|
+          month[:posts].each_cons(2) do |a, b|
+            (a.created >= b.created).should be_true
+          end
+        end
+      end
+    end
+  end
+
+  describe "#to_liquid" do
+    it "uses the value of #archives without modification" do
+      subject.should_receive(:archives).once
+      subject.to_liquid
+    end
+  end
+
   describe "#archive_url_for_date" do
     it "uses the archive URL format from the config to construct an archive URL string" do
       date = Date.parse("2012-01-02")
