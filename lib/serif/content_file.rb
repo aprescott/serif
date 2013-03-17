@@ -3,10 +3,6 @@
 # which contains the contents of a post, be it in
 # draft form or otherwise.
 #
-# A ContentFile can determine its type based on
-# the presence or absence of a "published"
-# timestamp value.
-#
 
 module Serif
 class ContentFile
