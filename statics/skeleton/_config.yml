@@ -1,52 +1,8 @@
+#
 # This is the Serif config file. It must be a valid YAML document.
 #
-# Some configuration options:
+# For information on which values are available here, see the README.
 #
-#     admin:
-#       username: [a username for the admin web interface]
-#       password: [a password for the admin web interface]
-#     permalink: [permalink format for generated posts]
-#
-# See the README for information on permalink formats.
-#
-# Image upload path configuration, used for any images added
-# through the admin drag-and-drop interface:
-#
-#     image_upload_path: [/some/absolute/path/:with/:placeholders]
-#
-# This should be an ABSOLUTE PATH and will be relative to your
-# base site (e.g., mysite.com). The value used will have the
-# relevant extension appended AUTOMATICALLY.
-#
-# The default value is: /images/:timestamp_:name
-#
-# Possible placeholders for the image upload path:
-#
-#     :year
-#       current full year, e.g., "2013"
-#
-#     :month
-#       current month as a two digit value, e.g., "02"
-#
-#     :day
-#       current day as a two digit value, e.g., "01"
-#
-#     :timestamp
-#       unix timestamp in seconds, e.g., "1361057832685"
-#
-#     :name
-#       filename of the image being uploaded
-#
-#     :slug
-#       the slug of the post at the time the image is added
-#
-# Any slashes in this string will become directories relative to the
-# base site directory.
-#
-# Example:  image_upload_path: /images/:slug/:year_:month_:day_:timestamp
-#
-#           This would lead to an example path of
-#           /images/sample-post/2013_02_16_1361057832685.png
 admin:
   username: changethisusername
   password: changethispassword
