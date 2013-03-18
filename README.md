@@ -35,7 +35,7 @@ Now visit <http://localhost:8000/> to view the site.
 * [Configuration](#configuration)
 * [Deploying](#deploying)
 * [Customising the admin interface](#customising-the-admin-interface)
-* [Custom tags](#custom-tags)
+* [Custom tags and filters](#custom-tags-and-filters)
 * [Template variables](#template-variables)
 * [Developing Serif](#developing-serif)
 * [Changes and what's new](#changes-and-whats-new)
