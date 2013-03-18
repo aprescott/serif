@@ -87,7 +87,7 @@ describe Serif::Post do
     end
 
     it "calls save and writes out the new timestamp value" do
-      @temporary_post.should_receive(:save).once
+      @temporary_post.should_receive(:save).once.and_call_original
 
       t = Time.now + 50
       Timecop.freeze(t)
