@@ -280,6 +280,26 @@ This is a draft that will be published now.
 
 On the next site generation (`serif generate`) this draft will be automatically published, using the current time as the creation timestamp.
 
+# Updating posts
+
+When you update a draft, you need to remember to change the updated time. As luck would have it, Serif takes care of timestamps for you! Just use a header of `update: now` at the top of your post:
+
+```
+title: My blog post
+Created: 2013-01-01T12:01:30+00:00
+update: now
+```
+
+Now the next time the site is generated, the timestamp will be updated:
+
+```
+title: My blog post
+Created: 2013-01-01T12:01:30+00:00
+Updated: 2013-03-18T19:03:30+00:00
+```
+
+Admin users: this is all done for you.
+
 # Archive pages
 
 By default, archive pages are made available at `/archive/:year/month`, e.g., `/archive/2012/11`. Individual archive pages can be customised by editing the `_templates/archive_page.html` file, which is used for each month.
