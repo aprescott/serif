@@ -253,6 +253,9 @@ class Site
     # to operate on.
     preprocess_autopublish_drafts
 
+    # preprocess any posts that might have had an update flag set in the header
+    preprocess_autoupdate_posts
+
     posts = self.posts
 
     files.each do |path|
@@ -345,6 +348,15 @@ class Site
   end
 
   private
+
+  def preprocess_autoupdate_posts
+    posts.each do |p|
+      if p.autoupdate?
+        puts "Auto-updating timestamp for: #{p.title} / #{p.slug}"
+        p.update!
+      end
+    end
+  end
 
   # generates draft preview files for any unpublished drafts.
   #

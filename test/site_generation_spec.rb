@@ -98,6 +98,34 @@ describe Serif::Site do
       Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
     end
 
+    context "for posts with an update: now header" do
+      around :each do |example|
+        begin
+          d = Serif::Draft.new(subject)
+          d.slug = "post-to-be-auto-updated"
+          d.title = "Testing title"
+          d.save("# some content")
+          d.publish!
+          
+          @temporary_post = Serif::Post.from_slug(subject, d.slug)
+          @temporary_post.autoupdate = true
+          @temporary_post.save
+
+          example.run
+        ensure
+          FileUtils.rm(@temporary_post.path)
+        end
+      end
+
+      it "sets the updated header to the current time" do
+        t = Time.now + 30
+        Timecop.freeze(t) do
+          capture_stdout { subject.generate }
+          Serif::Post.from_slug(subject, @temporary_post.slug).updated.to_i.should == t.to_i
+        end
+      end
+    end
+
     context "for drafts with a publish: now header" do
       before :all do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)

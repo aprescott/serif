@@ -36,18 +36,16 @@ class Draft < ContentFile
     @path = Post.from_slug(site, slug).path
   end
 
-  # sets the autopublish flag to the given value.
-  #
   # if the assigned value is truthy, the "publish" header
   # is set to "now", otherwise the header is removed.
   def autopublish=(value)
-    @autopublish = value
-
     if value
       @source.headers[:publish] = "now"
     else
       @source.headers.delete(:publish)
     end
+
+    headers_changed!
   end
 
   # Checks the value of the "publish" header, and returns

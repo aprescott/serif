@@ -1,6 +1,7 @@
 # next release
 
 * The admin interface now supports bookmarks for quickly creating drafts. Selected text on the page will be turned into Markdown. (#50)
+* Posts with a header of `update: now` will have their `Updated` timestamps updated automatically on the next generate. (#49)
 * The 'markdown' filter now properly turns single quotes in Markdown into curly quotes. (#40)
 * Add `archive_page` template flag set to true when processing archive pages. (#41)
 * Make the `month` archive variable available to layouts as well as the archive template. (#41)
