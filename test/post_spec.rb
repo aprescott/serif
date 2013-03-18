@@ -81,8 +81,8 @@ describe Serif::Post do
       Timecop.freeze(t) do
         @temporary_post.update!
         @temporary_post.updated.should_not == old_update_time
-        @temporary_post.updated.utc.should == t.utc
-        @temporary_post.headers[:updated].should == t
+        @temporary_post.updated.to_i.should == t.to_i
+        @temporary_post.headers[:updated].to_i.should == t.to_i
       end
     end
 
@@ -90,10 +90,10 @@ describe Serif::Post do
       @temporary_post.should_receive(:save).once.and_call_original
 
       t = Time.now + 50
-      Timecop.freeze(t)
-      @temporary_post.update!
-      Time.parse(Redhead::String[File.read(@temporary_post.path)].headers[:updated].value).should == t
-      Timecop.return
+      Timecop.freeze(t) do
+        @temporary_post.update!
+        Time.parse(Redhead::String[File.read(@temporary_post.path)].headers[:updated].value).to_i.should == t.to_i
+      end
     end
 
     it "marks the post as no longer auto-updating" do
