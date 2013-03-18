@@ -353,7 +353,7 @@ class Site
     posts.each do |p|
       if p.autoupdate?
         puts "Auto-updating timestamp for: #{p.title} / #{p.slug}"
-        p.autoupdate!
+        p.update!
       end
     end
   end

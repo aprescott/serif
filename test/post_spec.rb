@@ -20,7 +20,7 @@ describe Serif::Post do
 
       example.run
     ensure
-      FileUtils.rm_rf(@temporary_post.path)
+      FileUtils.rm(@temporary_post.path)
     end
   end
 

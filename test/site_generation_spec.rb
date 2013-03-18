@@ -99,7 +99,31 @@ describe Serif::Site do
     end
 
     context "for posts with an update: now header" do
-      it "does what it needs to"
+      around :each do |example|
+        begin
+          d = Serif::Draft.new(subject)
+          d.slug = "post-to-be-auto-updated"
+          d.title = "Testing title"
+          d.save("# some content")
+          d.publish!
+          
+          @temporary_post = Serif::Post.from_slug(subject, d.slug)
+          @temporary_post.autoupdate = true
+          @temporary_post.save
+
+          example.run
+        ensure
+          FileUtils.rm(@temporary_post.path)
+        end
+      end
+
+      it "sets the updated header to the current time" do
+        t = Time.now + 30
+        Timecop.freeze(t) do
+          capture_stdout { subject.generate }
+          Serif::Post.from_slug(subject, @temporary_post.slug).updated.to_i.should == t.to_i
+        end
+      end
     end
 
     context "for drafts with a publish: now header" do
