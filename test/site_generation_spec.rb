@@ -98,6 +98,10 @@ describe Serif::Site do
       Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
     end
 
+    context "for posts with an update: now header" do
+      it "does what it needs to"
+    end
+
     context "for drafts with a publish: now header" do
       before :all do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)
