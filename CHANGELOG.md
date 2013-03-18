@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.4
+
 * The admin interface now supports bookmarks for quickly creating drafts. Selected text on the page will be turned into Markdown. (#50)
 * Posts with a header of `update: now` will have their `Updated` timestamps updated automatically on the next generate. (#49)
 * The 'markdown' filter now properly turns single quotes in Markdown into curly quotes. (#40)
