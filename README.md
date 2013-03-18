@@ -283,7 +283,7 @@ On the next site generation (`serif generate`) this draft will be automatically 
 
 # Updating posts
 
-When you update a draft, you need to remember to change the updated time. As luck would have it, Serif takes care of timestamps for you! Just use a header of `update: now` at the top of your post:
+When you update a post, you need to remember to change the updated time. As luck would have it, Serif takes care of timestamps for you! Just use a header of `update: now` at the top of your published post after making your changes:
 
 ```
 title: My blog post
