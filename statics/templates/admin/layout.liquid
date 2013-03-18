@@ -32,10 +32,11 @@ body > nav ul {
 
 body > nav ul li {
 	display: inline;
+	margin-right: 1em;
 }
 
 body > nav ul li:last-child {
-	margin-left: 1em;
+	margin-right: 0;
 }
 
 #edit input[disabled] {
@@ -537,11 +538,12 @@ body > nav ul li:last-child {
 		});
 	</script>
 </head>
-<body>
+<body id="admin">
 	<nav>
 		<ul>
 			<li><a href="/admin">Admin</a></li>
 			<li><a href="/admin/new/draft">New draft</a></li>
+			<li><a href="/admin/bookmarks">Bookmarks</a></li>
 		</ul>
 	</nav>
 
