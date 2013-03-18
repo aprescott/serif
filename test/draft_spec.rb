@@ -152,6 +152,20 @@ describe Serif::Draft do
 
       draft.delete!
     end
+
+    it "carries its value through to #autopublish?" do
+      draft = D.new(@site)
+      draft.slug = "test-draft"
+      draft.title = "Some draft title"
+      draft.autopublish = false
+      draft.autopublish?.should be_false
+
+      draft.autopublish = true
+      draft.autopublish?.should be_true
+
+      draft.autopublish = false
+      draft.autopublish?.should be_false
+    end
   end
 
   describe "#autopublish?" do
