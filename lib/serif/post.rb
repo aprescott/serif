@@ -27,6 +27,36 @@ class Post < ContentFile
     output
   end
 
+  # if the assigned value is truthy, the "update" header
+  # is set to "now", otherwise the header is removed.
+  def autoupdate=(value)
+    if value
+      @source.headers[:update] = "now"
+    else
+      @source.headers.delete(:update)
+    end
+
+    headers_changed!
+  end
+
+  # returns true if the post has been marked as needing a
+  # new updated timestamp header.
+  #
+  # this is based on the presence of an "update: now" header.
+  def autoupdate?
+    update_header = headers[:update]
+    update_header && update_header.strip == "now"
+  end
+
+  # Updates the updated timestamp and saves the contents.
+  #
+  # If there is an "update" header (see autoupdate?), it is deleted.
+  def update!
+    @source.headers.delete(:update)
+    set_updated_time(Time.now)
+    save
+  end
+
   def self.all(site)
     files = Dir[File.join(site.directory, dirname, "*")].select { |f| File.file?(f) }.map { |f| File.expand_path(f) }
     files.map { |f| new(site, f) }

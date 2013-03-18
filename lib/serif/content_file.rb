@@ -122,11 +122,18 @@ class ContentFile
 
   def set_publish_time(time)
     @source.headers[:created] = time.xmlschema
-    @cached_headers = nil
+    headers_changed!
   end
 
   def set_updated_time(time)
     @source.headers[:updated] = time.xmlschema
+    headers_changed!
+  end
+
+  # Invalidates the cached headers entirely.
+  #
+  # Any methods which alter headers should call this.
+  def headers_changed!
     @cached_headers = nil
   end
 
