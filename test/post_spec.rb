@@ -86,13 +86,16 @@ describe Serif::Post do
       end
     end
 
-    it "calls save and writes out the new timestamp value" do
+    it "calls save and writes out the new timestamp value, without a publish: now header" do
       @temporary_post.should_receive(:save).once.and_call_original
 
       t = Time.now + 50
       Timecop.freeze(t) do
         @temporary_post.update!
-        Time.parse(Redhead::String[File.read(@temporary_post.path)].headers[:updated].value).to_i.should == t.to_i
+
+        file_content = Redhead::String[File.read(@temporary_post.path)]
+        Time.parse(file_content.headers[:updated].value).to_i.should == t.to_i
+        file_content.headers[:publish].should be_nil
       end
     end
 
