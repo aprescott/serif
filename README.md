@@ -4,7 +4,7 @@
 
 Serif is a file-based blogging engine intended for simple sites. It compiles Markdown content to static files, and there is a web interface for editing and publishing ([simple video demo](https://docs.google.com/open?id=0BxPQpxGSOOyKS1J4MmlnM3JIaXM)), because managing everything with `ssh` and `git` can be a pain, compared to having a more universally accessible editing interface.
 
-Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), or use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb)
+Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb), or [join the Freenode#serif IRC channel](irc://irc.freenode.net/serif).
 
 ## First time use
 
