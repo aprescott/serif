@@ -1,5 +1,7 @@
 require "sinatra/base"
 require "fileutils"
+require "nokogiri"
+require "reverse_markdown"
 
 module Serif
 class AdminServer
@@ -37,6 +39,52 @@ class AdminServer
 
     get "/admin/edit/?" do
       redirect to("/admin"), 301
+    end
+
+    get "/admin/bookmarks" do
+      liquid :bookmarks, locals: { base_url: request.base_url }
+    end
+
+    get "/admin/quick-draft" do
+      url = params[:url]
+      html_content = params[:content].strip
+
+      title = params[:title]
+
+      # delete anything nonprintable
+      title = title.gsub(/[^\x20-\x7E]/, "")
+
+      # sanitise the HTML title into something we can use as a temporary slug
+      slug = title.split(" ").first(5).join(" ").gsub(/[^\w-]/, "-").gsub(/--+/, '-').gsub(/^-|-$/, '')
+      slug.downcase!
+
+      if html_content.empty?
+        markdown = "[#{title}](#{url.gsub(")", "\\)")})"
+      else
+        # parse the document fragment and remove any empty nodes.
+        document = Nokogiri::HTML::DocumentFragment.parse(html_content)
+        document.traverse { |p| p.remove if p.text && p.text.strip.empty? }
+        html_content = document.to_html
+
+        html_content = "<blockquote>#{html_content}</blockquote>"
+        markdown = ReverseMarkdown.parse(html_content, github_style_code_blocks: true)
+
+        # markdown URLs need to have any )s escaped
+        markdown = "[#{title}](#{url.gsub(")", "\\)")}):\n\n#{markdown}"
+      end
+
+      draft = Draft.new(site)
+      draft.title = title
+      draft.slug = slug
+      draft.save(markdown)
+
+      site.generate
+
+      if params[:edit] == "1"
+        redirect to("/admin/edit/drafts/#{slug}")
+      else
+        redirect to(url)
+      end
     end
 
     get "/admin/new/draft" do
