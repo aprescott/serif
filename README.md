@@ -30,6 +30,7 @@ Now visit <http://localhost:8000/> to view the site.
 * [Basic usage](#basics)
 * [Content and site structure](#content-and-site-structure)
 * [Publishing drafts](#publishing-drafts)
+* [Updating posts](#updating-posts)
 * [Archive pages](#archive-pages)
 * [Configuration](#configuration)
 * [Deploying](#deploying)
