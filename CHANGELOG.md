@@ -1,6 +1,6 @@
 # next release
 
-* The admin interface now supports bookmarks for quickly creating drafts, including quoting selected text. (#50)
+* The admin interface now supports bookmarks for quickly creating drafts. Selected text on the page will be turned into Markdown. (#50)
 * The 'markdown' filter now properly turns single quotes in Markdown into curly quotes. (#40)
 * Add `archive_page` template flag set to true when processing archive pages. (#41)
 * Make the `month` archive variable available to layouts as well as the archive template. (#41)
