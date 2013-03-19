@@ -519,15 +519,7 @@ Variable       | Value
 
 # Changes and what's new
 
-## Latest release (v0.4)
-
-## v0.3.3
-
-* Allow drag-and-drop to work on posts as well as drafts. (9ea3bebf)
-* `serif new` no longer creates a sample published post (#37) and generates immediately. (#39)
-* Pygments.rb is replaced with Rouge for code highlighting. (#34)
-
-See `CHANGELOG` for more.
+See `CHANGELOG`.
 
 # Planned features
 
