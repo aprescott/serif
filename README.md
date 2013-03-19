@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/aprescott/serif.png?branch=master)](https://travis-ci.org/aprescott/serif)
 
-Serif is a file-based blogging engine intended for simple sites. It compiles Markdown content to static files, and there is a web interface for editing and publishing ([simple video demo](https://docs.google.com/open?id=0BxPQpxGSOOyKS1J4MmlnM3JIaXM)), because managing everything with `ssh` and `git` can be a pain, compared to having a more universally accessible editing interface.
+Serif is a static site generator and blogging system powered by markdown files and an optional admin interface complete with drag-and-drop image uploading. ([Check out the simple video demo](https://docs.google.com/open?id=0BxPQpxGSOOyKS1J4MmlnM3JIaXM).)
+
+Serif releases you from managing a file system so you can focus on writing content.
 
 Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb), or [join the Freenode#serif IRC channel](irc://irc.freenode.net/serif).
 
