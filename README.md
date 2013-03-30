@@ -532,6 +532,7 @@ Variable       | Value
 * `./bin/serif {dev,admin,generate}` to run Serif commands.
 * `rake test` to run the tests.
 * Unit tests are written in RSpec.
+* `rake docs` will generate HTML documentation in `docs/`. Open `docs/index.html` in a browser to start.
 
 ## Directory structure
 
