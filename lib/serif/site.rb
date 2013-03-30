@@ -323,6 +323,7 @@ class Site
         # variables available in the post template
         post_template_variables = {
           "post" => post,
+          "post_page" => true,
           "prev_post" => prev_post,
           "next_post" => next_post
         }
@@ -330,6 +331,7 @@ class Site
         f.puts post_layout.render!(
           "site" => self,
           "page" => { "title" => post.title },
+          "post_page" => true,
           "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!(post_template_variables)
         )
       end
