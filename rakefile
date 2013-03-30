@@ -20,6 +20,7 @@ Rake::RDocTask.new(:docs) do |rd|
   rd.options << "--markup=markdown"
 end
 
+task :rdoc => :docs
 
 task :stress, [:n] do |t, args|
   iterations = args[:n] || 250
