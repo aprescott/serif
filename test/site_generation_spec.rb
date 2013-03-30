@@ -69,10 +69,32 @@ describe Serif::Site do
 
       d = Serif::Draft.from_slug(subject, "sample-draft")
       preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
-      preview_contents =~ preview_flag_pattern
+      (preview_contents =~ preview_flag_pattern).should be_true
 
       # does not exist on live published pages
       (File.read(testing_dir("_site/test-blog/second-post.html")) =~ preview_flag_pattern).should be_false
+    end
+
+    it "sets a post_page flag for regular posts" do
+      capture_stdout { subject.generate }
+      d = Serif::Post.from_slug(subject, "second-post")
+      contents = File.read(testing_dir("_site#{d.url}.html"))
+
+      # available to the post layout file
+      (contents =~ /post_page flag set for template/).should be_true
+
+      # available in the layout file itself
+      (contents =~ /post_page flag set for layout/).should be_true
+
+      # not set for regular pages
+      (File.read(testing_dir("_site/index.html")) =~ /post_page flag set for template/).should be_false
+      (File.read(testing_dir("_site/index.html")) =~ /post_page flag set for layout/).should be_false
+
+      # not set for drafts
+      d = Serif::Draft.from_slug(subject, "sample-draft")
+      preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
+      (preview_contents =~ /post_page flag set for template/).should be_false
+      (preview_contents =~ /post_page flag set for layout/).should be_false
     end
 
     it "creates draft preview files" do

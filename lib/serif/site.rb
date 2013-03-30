@@ -292,7 +292,7 @@ class Site
               layout_file = File.join(self.directory, "_layouts", "#{layout_option}.html")
               layout = Liquid::Template.parse(File.read(layout_file))
             end
-            f.puts layout.render!("site" => self, "page" => { "title" => [title].compact }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
+            f.puts layout.render!("site" => self, "page" => { "title" => title }, "content" => Liquid::Template.parse(file.to_s).render!("site" => self))
           end
         end
       end
@@ -323,13 +323,15 @@ class Site
         # variables available in the post template
         post_template_variables = {
           "post" => post,
+          "post_page" => true,
           "prev_post" => prev_post,
           "next_post" => next_post
         }
 
         f.puts post_layout.render!(
           "site" => self,
-          "page" => { "title" => ["Posts", "#{post.title}"] },
+          "page" => { "title" => post.title },
+          "post_page" => true,
           "content" => Liquid::Template.parse(File.read("_templates/post.html")).render!(post_template_variables)
         )
       end
@@ -393,7 +395,7 @@ class Site
         f.puts layout.render!(
           "site" => self,
           "draft_preview" => true,
-          "page" => { "title" => [ "Draft Preview", draft.title ] },
+          "page" => { "title" => draft.title },
           "content" => template.render!("site" => self, "post" => draft, "draft_preview" => true)
         )
       end
