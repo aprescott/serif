@@ -69,7 +69,7 @@ describe Serif::Site do
 
       d = Serif::Draft.from_slug(subject, "sample-draft")
       preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
-      preview_contents =~ preview_flag_pattern
+      (preview_contents =~ preview_flag_pattern).should be_true
 
       # does not exist on live published pages
       (File.read(testing_dir("_site/test-blog/second-post.html")) =~ preview_flag_pattern).should be_false
