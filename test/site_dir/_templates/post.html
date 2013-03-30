@@ -1,4 +1,5 @@
 {% if draft_preview %}<p>draftpreviewflagexists</p>{% endif %}
+{% if post_page %}<p>post_page flag set for template</p>{% endif %}
 <h2>{{ post.title }}</h2>
 
 {{ post.content | markdown }}
