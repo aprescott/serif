@@ -2,6 +2,7 @@ require "rake"
 require "time"
 require "rspec/core/rake_task"
 require "benchmark"
+require "rdoc/task"
 
 RSpec::Core::RakeTask.new(:test) do |t|
   t.rspec_opts = "-I test --color --format nested"
@@ -11,6 +12,14 @@ RSpec::Core::RakeTask.new(:test) do |t|
 end
 
 task :default => :test
+
+Rake::RDocTask.new(:docs) do |rd|
+  rd.main = "README.md"
+  rd.rdoc_dir = "docs"
+  rd.rdoc_files.include("README.md", "lib/**/*.rb")
+  rd.options << "--markup=markdown"
+end
+
 
 task :stress, [:n] do |t, args|
   iterations = args[:n] || 250
