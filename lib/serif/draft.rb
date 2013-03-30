@@ -11,6 +11,27 @@ class Draft < ContentFile
     File.rename("#{site.directory}/#{dirname}/#{original_slug}", "#{site.directory}/#{dirname}/#{new_slug}")
   end
 
+  # Returns the URL that would be used for this post if it were
+  # to be published now.
+  def url
+    permalink_style = headers[:permalink] || site.config.permalink
+
+    parts = {
+      "title" => slug,
+      "year" => Time.now.year.to_s,
+      "month" => Time.now.month.to_s.rjust(2, "0"),
+      "day" => Time.now.day.to_s.rjust(2, "0")
+    }
+
+    output = permalink_style
+
+    parts.each do |placeholder, value|
+      output = output.gsub(Regexp.quote(":" + placeholder), value)
+    end
+
+    output
+  end
+
   def delete!
     FileUtils.mkdir_p("#{site.directory}/_trash")
     File.rename(@path, File.expand_path("#{site.directory}/_trash/#{Time.now.to_i}-#{slug}"))

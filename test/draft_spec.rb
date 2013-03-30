@@ -7,6 +7,32 @@ describe Serif::Draft do
     FileUtils.rm_rf(testing_dir("_trash"))
   end
 
+  describe "#url" do
+    it "uses the current time for its placeholder values" do
+      d = D.new(@site)
+      d.slug = "my-blar-blar"
+      orig_headers = d.headers
+      d.stub(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
+
+      Timecop.freeze(Time.parse("2020-02-09")) do
+        d.url.should == "/foo/2020/02/09/my-blar-blar"
+      end
+    end
+
+    it "defaults to the config file's permalink value" do
+      d = D.new(@site)
+      d.slug = "gablarhgle"
+      d.url.should == "/test-blog/gablarhgle"
+    end
+
+    it "uses its permalink header value" do
+      d = D.new(@site)
+      d.slug = "anything"
+      d.stub(:headers) { { :permalink => "testage" } }
+      d.url.should == "testage"
+    end
+  end
+
   describe ".rename" do
     it "moves the draft to a new file" do
       draft = D.new(@site)
