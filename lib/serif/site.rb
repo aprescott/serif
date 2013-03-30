@@ -292,6 +292,10 @@ class Site
 
     default_layout = Liquid::Template.parse(File.read("_layouts/default.html"))
 
+    if conflicts
+      raise PostConflictError, "Generating would cause a conflict."
+    end
+
     # preprocess any drafts marked for autopublish, before grabbing the posts
     # to operate on.
     preprocess_autopublish_drafts

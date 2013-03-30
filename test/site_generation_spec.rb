@@ -10,6 +10,12 @@ describe Serif::Site do
   end
 
   describe "site generation" do
+    it "raises PostConflictError if there are conflicts" do
+      # not nil, the value is unimportant
+      subject.stub(:conflicts) { [] }
+      expect { capture_stdout { subject.generate } }.to raise_error(Serif::PostConflictError)
+    end
+
     it "uses the permalinks in the config file for site generation" do
       capture_stdout { subject.generate }
       File.exist?(testing_dir("_site/test-blog/sample-post.html")).should be_true
