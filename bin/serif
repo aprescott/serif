@@ -4,6 +4,60 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
 
 require "fileutils"
 
+def print_help
+  puts <<-END_HELP
+USAGE
+
+  serif [-h | --help]
+  serif [COMMAND]
+
+OPTIONS
+
+  -h, --help  Display this help message and exit immediately.
+
+COMMANDS
+
+  serif generate    Generate the site in the current directory.
+
+  serif new         Create a site skeleton to get started. Will
+                    only run if the current directory is empty.
+
+  serif admin       Start the admin server on localhost:4567.
+
+  serif dev         Start a simple dev server on localhost:8000.
+                    Serves up the generated static files, but loads
+                    some files (like CSS) from source (instead of
+                    out of the _site/ directory).
+
+ENVIRONMENT VARIABLES
+
+  ENV               Set to 'production' if the command is being run
+                    as part of serving up a live site.
+
+                        $ ENV=production serif generate
+
+                        $ ENV=production serif admin
+
+                    Note that this by and large doesn't change much,
+                    but in future it may provide extra features.
+
+                    The main benefit is that the `file_digest` tag
+                    will return a hex digest of the given file's
+                    contents only when ENV is set to production.
+
+EXAMPLES
+
+  $ serif generate
+
+    Generate the site.
+
+  $ serif admin
+
+    Start the admin server on localhost:4567.
+
+END_HELP
+end
+
 def initialize_admin_server(source_dir)
   # need to cd to the directory before requiring the admin
   # server, because otherwise Dir.pwd won't be right when
@@ -63,6 +117,9 @@ command = ARGV.shift
 args = ARGV
 
 case command
+when "-h", "--help", nil
+  print_help
+  exit 0
 when "admin"
   initialize_admin_server(Dir.pwd)
 when "generate"
