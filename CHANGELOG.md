@@ -1,6 +1,7 @@
 # next release
 
-* ...
+* `post.title` is now a single value, instead of being an array. (#45)
+* `post_page` flag added for use in templates. Set to true when generating a post. (#45)
 
 # v0.4
 
