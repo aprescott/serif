@@ -179,9 +179,24 @@ Something something.
 End of the post
 ```
 
+### Headers
+
 The headers are similar to Jekyll's YAML front matter, but here there are no formatting requirements beyond `Key: value` pairs. Header names are case-insensitive (so `title` is the same as `Title`), but values are not.
 
-(The headers `created` and `updated` must be a string that Ruby's standard Time library can parse, but this will mostly be handled for you.)
+File headers like `Title: Some title` can contain any header, but certain headers have special meaning in Serif.
+
+Header name | Meaning
+----------- |:-------
+`Created`   | For a post, timestamp for when it was first published. Must be a string that Ruby's `Time` class can parse. Means nothing for drafts.
+`Updated`   | For a post, timestamp for when it was last updated. Must be a string that Ruby's `Time` class can parse. Means nothing for drafts.
+`Title`     | Title for the draft or post.
+`Update`    | For a post, When given the value of `now` (i.e., `Update: now`), the `Updated` timestamp will be updated on the next site generation. Means nothing for drafts.
+`Publish`   | For a draft, when given the value of `now` (i.e., `Publish: now`), the draft will be published on the next site generation (and the `Created` set appropriately). Means nothing for a post.
+`Permalink` | For a post, overrides the default permalink value defined in `_config.yml`. **Note that this is interpolated**, so `:title` in the permalink value will be replaced according to regular permalink rules. Means nothing for a draft.
+
+Note that while it is possible for you to manually handle timestamp values, it is recommended that you rely on using the value of `now` for `Update` and `Publish`.
+
+If you change the `permalink` value for a published post, you will break any inbound URLs as well as, e.g., any feeds that rely on the URL as a unique persistent ID.
 
 ## `_templates`
 
@@ -218,6 +233,8 @@ Placeholder | Value
 `:year`     | Year as given in the filename, e.g., "2012"
 `:month`    | Month as given in the filename, e.g., "01"
 `:day`      | Day as given in the filename, e.g., "28"
+
+<b>NOTE</b>: if you change the permalink value, you will break existing URLs for published posts, in addition to, e.g., any feed ID values that depend on the post URL never changing.
 
 ### Admin drag-and-drop upload path
 
@@ -486,6 +503,7 @@ Name           | Value
 `post.created` | A [Ruby `Time`](http://ruby-doc.org/core/Time.html) instance for the time the post was first published.
 `post.updated` | A [Ruby `Time`](http://ruby-doc.org/core/Time.html) instance for the time the post was last updated.
 `post.content` | The raw post content. Example use: `{{ post.content | markdown }}`.
+`post.foo`     | The value of the `Foo` header, e.g., if `Foo: my special header` is in the source file, `post.foo` is `my special header`. All headers are merged into the `{{ post }}` variable for you to use in templates.
 
 ## Variables available within post templates
 
