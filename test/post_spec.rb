@@ -117,4 +117,23 @@ describe Serif::Post do
       @temporary_post.autoupdate?.should be_false
     end
   end
+
+  describe "#to_liquid" do
+    it "contains the relevant keys" do
+      liq = subject.posts.sample.to_liquid
+
+      ["title",
+       "created",
+       "updated",
+       "content",
+       "slug",
+       "url",
+       "type",
+       "draft",
+       "published",
+       "basename"].each do |e|
+        liq.key?(e).should be_true
+      end
+    end
+  end
 end

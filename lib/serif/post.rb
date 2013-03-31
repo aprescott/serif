@@ -76,7 +76,8 @@ class Post < ContentFile
       "url" => url,
       "type" => "post",
       "draft" => draft?,
-      "published" => published?
+      "published" => published?,
+      "basename" => basename
     }
 
     headers.each do |key, value|

@@ -222,19 +222,18 @@ class AdminServer
       end
     end
 
-    get "/admin/edit/:type/:slug" do
+    get "/admin/edit/posts/:basename" do
+      redirect to("/admin") unless params[:basename]
+
+      content = Post.from_basename(site, params[:basename])
+      liquid :edit_post, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown" }
+    end
+
+    get "/admin/edit/drafts/:slug" do
       redirect to("/admin") unless params[:slug]
 
-      if params[:type] == "posts"
-        content = site.posts.find { |p| p.slug == params[:slug] }
-        liquid :edit_post, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown" }
-      elsif params[:type] == "drafts"
-        content = Draft.from_slug(site, params[:slug])
-        liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown", private_url: site.private_url(content) }
-      else
-        response.status = 404
-        return "Nope"
-      end
+      content = Draft.from_slug(site, params[:slug])
+      liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown", private_url: site.private_url(content) }
     end
 
     post "/admin/delete/?" do
