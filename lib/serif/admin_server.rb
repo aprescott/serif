@@ -199,7 +199,7 @@ class AdminServer
     end
 
     post "/admin/edit/posts" do
-      content = Post.from_slug(site, params[:original_slug])
+      content = Post.from_basename(site, params[:original_basename])
 
       params[:markdown] = params[:markdown].strip
       params[:title] = params[:title].strip

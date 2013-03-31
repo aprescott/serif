@@ -83,7 +83,8 @@ describe Serif::Site do
 
     it "sets a post_page flag for regular posts" do
       capture_stdout { subject.generate }
-      d = Serif::Post.from_slug(subject, "second-post")
+      d = Serif::Post.from_basename(subject, "2013-01-01-second-post")
+      d.should_not be_nil
       contents = File.read(testing_dir("_site#{d.url}.html"))
 
       # available to the post layout file
@@ -135,7 +136,7 @@ describe Serif::Site do
           d.save("# some content")
           d.publish!
           
-          @temporary_post = Serif::Post.from_slug(subject, d.slug)
+          @temporary_post = Serif::Post.new(subject, d.path)
           @temporary_post.autoupdate = true
           @temporary_post.save
 
@@ -149,7 +150,7 @@ describe Serif::Site do
         t = Time.now + 30
         Timecop.freeze(t) do
           capture_stdout { subject.generate }
-          Serif::Post.from_slug(subject, @temporary_post.slug).updated.to_i.should == t.to_i
+          Serif::Post.from_basename(subject, @temporary_post.basename).updated.to_i.should == t.to_i
         end
       end
     end
@@ -182,9 +183,11 @@ describe Serif::Site do
       after :each do
         Timecop.return
 
-        # the generate processes creates its own set of instances, so the
-        # value of #path here would be stale if we were to call @post.path
-        FileUtils.rm(Serif::Post.from_slug(subject, @post.slug).path)
+        # the generate processes creates its own set of instances, and we're
+        # publishing a draft marked as autopublish, so our @post instance
+        # has a #path value which is for the draft, not for the newly published
+        # post. thus, we need to clobber.
+        FileUtils.rm(*Dir[testing_dir("_posts/*-#{@post.slug}")])
       end
 
       it "places the file in the published posts folder" do
@@ -194,7 +197,7 @@ describe Serif::Site do
 
       it "marks the creation time as the current time" do
         capture_stdout { subject.generate }
-        Serif::Post.from_slug(subject, @post.slug).created.should == @time
+        subject.posts.find { |p| p.slug == @post.slug }.created.to_i.should == @time.to_i
       end
     end
   end

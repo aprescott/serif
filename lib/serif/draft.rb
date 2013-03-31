@@ -54,7 +54,7 @@ class Draft < ContentFile
     File.rename(path, full_published_path)
 
     # update the path since the file has now changed
-    @path = Post.from_slug(site, slug).path
+    @path = Post.new(site, full_published_path).path
   end
 
   # if the assigned value is truthy, the "publish" header

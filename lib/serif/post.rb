@@ -62,8 +62,8 @@ class Post < ContentFile
     files.map { |f| new(site, f) }
   end
 
-  def self.from_slug(site, slug)
-    all(site).find { |p| p.slug == slug }
+  def self.from_basename(site, filename)
+    all(site).find { |p| p.basename == filename }
   end
 
   def to_liquid

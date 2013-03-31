@@ -159,7 +159,7 @@ describe Serif::Draft do
       draft.autopublish?.should be_false
 
       # check the actual file doesn't have the header
-      Serif::Post.from_slug(@site, draft.slug).headers[:publish].should be_nil
+      Serif::Post.new(@site, draft.path).headers[:publish].should be_nil
 
       draft.delete!
     end
