@@ -6,7 +6,7 @@ Serif is a static site generator and blogging system powered by markdown files a
 
 Serif releases you from managing a file system so you can focus on writing content.
 
-Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb), or [join the Freenode#serif IRC channel](irc://irc.freenode.net/serif).
+Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb), or join the Freenode#serif IRC channel at irc://irc.freenode.net/serif.
 
 ## First time use
 
