@@ -10,7 +10,7 @@ describe Serif::Commands do
   def expect_method_call(arg, method)
     c = Serif::Commands.new([arg])
     c.should_receive(method)
-    c.process
+    capture_stdout { c.process }
   end
 
   describe "#process" do
@@ -45,6 +45,33 @@ describe Serif::Commands do
       Serif::Site.should_receive(:generation_called)
 
       Serif::Commands.new([]).generate_site("anything")
+    end
+
+    context "with a conflict" do
+      def conflicting_generate_command
+        a = b = double("")
+        a.stub(:url) { "/foo" }
+        b.stub(:url) { "/foo" }
+        a.stub(:path) { "/anything" }
+        b.stub(:path) { "/anything" }
+
+        # any non-nil value will do
+        Serif::Site.any_instance.stub(:conflicts) { { "/foo" => [a, b] } }
+
+        command = Serif::Commands.new([])
+        command.generate_site(testing_dir)
+        command.should_receive(:exit)
+        command
+      end
+
+      it "exits" do
+        capture_stdout { conflicting_generate_command.process }
+      end
+
+      it "prints the urls that conflict" do
+        output = capture_stdout { conflicting_generate_command.process }
+        output.should match(/Conflicts at:\n\n\/foo\n\t\/anything\n\t\/anything/)
+      end
     end
   end
 end

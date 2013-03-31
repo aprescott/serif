@@ -1,4 +1,6 @@
 require "fileutils"
+require "serif"
+require "serif/server"
 
 module Serif
 class Commands
@@ -28,7 +30,6 @@ class Commands
     # server, because otherwise Dir.pwd won't be right when
     # the admin server class is defined at require time.
     FileUtils.cd(source_dir)
-    require "serif"
     require "serif/admin_server"
 
     server = Serif::AdminServer.new(source_dir)
@@ -37,18 +38,32 @@ class Commands
 
   def initialize_dev_server(source_dir)
     FileUtils.cd(source_dir)
-    require "serif"
-    require "serif/server"
 
     server = Serif::DevelopmentServer.new(source_dir)
     server.start
   end
 
   def generate_site(source_dir)
-    require "serif"
     
     site = Serif::Site.new(source_dir)
-    site.generate
+
+    begin
+      site.generate
+    rescue Serif::PostConflictError => e
+      puts "Error! Unable to generate because there is a conflict."
+      puts
+      puts "Conflicts at:"
+      puts
+
+      site.conflicts.each do |url, ary|
+        puts url
+        ary.each do |e|
+          puts "\t#{e.path}"
+        end
+      end
+
+      exit 1
+    end
   end
 
   def verify_directory(dir)
