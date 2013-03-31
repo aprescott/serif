@@ -1,6 +1,6 @@
 # Serif
 
-[![Build Status](https://travis-ci.org/aprescott/serif.png?branch=master)](https://travis-ci.org/aprescott/serif)
+[![Build Status](https://travis-ci.org/aprescott/serif.png?branch=master)](https://travis-ci.org/aprescott/serif) [![Code Climate](https://codeclimate.com/github/aprescott/serif.png)](https://codeclimate.com/github/aprescott/serif)
 
 Serif is a static site generator and blogging system powered by markdown files and an optional admin interface complete with drag-and-drop image uploading. ([Check out the simple video demo](https://docs.google.com/open?id=0BxPQpxGSOOyKS1J4MmlnM3JIaXM).)
 
@@ -532,6 +532,7 @@ Variable       | Value
 * `./bin/serif {dev,admin,generate}` to run Serif commands.
 * `rake test` to run the tests.
 * Unit tests are written in RSpec.
+* `rake docs` will generate HTML documentation in `docs/`. Open `docs/index.html` in a browser to start.
 
 ## Directory structure
 
