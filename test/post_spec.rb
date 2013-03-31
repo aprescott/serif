@@ -5,7 +5,7 @@ describe Serif::Post do
     Serif::Site.new(testing_dir)
   end
 
-  before :all do
+  before :each do
     @posts = subject.posts
   end
 
@@ -16,11 +16,21 @@ describe Serif::Post do
       d.title = "Testing title"
       d.save("# some content")
       d.publish!
-      @temporary_post = Serif::Post.from_slug(subject, d.slug)
+      @temporary_post = Serif::Post.new(subject, d.path)
 
       example.run
     ensure
       FileUtils.rm(@temporary_post.path)
+    end
+  end
+
+  describe "#from_basename" do
+    it "is nil if there is nothing found" do
+      Serif::Post.from_basename(subject, "eoijfwoifjweofej").should be_nil
+    end
+
+    it "takes full filename within _posts" do
+      Serif::Post.from_basename(subject, @temporary_post.basename).path.should == @temporary_post.path
     end
   end
 
@@ -105,6 +115,25 @@ describe Serif::Post do
       @temporary_post.autoupdate?.should be_true
       @temporary_post.update!
       @temporary_post.autoupdate?.should be_false
+    end
+  end
+
+  describe "#to_liquid" do
+    it "contains the relevant keys" do
+      liq = subject.posts.sample.to_liquid
+
+      ["title",
+       "created",
+       "updated",
+       "content",
+       "slug",
+       "url",
+       "type",
+       "draft",
+       "published",
+       "basename"].each do |e|
+        liq.key?(e).should be_true
+      end
     end
   end
 end

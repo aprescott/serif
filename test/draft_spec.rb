@@ -7,6 +7,43 @@ describe Serif::Draft do
     FileUtils.rm_rf(testing_dir("_trash"))
   end
 
+  describe "#url" do
+    it "uses the current time for its placeholder values" do
+      d = D.new(@site)
+      d.slug = "my-blar-blar"
+      orig_headers = d.headers
+      d.stub(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
+
+      Timecop.freeze(Time.parse("2020-02-09")) do
+        d.url.should == "/foo/2020/02/09/my-blar-blar"
+      end
+    end
+
+    it "can handle nil slug values" do
+      d = D.new(@site)
+      d.slug.should be_nil
+      orig_headers = d.headers
+      d.stub(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
+
+      Timecop.freeze(Time.parse("2020-02-09")) do
+        d.url.should == "/foo/2020/02/09/"
+      end
+    end
+
+    it "defaults to the config file's permalink value" do
+      d = D.new(@site)
+      d.slug = "gablarhgle"
+      d.url.should == "/test-blog/gablarhgle"
+    end
+
+    it "uses its permalink header value" do
+      d = D.new(@site)
+      d.slug = "anything"
+      d.stub(:headers) { { :permalink => "testage" } }
+      d.url.should == "testage"
+    end
+  end
+
   describe ".rename" do
     it "moves the draft to a new file" do
       draft = D.new(@site)
@@ -86,11 +123,11 @@ describe Serif::Draft do
       published_path = testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
 
       begin
-        @site.generate
+        capture_stdout { @site.generate }
         @site.posts.first.slug.should_not == draft.slug
         @site.to_liquid["posts"].first.slug.should_not == draft.slug
         draft.publish!
-        @site.generate
+        capture_stdout { @site.generate }
         @site.posts.first.slug.should == draft.slug
         @site.to_liquid["posts"].first.slug.should == draft.slug
       rescue
@@ -122,7 +159,7 @@ describe Serif::Draft do
       draft.autopublish?.should be_false
 
       # check the actual file doesn't have the header
-      Serif::Post.from_slug(@site, draft.slug).headers[:publish].should be_nil
+      Serif::Post.new(@site, draft.path).headers[:publish].should be_nil
 
       draft.delete!
     end
@@ -183,6 +220,16 @@ describe Serif::Draft do
       headers = draft.headers
       draft.stub(:headers) { headers.merge(:publish => " now  ") }
       draft.autopublish?.should be_true
+    end
+  end
+
+  describe "#to_liquid" do
+    it "contains the relevant keys" do
+      liq = @site.drafts.sample.to_liquid
+
+      ["title", "content", "slug", "type", "draft", "published", "url"].each do |e|
+        liq.key?(e).should be_true
+      end
     end
   end
 

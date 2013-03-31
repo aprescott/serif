@@ -5,6 +5,37 @@ describe Serif::ContentFile do
     Serif::Site.new(testing_dir)
   end
 
+  describe "#basename" do
+    it "is the basename of the path" do
+      (subject.drafts + subject.posts).each do |content_file|
+        content_file.basename.should == File.basename(content_file.path)
+      end
+
+      draft = Serif::Draft.new(subject)
+      draft.slug = "foo"
+      draft.title = "foo"
+
+      # NOTE! Freezing!
+      Timecop.freeze(Time.parse("2013-04-03"))
+
+      draft.save
+      draft.publish!
+      post = Serif::Post.new(subject, draft.path)
+
+      begin
+        draft.path.should_not be_nil
+        post.should_not be_nil
+        draft.basename.should == post.basename
+
+        # NOTE! Time frozen!
+        post.basename.should == "2013-04-03-foo"
+      ensure
+        Timecop.return
+        FileUtils.rm(post.path)
+      end
+    end
+  end
+
   describe "#title=" do
     it "sets the underlying header value to the assigned title" do
       (subject.drafts + subject.posts).each do |content_file|
@@ -24,7 +55,7 @@ describe Serif::ContentFile do
         draft.save("# Some content")
         draft.publish!
 
-        post = Serif::Post.from_slug(subject, draft.slug)
+        post = Serif::Post.new(subject, draft.path)
 
         t = Time.now
         Timecop.freeze(t + 30) do

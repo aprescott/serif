@@ -23,6 +23,10 @@ class ContentFile
     end
   end
 
+  def basename
+    File.basename(@path)
+  end
+
   def slug=(str)
     @slug = str
 

@@ -4,6 +4,65 @@ describe Serif::Site do
   subject do
     Serif::Site.new(testing_dir)
   end
+
+  describe "#conflicts" do
+    context "with no arguments" do
+      it "is nil if there are no conflicts" do
+        subject.conflicts.should be_nil
+      end
+
+      it "is a map of url => conflicts_array if there are conflicts" do
+        d = Serif::Draft.new(subject)
+        conflicting_post = subject.posts.first
+        d.slug = conflicting_post.slug
+        d.title = "Anything you like"
+        d.save("# Some content")
+
+        # need this to be true
+        d.url.should == conflicting_post.url
+
+        begin
+          conflicts = subject.conflicts
+          conflicts.should_not be_nil
+          conflicts.class.should == Hash
+          conflicts.size.should == 1
+          conflicts.keys.should == [conflicting_post.url]
+          conflicts[conflicting_post.url].size.should == 2
+        ensure
+          FileUtils.rm(d.path)
+        end
+      end
+    end
+
+    context "with an argument given" do
+      it "is nil if there are no conflicts" do
+        subject.conflicts(subject.drafts.first).should be_nil
+      end
+
+      it "is an array of conflicting content if there are conflicts" do
+        d = Serif::Draft.new(subject)
+        conflicting_post = subject.posts.first
+        d.slug = conflicting_post.slug
+        d.title = "Anything you like"
+        d.save("# Some content")
+
+        # need this to be true
+        d.url.should == conflicting_post.url
+
+        begin
+          conflicts = subject.conflicts(d)
+          conflicts.should_not be_nil
+          conflicts.class.should == Array
+          conflicts.size.should == 2
+          conflicts.each do |e|
+            e.url.should == conflicting_post.url
+          end
+        ensure
+          FileUtils.rm(d.path)
+        end
+      end
+    end
+  end
   
   describe "#source_directory" do
     it "should be sane" do
