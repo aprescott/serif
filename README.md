@@ -1,6 +1,6 @@
 # Serif
 
-[![Build Status](https://travis-ci.org/aprescott/serif.png?branch=master)](https://travis-ci.org/aprescott/serif) [![Code Climate](https://codeclimate.com/github/aprescott/serif.png)](https://codeclimate.com/github/aprescott/serif)
+[![Build Status](https://travis-ci.org/aprescott/serif.png?branch=master)](https://travis-ci.org/aprescott/serif) [![Code Climate](https://codeclimate.com/github/aprescott/serif.png)](https://codeclimate.com/github/aprescott/serif) [![Coverage Status](https://coveralls.io/repos/aprescott/serif/badge.png?branch=master)](https://coveralls.io/r/aprescott/serif)
 
 Serif is a static site generator and blogging system powered by markdown files and an optional admin interface complete with drag-and-drop image uploading. ([Check out the simple video demo](https://docs.google.com/open?id=0BxPQpxGSOOyKS1J4MmlnM3JIaXM).)
 
