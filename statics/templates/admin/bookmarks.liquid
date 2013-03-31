@@ -25,17 +25,17 @@ compress me!
 -->
 {% endcomment %}
 
-{% capture compressed_js %}
+<script>
+var compressed_js = 'javascript:(function(){var e,n,t,o;n=location.href,document.getSelection?(t=document.getSelection(),""==""+t?t="":(t=t.getRangeAt(0).cloneContents(),o=document.createElement("div"),o.appendChild(t),t=o.innerHTML)):t="",e=document.title,window.location.href="[BASE_URL]url="+encodeURIComponent(n)+"&content="+encodeURIComponent(t)+"&title="+encodeURIComponent(e)})();';
+var base_url = window.location.protocol + "//" + window.location.host + "/admin/quick-draft?";
+var js_now = compressed_js.replace('[BASE_URL]', base_url + "edit=1&");
+var js_later = compressed_js.replace('[BASE_URL]', base_url);
 
-(function(){var e,n,t,o;n=location.href,document.getSelection?(t=document.getSelection(),""==""+t?t="":(t=t.getRangeAt(0).cloneContents(),o=document.createElement("div"),o.appendChild(t),t=o.innerHTML)):t="",e=document.title,window.location.href="[BASE_URL]url="+encodeURIComponent(n)+"&content="+encodeURIComponent(t)+"&title="+encodeURIComponent(e)})();
-
-{% endcapture %}
-
-{% assign compressed_js = compressed_js | strip | replace:'"',"'" | prepend: "javascript:" %}
-{% assign non_edit_url = base_url | append:"/admin/quick-draft?" %}
-{% assign edit_now_url = non_edit_url | append:"edit=1&" %}
-{% assign js_later = compressed_js | replace:"[BASE_URL]",non_edit_url %}
-{% assign js_now   = compressed_js | replace:"[BASE_URL]",edit_now_url %}
+$(function() {
+	$("[data-bookmark-later]").attr("href", js_later);
+	$("[data-bookmark-now]").attr("href", js_now);
+});
+</script>
 
 <section id="bookmarks">
 	<h2>Bookmarks</h2>
@@ -44,13 +44,17 @@ compress me!
 
 	<p>Any selected text will go in as Markdown, ready for editing!</p>
 
+	<noscript>
+		<p><strong>You need to enable JavaScript!</strong></p>
+	</noscript>
+
 	<hr>
 
-	<p class="bookmark"><a href="{{ js_later }}">Save draft for later</a></p>
+	<p class="bookmark"><a href="#" data-bookmark-later>Save draft for later</a></p>
 
 	<p>Saves the current page as a draft. Takes you straight back to where you were so you can keep reading.</p>
 
-	<p class="bookmark"><a href="{{ js_now }}">Save draft and edit</a></p>
+	<p class="bookmark"><a href="#" data-bookmark-now>Save draft and edit</a></p>
 
 	<p>Saves the current page as a draft and lets you start editing immediately.</p>
 </section>

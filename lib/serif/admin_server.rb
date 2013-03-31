@@ -46,7 +46,7 @@ class AdminServer
     end
 
     get "/admin/bookmarks" do
-      liquid :bookmarks, locals: { conflicts: @conflicts, base_url: request.base_url }
+      liquid :bookmarks, locals: { conflicts: @conflicts }
     end
 
     get "/admin/quick-draft" do
