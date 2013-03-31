@@ -36,7 +36,11 @@ describe Serif::Site do
 
     context "with an argument given" do
       it "is nil if there are no conflicts" do
-        subject.conflicts(subject.drafts.first).should be_nil
+        subject.conflicts(subject.drafts.sample).should be_nil
+        subject.conflicts(subject.posts.sample).should be_nil
+
+        d = Serif::Draft.new(subject)
+        subject.conflicts(d).should be_nil
       end
 
       it "is an array of conflicting content if there are conflicts" do

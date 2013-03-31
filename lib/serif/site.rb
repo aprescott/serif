@@ -251,9 +251,27 @@ class Site
   # 2. nil if there is no conflict.
   def conflicts(content_to_check = nil)
     if content_to_check
-      conflicts = (drafts + posts).select { |e| e.url == content_to_check.url }
+      content = drafts + posts + [content_to_check]
 
-      if conflicts.length == 1
+      # In the event that the given argument is actually one of the
+      # drafts + posts, we need to de-duplicate, otherwise our return
+      # value will contain two of the same Draft/Post, which isn't
+      # actually a conflict.
+      #
+      # So to do that, we can use the path on the filesystem. However,
+      # we can't just rely on calling #path, because if content_to_check
+      # doesn't have a #path value, it'll be nil and it's possible that
+      # we might expand checking to multiple files/Drafts/Posts.
+      #
+      # Thus, if #path is nil, simply rely on object_id.
+      #
+      # FIXME: Replace this with a proper implementation of
+      # ContentFile equality/hashing.
+      content.uniq! { |e| e.path ? e.path : e.object_id }
+
+      conflicts = content.select { |e| e.url == content_to_check.url }
+
+      if conflicts.length <= 1
         return nil
       else
         return conflicts
