@@ -17,7 +17,7 @@ class Draft < ContentFile
     permalink_style = headers[:permalink] || site.config.permalink
 
     parts = {
-      "title" => slug,
+      "title" => slug.to_s,
       "year" => Time.now.year.to_s,
       "month" => Time.now.month.to_s.rjust(2, "0"),
       "day" => Time.now.day.to_s.rjust(2, "0")
@@ -84,7 +84,8 @@ class Draft < ContentFile
       "slug" => slug,
       "type" => "draft",
       "draft" => draft?,
-      "published" => published?
+      "published" => published?,
+      "url" => url
     }
 
     headers.each do |key, value|
