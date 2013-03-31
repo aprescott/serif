@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.5
+
 * Site generation will be blocked if any two posts or drafts lead to the same URL. (#47)
 * Bookmark links are generated with JavaScript instead of trying to detect Rack environment variables, which is buggy with some SSL configurations. (#52)
 * `page.title` is now a single value, instead of being an array. (#45)
