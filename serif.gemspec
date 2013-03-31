@@ -31,4 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency("simplecov", "~> 0.7")
   s.add_development_dependency("timecop", "~> 0.6.1")
   s.add_development_dependency("rdoc", "~> 4.0.0")
+  s.add_development_dependency("coveralls")
 end

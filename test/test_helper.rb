@@ -1,4 +1,12 @@
 require "simplecov"
+
+# if we're running on Travis, use Coveralls, otherwise
+# let us generate SimpleCov output as normal.
+if ENV["CI"]
+  require "coveralls"
+  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+end
+
 SimpleCov.start do
   add_filter "/test/"
 end
