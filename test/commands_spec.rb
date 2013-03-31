@@ -35,4 +35,16 @@ describe Serif::Commands do
       expect_method_call("-h", :exit)
     end
   end
+
+  describe "#generate_site" do
+    it "calls Site#generate" do
+      Serif::Site.stub(:generation_called)
+      Serif::Site.any_instance.stub(:generate) { Serif::Site.generation_called }
+
+      # if this is called, it means any instance of Site had #generate called.
+      Serif::Site.should_receive(:generation_called)
+
+      Serif::Commands.new([]).generate_site("anything")
+    end
+  end
 end
