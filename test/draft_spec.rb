@@ -112,11 +112,11 @@ describe Serif::Draft do
       published_path = testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
 
       begin
-        @site.generate
+        capture_stdout { @site.generate }
         @site.posts.first.slug.should_not == draft.slug
         @site.to_liquid["posts"].first.slug.should_not == draft.slug
         draft.publish!
-        @site.generate
+        capture_stdout { @site.generate }
         @site.posts.first.slug.should == draft.slug
         @site.to_liquid["posts"].first.slug.should == draft.slug
       rescue
