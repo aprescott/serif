@@ -547,6 +547,22 @@ body > nav ul li:last-child {
 		</ul>
 	</nav>
 
+	{% if conflicts %}
+		<p>The following URLs have conflicts and must be resolved:</p>
+		<ul>
+		{% for conflict in conflicts %}
+			<li>
+				{{ conflict[0] | escape }}
+				<ul>
+					{% for conflicting_content in conflict[1] %}
+						<li>{% if conflicting_content.draft %}Draft{% else %}Post{% endif %}: {{ conflicting_content.title | escape }}</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+
 	{{ content }}
 
 	<div id="shortcuts">

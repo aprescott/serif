@@ -19,6 +19,10 @@ class AdminServer
       [username, password] == [site.config.admin_username, site.config.admin_password]
     end
 
+    before do
+      @conflicts = site.conflicts
+    end
+
     # multiple public folders??
     get "/admin/js/:file" do |file|
       assets_dir = File.join(File.dirname(__FILE__), "..", "..", "statics", "assets", "js")
@@ -34,7 +38,7 @@ class AdminServer
       posts = site.posts.sort_by { |p| p.created }.reverse
       drafts = site.drafts.sort_by { |p| File.mtime(p.path) }.reverse
 
-      liquid :index, locals: { posts: posts, drafts: drafts }
+      liquid :index, locals: { conflicts: @conflicts, posts: posts, drafts: drafts }
     end
 
     get "/admin/edit/?" do
@@ -42,7 +46,7 @@ class AdminServer
     end
 
     get "/admin/bookmarks" do
-      liquid :bookmarks, locals: { base_url: request.base_url }
+      liquid :bookmarks, locals: { conflicts: @conflicts, base_url: request.base_url }
     end
 
     get "/admin/quick-draft" do
@@ -76,21 +80,36 @@ class AdminServer
       draft = Draft.new(site)
       draft.title = title
       draft.slug = slug
-      draft.save(markdown)
 
-      site.generate
-
-      if params[:edit] == "1"
-        redirect to("/admin/edit/drafts/#{slug}")
+      # if the draft itself has no conflict, save it,
+      # otherwise show the new draft page with an error.
+      #
+      # if, after saving the draft because of no conflict,
+      # there is actually an overall site conflict, then
+      # keep on trucking so it doesn't interrupt the user.
+      if site.conflicts(draft)
+        liquid :new_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: draft, error_message: "There is a conflict on this draft." }
       else
-        redirect to(url)
+        draft.save(markdown)
+
+        begin
+          site.generate
+        rescue PostConflictError => e
+          puts "Site has conflicts, skipping generation for now."
+        end
+
+        if params[:edit] == "1"
+          redirect to("/admin/edit/drafts/#{slug}")
+        else
+          redirect to(url)
+        end
       end
     end
 
     get "/admin/new/draft" do
       content = Draft.new(site)
       autofocus = "slug"
-      liquid :new_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: autofocus }
+      liquid :new_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: autofocus }
     end
 
     post "/admin/new/draft" do
@@ -109,13 +128,18 @@ class AdminServer
         autofocus = "title" unless params[:title]
         autofocus = "slug" unless params[:slug]
 
-        liquid :new_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
+        liquid :new_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
       else
         if Draft.exist?(site, params[:slug])
-          liquid :new_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
+          error_message = "Draft already eixsts with the given slug #{params[:slug]}."
+          liquid :new_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
         else
           content.save(params[:markdown])
-          site.generate
+          begin
+            site.generate
+          rescue PostConflictError => e
+            puts "Cannot generate. Skipping for now."
+          end
           redirect to("/admin")
         end
       end
@@ -155,7 +179,10 @@ class AdminServer
           error_message = "You must pick a URL to use"
         end
 
-        liquid :edit_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
+        liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
+      elsif (conflicts = site.conflicts)
+        error_message = "The site has a conflict and cannot be generated."
+        liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
       else
         content.save(params[:markdown])
 
@@ -172,7 +199,7 @@ class AdminServer
     end
 
     post "/admin/edit/posts" do
-      content = Post.from_slug(site, params[:original_slug])
+      content = Post.from_basename(site, params[:original_basename])
 
       params[:markdown] = params[:markdown].strip
       params[:title] = params[:title].strip
@@ -183,7 +210,10 @@ class AdminServer
         error_message = "Content must not be blank." if params[:markdown].empty?
         error_message = "Title must not be blank." if params[:title].empty?
 
-        liquid :edit_post, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content }
+        liquid :edit_post, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content }
+      elsif (conflicts = site.conflicts)
+        error_message = "The site has a conflict and cannot be generated."
+        liquid :edit_post, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content }
       else
         content.save(params[:markdown])
         site.generate
@@ -192,19 +222,18 @@ class AdminServer
       end
     end
 
-    get "/admin/edit/:type/:slug" do
+    get "/admin/edit/posts/:basename" do
+      redirect to("/admin") unless params[:basename]
+
+      content = Post.from_basename(site, params[:basename])
+      liquid :edit_post, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown" }
+    end
+
+    get "/admin/edit/drafts/:slug" do
       redirect to("/admin") unless params[:slug]
 
-      if params[:type] == "posts"
-        content = site.posts.find { |p| p.slug == params[:slug] }
-        liquid :edit_post, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown" }
-      elsif params[:type] == "drafts"
-        content = Draft.from_slug(site, params[:slug])
-        liquid :edit_draft, locals: { images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown", private_url: site.private_url(content) }
-      else
-        response.status = 404
-        return "Nope"
-      end
+      content = Draft.from_slug(site, params[:slug])
+      liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), post: content, autofocus: "markdown", private_url: site.private_url(content) }
     end
 
     post "/admin/delete/?" do

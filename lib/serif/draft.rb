@@ -11,6 +11,27 @@ class Draft < ContentFile
     File.rename("#{site.directory}/#{dirname}/#{original_slug}", "#{site.directory}/#{dirname}/#{new_slug}")
   end
 
+  # Returns the URL that would be used for this post if it were
+  # to be published now.
+  def url
+    permalink_style = headers[:permalink] || site.config.permalink
+
+    parts = {
+      "title" => slug.to_s,
+      "year" => Time.now.year.to_s,
+      "month" => Time.now.month.to_s.rjust(2, "0"),
+      "day" => Time.now.day.to_s.rjust(2, "0")
+    }
+
+    output = permalink_style
+
+    parts.each do |placeholder, value|
+      output = output.gsub(Regexp.quote(":" + placeholder), value)
+    end
+
+    output
+  end
+
   def delete!
     FileUtils.mkdir_p("#{site.directory}/_trash")
     File.rename(@path, File.expand_path("#{site.directory}/_trash/#{Time.now.to_i}-#{slug}"))
@@ -33,7 +54,7 @@ class Draft < ContentFile
     File.rename(path, full_published_path)
 
     # update the path since the file has now changed
-    @path = Post.from_slug(site, slug).path
+    @path = Post.new(site, full_published_path).path
   end
 
   # if the assigned value is truthy, the "publish" header
@@ -63,7 +84,8 @@ class Draft < ContentFile
       "slug" => slug,
       "type" => "draft",
       "draft" => draft?,
-      "published" => published?
+      "published" => published?,
+      "url" => url
     }
 
     headers.each do |key, value|

@@ -6,7 +6,7 @@
 
 <div id="edit">
 <form action="/admin/edit/posts" method="post">
-	<input type="hidden" name="original_slug" value="{{ post.slug | escape }}">
+	<input type="hidden" name="original_basename" value="{{ post.basename | escape }}">
 
 	<h2 id="slug">
 		<code>

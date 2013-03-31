@@ -227,6 +227,49 @@ class Site
     h
   end
 
+  # Returns a hash representing any conflicting URLs,
+  # in the form
+  #
+  #     { "/url_1" => [e_1, e_2, ..., e_n], ... }
+  #
+  # The elements e_i are the conflicting Post and
+  # Draft instances that share the URL "/url_1".
+  #
+  # Note that if n = 1 (that is, the array value is
+  # [e_1], containing a single element), then it is
+  # not included in the Hash, since it does not
+  # contribute to a conflict.
+  #
+  # If there are no conflicts found, returns nil.
+  #
+  # If an argument is specified, its #url value is
+  # compared against all post and draft URLs, and
+  # the value returned is either:
+  #
+  # 1. an array of post/draft instances that
+  #    conflict, _including_ the argument given; or,
+  # 2. nil if there is no conflict.
+  def conflicts(content_to_check = nil)
+    if content_to_check
+      conflicts = (drafts + posts).select { |e| e.url == content_to_check.url }
+
+      if conflicts.length == 1
+        return nil
+      else
+        return conflicts
+      end
+    end
+
+    conflicts = (drafts + posts).group_by { |e| e.url }
+    conflicts.reject! { |k, v| v.length == 1 }
+
+    if conflicts.empty?
+      nil
+    else
+      conflicts
+    end
+  end
+
   def to_liquid
     @liquid_cache_store ||= TimeoutCache.new(1)
 
@@ -250,6 +293,10 @@ class Site
     files = Dir["**/*"].select { |f| f !~ /\A_/ && File.file?(f) }
 
     default_layout = Liquid::Template.parse(File.read("_layouts/default.html"))
+
+    if conflicts
+      raise PostConflictError, "Generating would cause a conflict."
+    end
 
     # preprocess any drafts marked for autopublish, before grabbing the posts
     # to operate on.

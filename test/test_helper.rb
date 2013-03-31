@@ -27,6 +27,7 @@ describe "curly quote patch" do
 end
 
 require "serif"
+require "serif/commands"
 require "fileutils"
 require "pathname"
 require "time"
