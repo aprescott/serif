@@ -155,7 +155,7 @@ describe Serif::Site do
     end
 
     context "for drafts with a publish: now header" do
-      before :all do
+      before :each do
         @time = Time.utc(2012, 12, 21, 15, 30, 00)
 
         draft = Serif::Draft.new(subject)
@@ -179,7 +179,7 @@ describe Serif::Site do
         Timecop.freeze(@time)
       end
 
-      after :all do
+      after :each do
         Timecop.return
 
         # the generate processes creates its own set of instances, so the

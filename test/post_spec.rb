@@ -5,7 +5,7 @@ describe Serif::Post do
     Serif::Site.new(testing_dir)
   end
 
-  before :all do
+  before :each do
     @posts = subject.posts
   end
 
