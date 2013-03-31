@@ -30,5 +30,9 @@ describe Serif::Commands do
         expect_method_call(command, meth)
       end
     end
+
+    it "exits on help" do
+      expect_method_call("-h", :exit)
+    end
   end
 end
