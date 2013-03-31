@@ -1,6 +1,6 @@
 # next release
 
-* `post.title` is now a single value, instead of being an array. (#45)
+* `page.title` is now a single value, instead of being an array. (#45)
 * `post_page` flag added for use in templates. Set to true when generating a post. (#45)
 * Better README documentation for headers and per-post permalinks. (#46)
 * `serif` with no arguments or `-h` or `--help` will now show usage. (#44)
