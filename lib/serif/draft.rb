@@ -41,6 +41,8 @@ class Draft < ContentFile
     publish_time = Time.now
     date = Time.now.strftime("%Y-%m-%d")
     filename = "#{date}-#{slug}"
+
+    FileUtils.mkdir_p("#{site.directory}/#{Post.dirname}")
     full_published_path = File.expand_path("#{site.directory}/#{Post.dirname}/#{filename}")
 
     raise "conflict, post exists already" if File.exist?(full_published_path)

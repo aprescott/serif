@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Fix a bug introduced in version 0.4, where the `_posts/` directory is not created for new sites, causing publish errors. (#53, #54)
 
 # v0.5
 

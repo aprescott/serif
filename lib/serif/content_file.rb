@@ -51,12 +51,14 @@ class ContentFile
     @cached_headers = nil
   end
   
+  # Returns true if the file is in the directory for draft content.
   def draft?
-    !published?
+    File.dirname(path) == File.join(site.directory, Draft.dirname)
   end
 
+  # Returns true if the file is in the directory for published posts.
   def published?
-    headers.key?(:created)
+    File.dirname(path) == File.join(site.directory, Post.dirname)
   end
   
   def content(include_headers = false)
