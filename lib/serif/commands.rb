@@ -83,6 +83,7 @@ class Commands
     files.each do |f|
       FileUtils.cp_r(f, dir, verbose: true)
     end
+    FileUtils.mkdir(File.join(dir, "_posts"))
 
     generate_site(dir)
 
