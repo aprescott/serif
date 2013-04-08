@@ -115,6 +115,21 @@ describe Serif::Draft do
       FileUtils.rm_f(published_path)
     end
 
+    it "creates the posts directory if it doens't already exist" do
+      draft = D.new(@site)
+      draft.slug = "test-draft"
+      draft.title = "Some draft title"
+      draft.save("some content")
+
+      FileUtils.should_receive(:mkdir_p).with(testing_dir("_posts")).and_call_original
+
+      begin
+        draft.publish!
+      ensure
+        FileUtils.rm(draft.path)
+      end
+    end
+
     it "makes the post available in Site#posts and Site#to_liquid even straight after a generate" do
       draft = D.new(@site)
       draft.slug = "test-draft-to-go-into-liquid"
