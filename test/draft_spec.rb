@@ -121,8 +121,7 @@ describe Serif::Draft do
       draft.title = "Some draft title"
       draft.save("some content")
 
-      FileUtils.should_receive(:mkdir_p).with("#{@site.directory}/_posts").and_call_original
-      Serif::Post.should_receive(:dirname).twice.and_call_original
+      FileUtils.should_receive(:mkdir_p).with(testing_dir("_posts")).and_call_original
 
       begin
         draft.publish!

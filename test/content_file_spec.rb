@@ -36,6 +36,34 @@ describe Serif::ContentFile do
     end
   end
 
+  describe "draft?" do
+    it "is true if the file is in the _drafts directory" do
+      subject.drafts.each do |d|
+        d.draft?.should be_true
+        d.published?.should be_false
+      end
+
+      d = subject.drafts.sample
+      orig_path = d.path
+      d.stub(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_drafts"))}/, testing_dir("_anything")) }
+      d.draft?.should be_false
+    end
+  end
+
+  describe "published?" do
+    it "is true if the file is in the _posts directory" do
+      subject.posts.each do |p|
+        p.published?.should be_true
+        p.draft?.should be_false
+      end
+
+      p = subject.posts.sample
+      orig_path = p.path
+      p.stub(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_posts"))}/, testing_dir("_anything")) }
+      p.published?.should be_false
+    end
+  end
+
   describe "#title=" do
     it "sets the underlying header value to the assigned title" do
       (subject.drafts + subject.posts).each do |content_file|
