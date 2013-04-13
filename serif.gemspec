@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.bindir       = "bin"
   s.executables  = "serif"
   s.test_files   = Dir["test/*"]
+  s.required_ruby_version = ">= 1.9.3"
 
   [
     "rack", "~> 1.0",
