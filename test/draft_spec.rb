@@ -246,6 +246,12 @@ describe Serif::Draft do
         liq.key?(e).should be_true
       end
     end
+
+    context "for an initial draft" do
+      it "works fine" do
+        expect { Serif::Draft.new(@site).to_liquid }.to_not raise_error
+      end
+    end
   end
 
   describe "#save" do
