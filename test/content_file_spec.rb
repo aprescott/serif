@@ -36,6 +36,15 @@ describe Serif::ContentFile do
     end
   end
 
+  describe "draft and published status" do
+    it "can handle a nil path" do
+      c = Serif::ContentFile.new(subject)
+      c.path.should be_nil
+      c.draft?.should be_true
+      c.published?.should be_false
+    end
+  end
+
   describe "draft?" do
     it "is true if the file is in the _drafts directory" do
       subject.drafts.each do |d|
@@ -51,6 +60,12 @@ describe Serif::ContentFile do
   end
 
   describe "published?" do
+    it "can handle a nil path" do
+      d = Serif::Post.new(subject)
+      d.draft?.should be_true
+      d.published?.should be_false
+    end
+
     it "is true if the file is in the _posts directory" do
       subject.posts.each do |p|
         p.published?.should be_true

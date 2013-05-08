@@ -51,13 +51,21 @@ class ContentFile
     @cached_headers = nil
   end
   
-  # Returns true if the file is in the directory for draft content.
+  # Returns true if the file is in the directory for draft content, or
+  # has no saved path yet.
   def draft?
+    return true if !path
+
     File.dirname(path) == File.join(site.directory, Draft.dirname)
   end
 
-  # Returns true if the file is in the directory for published posts.
+  # Returns true if the file is in the directory for published posts,
+  # false otherwise.
+  #
+  # If there is no path at all, returns false.
   def published?
+    return false if !path
+
     File.dirname(path) == File.join(site.directory, Post.dirname)
   end
   
