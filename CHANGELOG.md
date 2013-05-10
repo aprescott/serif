@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.5.2
+
 * Prevent broken initial drafts, where the path is nil, and thus fix errors on the new draft admin page. (#57)
 
 # v0.5.1
