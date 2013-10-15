@@ -72,8 +72,13 @@ describe Serif::Filters do
       d.should_receive(:xmlschema).once
       subject.xmlschema(d)
 
-      subject.xmlschema(Time.parse("2012-01-01")).should == "2012-01-01T00:00:00+00:00"
-      subject.xmlschema(Time.parse("2012-01-01").utc).should == "2012-01-01T00:00:00Z"
+      t = Time.parse("2012-01-01")
+      t_utc = Time.utc("2012-01-01")
+      # -0400 => -04:00
+      offset = t.strftime("%z").gsub(/(\d\d)\z/, ':\1')
+
+      subject.xmlschema(t).should == "2012-01-01T00:00:00#{offset}"
+      subject.xmlschema(t_utc).should == "2012-01-01T00:00:00Z"
     end
   end
 
