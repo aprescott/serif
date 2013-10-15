@@ -41,7 +41,7 @@ END_OUTPUT
     subject.render(<<END_SOURCE).should == <<END_OUTPUT
 This "very" sentence's structure "isn't" necessary.
 END_SOURCE
-<p>This &ldquo;very&rdquo; sentence&#39;s structure &ldquo;isn&#39;t&rdquo; necessary.</p>
+<p>This &ldquo;very&rdquo; sentence&rsquo;s structure &ldquo;isn&rsquo;t&rdquo; necessary.</p>
 END_OUTPUT
   end
 end

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   [
     "rack", "~> 1.0",
-    "redcarpet", "~> 2.2",
+    "redcarpet", "~> 2.3",
     "rouge", "~> 0.3.2",
     "sinatra", "~> 1.3",
     "redhead", "~> 0.0.8",
