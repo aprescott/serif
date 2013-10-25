@@ -56,8 +56,6 @@ Serif is sort of a blend between Jekyll, [Second Crack](https://github.com/marco
 
 Serif is released under the MIT license. See LICENSE for details.
 
-Any contributions will be assumed by default to be under the same terms.
-
 The quickest way to get changes contributed:
 
 1. Visit the [GitHub repository for Serif](https://github.com/aprescott/serif).
