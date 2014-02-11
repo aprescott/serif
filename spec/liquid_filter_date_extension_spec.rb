@@ -1,4 +1,4 @@
-require "test_helper"
+require "spec_helper"
 
 describe Liquid::StandardFilters do
   subject do
