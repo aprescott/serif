@@ -1,14 +1,3 @@
-
-module Liquid #:nodoc:#
-module StandardFilters #:nodoc:#
-  alias_method :date_orig, :date
-
-  def date(input, format)
-    input == "now" ? date_orig(Time.now, format) : date_orig(input, format)
-  end
-end
-end
-
 module Serif
 module Filters
   def strip(input)

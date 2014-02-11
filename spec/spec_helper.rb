@@ -14,18 +14,6 @@ end
 # run tests in production mode so that file digests are enabled
 ENV["ENV"] = "production"
 
-# workaround checking. here before loading our application to ensure
-# we aren't testing against our own monkeypatches.
-
-describe "date 'now' patch" do
-  # if this test fails, the monkey match on StandardFilters#date can be removed
-  it "is necessary" do
-    liquid_filter = Object.new
-    liquid_filter.extend(Liquid::StandardFilters)
-    (liquid_filter.date_orig("now", "%Y") rescue "").should_not == Time.now.year.to_s
-  end
-end
-
 require "serif"
 require "serif/commands"
 require "fileutils"
