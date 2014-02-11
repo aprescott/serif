@@ -67,7 +67,7 @@ describe Serif::Site do
       end
     end
   end
-  
+
   describe "#source_directory" do
     it "should be sane" do
       subject.directory.should == File.join(File.dirname(__FILE__), "site_dir")
@@ -135,7 +135,7 @@ describe Serif::Site do
         year[:posts].each_cons(2) do |a, b|
           (a.created >= b.created).should be_true
         end
-        
+
         year[:months].each do |month|
           month[:posts].each_cons(2) do |a, b|
             (a.created >= b.created).should be_true

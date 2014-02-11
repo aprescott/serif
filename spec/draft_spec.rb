@@ -262,7 +262,7 @@ describe Serif::Draft do
 
       D.exist?(@site, draft.slug).should be_false
       File.exist?(testing_dir("_drafts/test-draft")).should be_false
-      
+
       draft.save("some content")
 
       D.exist?(@site, draft.slug).should be_true

@@ -44,7 +44,7 @@ class Commands
   end
 
   def generate_site(source_dir)
-    
+
     site = Serif::Site.new(source_dir)
 
     begin

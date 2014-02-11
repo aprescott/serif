@@ -28,7 +28,7 @@ module Filters
   def markdown(body)
     renderer = Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true, tables: true)
     html = renderer.render(body).strip
-    
+
     html
   end
 
@@ -68,7 +68,7 @@ class FileDigest < Liquid::Tag
     return "" unless ENV["ENV"] == "production"
 
     full_path = File.join(context["site"]["directory"], @path.strip)
-    
+
     return @prefix + DIGEST_CACHE[full_path] if DIGEST_CACHE[full_path]
 
     digest = Digest::MD5.hexdigest(File.read(full_path))
@@ -483,7 +483,7 @@ class Site
 
     months.each do |month, posts|
       archive_path = tmp_path(archive_url_for_date(month))
-      
+
       FileUtils.mkdir_p(archive_path)
 
       File.open(File.join(archive_path + ".html"), "w") do |f|

@@ -50,7 +50,7 @@ class ContentFile
 
     @cached_headers = nil
   end
-  
+
   # Returns true if the file is in the directory for draft content, or
   # has no saved path yet.
   def draft?
@@ -68,7 +68,7 @@ class ContentFile
 
     File.dirname(path) == File.join(site.directory, Post.dirname)
   end
-  
+
   def content(include_headers = false)
     include_headers ? "#{@source.headers.to_s}\n\n#{@source.to_s}" : @source.to_s
   end
@@ -82,7 +82,7 @@ class ContentFile
     return nil if !@source
     (headers[:updated] || created).utc
   end
-  
+
   def headers
     return @cached_headers if @cached_headers
 
@@ -97,7 +97,7 @@ class ContentFile
       if key == :created || key == :updated
         value = Time.parse(value)
       end
-      
+
       converted_headers[key] = value
     end
 
@@ -106,7 +106,7 @@ class ContentFile
 
   def save(markdown = nil)
     markdown ||= content if @source
-    
+
     save_path = path || "#{self.class.dirname}/#{@slug}"
 
     # TODO: when a draft is being saved, it will call set_publish_time
@@ -115,7 +115,7 @@ class ContentFile
     # between the update time of a brand new published post and the
     # creation time.
     set_updated_time(Time.now)
-    
+
     File.open(save_path, "w") do |f|
       f.puts %Q{#{@source.headers.to_s}
 
@@ -127,11 +127,11 @@ class ContentFile
 
     true # always return true for now
   end
-    
+
   def inspect
     %Q{<#{self.class} #{headers.inspect}>}
   end
-  
+
   protected
 
   def set_publish_time(time)

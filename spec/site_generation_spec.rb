@@ -62,7 +62,7 @@ describe Serif::Site do
       contents = File.read("_site/test-blog/final-post.html")
       previous_title = contents[/Previous post: .+?$/]
       next_title = contents[/Next post: .+?$/]
-      
+
       previous_title.should_not be_nil
       next_title.should be_nil
       previous_title[/(?<=: ).+/].should == "Penultimate post"
@@ -135,7 +135,7 @@ describe Serif::Site do
           d.title = "Testing title"
           d.save("# some content")
           d.publish!
-          
+
           @temporary_post = Serif::Post.new(subject, d.path)
           @temporary_post.autoupdate = true
           @temporary_post.save

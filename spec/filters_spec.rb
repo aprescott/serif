@@ -65,7 +65,7 @@ describe Serif::Filters do
       subject.encode_uri_component(nil).should == ""
     end
   end
-  
+
   describe "#xmlschema" do
     it "calls xmlschema on its input" do
       d = double("")
