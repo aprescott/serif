@@ -26,7 +26,7 @@ module Filters
   end
 
   def markdown(body)
-    renderer = Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true)
+    renderer = Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true, tables: true)
     html = renderer.render(body).strip
     
     html
