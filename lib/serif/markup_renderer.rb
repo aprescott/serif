@@ -7,7 +7,7 @@ class MarkupRenderer < Redcarpet::Render::SmartyHTML
     # ``` because otherwise it introduces an extra \n.
     if !language
         simple_code = %Q{```\n#{code}```}
-        renderer = Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true)
+        renderer = Redcarpet::Markdown.new(Redcarpet::Render::SmartyHTML, fenced_code_blocks: true, tables: true)
         return renderer.render(simple_code).strip
     end
 

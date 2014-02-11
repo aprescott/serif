@@ -1,6 +1,7 @@
 # next release
 
 * Add Ruby 2.1.0 support. (#62)
+* Enable Markdown table parsing. (#61)
 
 # v0.5.2
 
