@@ -1,4 +1,4 @@
-require "test_helper"
+require "spec_helper"
 
 describe Serif::Site do
   subject do

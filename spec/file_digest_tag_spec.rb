@@ -1,4 +1,4 @@
-require "test_helper"
+require "spec_helper"
 
 describe Serif::FileDigest do
   def file_digest(markup)

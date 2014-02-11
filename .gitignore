@@ -1,6 +1,6 @@
 /serif-*.gem
 /coverage
-/test/*/_site
-/test/*/_trash
+/spec/*/_site
+/spec/*/_trash
 /.rbx
 /docs
