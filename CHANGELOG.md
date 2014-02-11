@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Add Ruby 2.1.0 support. (#62)
 
 # v0.5.2
 
