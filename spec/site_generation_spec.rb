@@ -12,40 +12,40 @@ describe Serif::Site do
   describe "site generation" do
     it "raises PostConflictError if there are conflicts" do
       # not nil, the value is unimportant
-      subject.stub(:conflicts) { [] }
+      allow(subject).to receive(:conflicts) { [] }
       expect { capture_stdout { subject.generate } }.to raise_error(Serif::PostConflictError)
     end
 
     it "uses the permalinks in the config file for site generation" do
       capture_stdout { subject.generate }
-      File.exist?(testing_dir("_site/test-blog/sample-post.html")).should be_true
+      expect(File.exist?(testing_dir("_site/test-blog/sample-post.html"))).to be_true
     end
 
     it "reads the layout header for a non-post file and uses the appropriate layout file" do
       capture_stdout { subject.generate }
 
       # check it actually got generated
-      File.exist?(testing_dir("_site/page-alt-layout.html")).should be_true
-      File.read("_site/page-alt-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
+      expect(File.exist?(testing_dir("_site/page-alt-layout.html"))).to be_true
+      expect(File.read("_site/page-alt-layout.html").lines.first).to match(/<h1.+?>Alternate layout<\/h1>/)
     end
 
     it "reads the layout header for a post file and uses the appropriate layout file" do
       capture_stdout { subject.generate }
 
       # check it actually got generated
-      File.exist?(testing_dir("_site/test-blog/post-with-custom-layout.html")).should be_true
-      File.read("_site/test-blog/post-with-custom-layout.html").lines.first.should =~ /<h1.+?>Alternate layout<\/h1>/
+      expect(File.exist?(testing_dir("_site/test-blog/post-with-custom-layout.html"))).to be_true
+      expect(File.read("_site/test-blog/post-with-custom-layout.html").lines.first).to match(/<h1.+?>Alternate layout<\/h1>/)
     end
 
     it "supports a smarty filter" do
       capture_stdout { subject.generate }
-      File.read("_site/test-smarty-filter.html").should =~ /testing&rsquo;s for a &ldquo;heading&rsquo;s&rdquo; `with code` in it&hellip;/
+      expect(File.read("_site/test-smarty-filter.html")).to match(/testing&rsquo;s for a &ldquo;heading&rsquo;s&rdquo; `with code` in it&hellip;/)
     end
 
     it "correctly handles file_digest calls" do
       capture_stdout { subject.generate }
 
-      File.read("_site/file-digest-test.html").strip.should == "f8390232f0c354a871f9ba0ed306163c\n.f8390232f0c354a871f9ba0ed306163c"
+      expect(File.read("_site/file-digest-test.html").strip).to eq("f8390232f0c354a871f9ba0ed306163c\n.f8390232f0c354a871f9ba0ed306163c")
     end
 
     it "makes the previous and next posts available" do
@@ -55,17 +55,17 @@ describe Serif::Site do
       previous_title = contents[/^Previous post: .+?$/]
       next_title = contents[/^Next post: .+?$/]
 
-      previous_title.should be_nil
-      next_title.should_not be_nil
-      next_title[/(?<=: ).+/].should == "Second post"
+      expect(previous_title).to be_nil
+      expect(next_title).not_to be_nil
+      expect(next_title[/(?<=: ).+/]).to eq("Second post")
 
       contents = File.read("_site/test-blog/final-post.html")
       previous_title = contents[/Previous post: .+?$/]
       next_title = contents[/Next post: .+?$/]
 
-      previous_title.should_not be_nil
-      next_title.should be_nil
-      previous_title[/(?<=: ).+/].should == "Penultimate post"
+      expect(previous_title).not_to be_nil
+      expect(next_title).to be_nil
+      expect(previous_title[/(?<=: ).+/]).to eq("Penultimate post")
     end
 
     it "sets a draft_preview flag for preview urls" do
@@ -75,56 +75,56 @@ describe Serif::Site do
 
       d = Serif::Draft.from_slug(subject, "sample-draft")
       preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
-      (preview_contents =~ preview_flag_pattern).should be_true
+      expect(preview_contents =~ preview_flag_pattern).to be_true
 
       # does not exist on live published pages
-      (File.read(testing_dir("_site/test-blog/second-post.html")) =~ preview_flag_pattern).should be_false
+      expect(File.read(testing_dir("_site/test-blog/second-post.html")) =~ preview_flag_pattern).to be_false
     end
 
     it "sets a post_page flag for regular posts" do
       capture_stdout { subject.generate }
       d = Serif::Post.from_basename(subject, "2013-01-01-second-post")
-      d.should_not be_nil
+      expect(d).not_to be_nil
       contents = File.read(testing_dir("_site#{d.url}.html"))
 
       # available to the post layout file
-      (contents =~ /post_page flag set for template/).should be_true
+      expect(contents =~ /post_page flag set for template/).to be_true
 
       # available in the layout file itself
-      (contents =~ /post_page flag set for layout/).should be_true
+      expect(contents =~ /post_page flag set for layout/).to be_true
 
       # not set for regular pages
-      (File.read(testing_dir("_site/index.html")) =~ /post_page flag set for template/).should be_false
-      (File.read(testing_dir("_site/index.html")) =~ /post_page flag set for layout/).should be_false
+      expect(File.read(testing_dir("_site/index.html")) =~ /post_page flag set for template/).to be_false
+      expect(File.read(testing_dir("_site/index.html")) =~ /post_page flag set for layout/).to be_false
 
       # not set for drafts
       d = Serif::Draft.from_slug(subject, "sample-draft")
       preview_contents = File.read(testing_dir("_site/#{subject.private_url(d)}.html"))
-      (preview_contents =~ /post_page flag set for template/).should be_false
-      (preview_contents =~ /post_page flag set for layout/).should be_false
+      expect(preview_contents =~ /post_page flag set for template/).to be_false
+      expect(preview_contents =~ /post_page flag set for layout/).to be_false
     end
 
     it "creates draft preview files" do
       capture_stdout { subject.generate }
 
-      Dir.exist?(testing_dir("_site/drafts")).should be_true
-      Dir[File.join(testing_dir("_site/drafts/*"))].size.should == subject.drafts.size
+      expect(Dir.exist?(testing_dir("_site/drafts"))).to be_true
+      expect(Dir[File.join(testing_dir("_site/drafts/*"))].size).to eq(subject.drafts.size)
 
-      Dir.exist?(testing_dir("_site/drafts/sample-draft")).should be_true
-      Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
+      expect(Dir.exist?(testing_dir("_site/drafts/sample-draft"))).to be_true
+      expect(Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size).to eq(1)
 
       d = Serif::Draft.from_slug(subject, "sample-draft")
-      subject.private_url(d).should_not be_nil
+      expect(subject.private_url(d)).not_to be_nil
 
       # absolute paths
-      (subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/.*\z/).should be_true
+      expect(subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/.*\z/).to be_true
 
       # 60 characters long (30 bytes as hex chars)
-      (subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/[a-z0-9]{60}\z/).should be_true
+      expect(subject.private_url(d) =~ /\A\/drafts\/#{d.slug}\/[a-z0-9]{60}\z/).to be_true
 
       # does not create more than one
       capture_stdout { subject.generate }
-      Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size.should == 1
+      expect(Dir[File.join(testing_dir("_site/drafts/sample-draft"), "*.html")].size).to eq(1)
     end
 
     context "for posts with an update: now header" do
@@ -150,7 +150,7 @@ describe Serif::Site do
         t = Time.now + 30
         Timecop.freeze(t) do
           capture_stdout { subject.generate }
-          Serif::Post.from_basename(subject, @temporary_post.basename).updated.to_i.should == t.to_i
+          expect(Serif::Post.from_basename(subject, @temporary_post.basename).updated.to_i).to eq(t.to_i)
         end
       end
     end
@@ -166,11 +166,11 @@ describe Serif::Site do
         draft.save("some content")
 
         @post = Serif::Draft.from_slug(subject, draft.slug)
-        @post.should_not be_nil
+        expect(@post).not_to be_nil
 
         # verifies that the header has actually been written to the file, since
         # we round-trip the save and load.
-        @post.autopublish?.should be_true
+        expect(@post.autopublish?).to be_true
 
         # Site#generate creates a backup of the site directory in /tmp
         # and uses a timestamp, which is now fixed across all tests,
@@ -192,12 +192,12 @@ describe Serif::Site do
 
       it "places the file in the published posts folder" do
         capture_stdout { subject.generate }
-        File.exist?(testing_dir("_site/test-blog/#{@post.slug}.html")).should be_true
+        expect(File.exist?(testing_dir("_site/test-blog/#{@post.slug}.html"))).to be_true
       end
 
       it "marks the creation time as the current time" do
         capture_stdout { subject.generate }
-        subject.posts.find { |p| p.slug == @post.slug }.created.to_i.should == @time.to_i
+        expect(subject.posts.find { |p| p.slug == @post.slug }.created.to_i).to eq(@time.to_i)
       end
     end
   end

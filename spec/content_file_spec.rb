@@ -8,7 +8,7 @@ describe Serif::ContentFile do
   describe "#basename" do
     it "is the basename of the path" do
       (subject.drafts + subject.posts).each do |content_file|
-        content_file.basename.should == File.basename(content_file.path)
+        expect(content_file.basename).to eq(File.basename(content_file.path))
       end
 
       draft = Serif::Draft.new(subject)
@@ -23,12 +23,12 @@ describe Serif::ContentFile do
       post = Serif::Post.new(subject, draft.path)
 
       begin
-        draft.path.should_not be_nil
-        post.should_not be_nil
-        draft.basename.should == post.basename
+        expect(draft.path).not_to be_nil
+        expect(post).not_to be_nil
+        expect(draft.basename).to eq(post.basename)
 
         # NOTE! Time frozen!
-        post.basename.should == "2013-04-03-foo"
+        expect(post.basename).to eq("2013-04-03-foo")
       ensure
         Timecop.return
         FileUtils.rm(post.path)
@@ -39,43 +39,43 @@ describe Serif::ContentFile do
   describe "draft and published status" do
     it "can handle a nil path" do
       c = Serif::ContentFile.new(subject)
-      c.path.should be_nil
-      c.draft?.should be_true
-      c.published?.should be_false
+      expect(c.path).to be_nil
+      expect(c.draft?).to be_true
+      expect(c.published?).to be_false
     end
   end
 
   describe "draft?" do
     it "is true if the file is in the _drafts directory" do
       subject.drafts.each do |d|
-        d.draft?.should be_true
-        d.published?.should be_false
+        expect(d.draft?).to be_true
+        expect(d.published?).to be_false
       end
 
       d = subject.drafts.sample
       orig_path = d.path
-      d.stub(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_drafts"))}/, testing_dir("_anything")) }
-      d.draft?.should be_false
+      allow(d).to receive(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_drafts"))}/, testing_dir("_anything")) }
+      expect(d.draft?).to be_false
     end
   end
 
   describe "published?" do
     it "can handle a nil path" do
       d = Serif::Post.new(subject)
-      d.draft?.should be_true
-      d.published?.should be_false
+      expect(d.draft?).to be_true
+      expect(d.published?).to be_false
     end
 
     it "is true if the file is in the _posts directory" do
       subject.posts.each do |p|
-        p.published?.should be_true
-        p.draft?.should be_false
+        expect(p.published?).to be_true
+        expect(p.draft?).to be_false
       end
 
       p = subject.posts.sample
       orig_path = p.path
-      p.stub(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_posts"))}/, testing_dir("_anything")) }
-      p.published?.should be_false
+      allow(p).to receive(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_posts"))}/, testing_dir("_anything")) }
+      expect(p.published?).to be_false
     end
   end
 
@@ -83,7 +83,7 @@ describe Serif::ContentFile do
     it "sets the underlying header value to the assigned title" do
       (subject.drafts + subject.posts).each do |content_file|
         content_file.title = "foobar"
-        content_file.headers[:title].should == "foobar"
+        expect(content_file.headers[:title]).to eq("foobar")
       end
     end
   end
@@ -103,7 +103,7 @@ describe Serif::ContentFile do
         t = Time.now
         Timecop.freeze(t + 30) do
           post.save("# Heading content")
-          post.updated.to_i.should == (t + 30).to_i
+          expect(post.updated.to_i).to eq((t + 30).to_i)
         end
       ensure
         FileUtils.rm(post.path)
