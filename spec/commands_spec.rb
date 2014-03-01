@@ -9,7 +9,7 @@ end
 describe Serif::Commands do
   def expect_method_call(arg, method)
     c = Serif::Commands.new([arg])
-    c.should_receive(method)
+    expect(c).to receive(method)
     capture_stdout { c.process }
   end
 
@@ -38,11 +38,11 @@ describe Serif::Commands do
 
   describe "#generate_site" do
     it "calls Site#generate" do
-      Serif::Site.stub(:generation_called)
-      Serif::Site.any_instance.stub(:generate) { Serif::Site.generation_called }
+      allow(Serif::Site).to receive(:generation_called)
+      allow_any_instance_of(Serif::Site).to receive(:generate) { Serif::Site.generation_called }
 
       # if this is called, it means any instance of Site had #generate called.
-      Serif::Site.should_receive(:generation_called)
+      expect(Serif::Site).to receive(:generation_called)
 
       Serif::Commands.new([]).generate_site("anything")
     end
@@ -50,17 +50,17 @@ describe Serif::Commands do
     context "with a conflict" do
       def conflicting_generate_command
         a = b = double("")
-        a.stub(:url) { "/foo" }
-        b.stub(:url) { "/foo" }
-        a.stub(:path) { "/anything" }
-        b.stub(:path) { "/anything" }
+        allow(a).to receive(:url) { "/foo" }
+        allow(b).to receive(:url) { "/foo" }
+        allow(a).to receive(:path) { "/anything" }
+        allow(b).to receive(:path) { "/anything" }
 
         # any non-nil value will do
-        Serif::Site.any_instance.stub(:conflicts) { { "/foo" => [a, b] } }
+        allow_any_instance_of(Serif::Site).to receive(:conflicts) { { "/foo" => [a, b] } }
 
         command = Serif::Commands.new([])
         command.generate_site(testing_dir)
-        command.should_receive(:exit)
+        expect(command).to receive(:exit)
         command
       end
 
@@ -70,7 +70,7 @@ describe Serif::Commands do
 
       it "prints the urls that conflict" do
         output = capture_stdout { conflicting_generate_command.process }
-        output.should match(/Conflicts at:\n\n\/foo\n\t\/anything\n\t\/anything/)
+        expect(output).to match(/Conflicts at:\n\n\/foo\n\t\/anything\n\t\/anything/)
       end
     end
   end

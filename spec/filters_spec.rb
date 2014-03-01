@@ -10,28 +10,28 @@ describe Serif::Filters do
   describe "#strip" do
     it "calls strip on its argument" do
       double = double("")
-      double.should_receive(:strip).once
+      expect(double).to receive(:strip).once
       subject.strip(double)
 
       s = " foo  "
-      subject.strip(s).should == s.strip
+      expect(subject.strip(s)).to eq(s.strip)
     end
   end
 
   describe "#smarty" do
     it "runs the input through a SmartyPants processor" do
-      subject.smarty("Testing").should == "Testing"
-      subject.smarty("Testing's").should == "Testing&rsquo;s"
-      subject.smarty("\"Testing\" some \"text's\" input...").should == "&ldquo;Testing&rdquo; some &ldquo;text&rsquo;s&rdquo; input&hellip;"
+      expect(subject.smarty("Testing")).to eq("Testing")
+      expect(subject.smarty("Testing's")).to eq("Testing&rsquo;s")
+      expect(subject.smarty("\"Testing\" some \"text's\" input...")).to eq("&ldquo;Testing&rdquo; some &ldquo;text&rsquo;s&rdquo; input&hellip;")
     end
 
     it "does not do any markdown processing" do
-      subject.smarty("# Heading").should == "# Heading"
-      subject.smarty("Testing `code blocks` input").should == "Testing `code blocks` input"
+      expect(subject.smarty("# Heading")).to eq("# Heading")
+      expect(subject.smarty("Testing `code blocks` input")).to eq("Testing `code blocks` input")
     end
 
     it "deals with HTML appropriately" do
-      subject.smarty("<p>Testing's <span>span</span> testing</p>").should == "<p>Testing&rsquo;s <span>span</span> testing</p>"
+      expect(subject.smarty("<p>Testing's <span>span</span> testing</p>")).to eq("<p>Testing&rsquo;s <span>span</span> testing</p>")
     end
   end
 
@@ -57,19 +57,19 @@ describe Serif::Filters do
         "]" => "%5D",
         "~" => "%7E"
       }.each do |char, enc_char|
-        subject.encode_uri_component(char).should == enc_char
+        expect(subject.encode_uri_component(char)).to eq(enc_char)
       end
     end
 
     it "returns an empty string on nil input" do
-      subject.encode_uri_component(nil).should == ""
+      expect(subject.encode_uri_component(nil)).to eq("")
     end
   end
 
   describe "#xmlschema" do
     it "calls xmlschema on its input" do
       d = double("")
-      d.should_receive(:xmlschema).once
+      expect(d).to receive(:xmlschema).once
       subject.xmlschema(d)
 
       t = Time.parse("2012-01-01")
@@ -77,19 +77,19 @@ describe Serif::Filters do
       # -0400 => -04:00
       offset = t.strftime("%z").gsub(/(\d\d)\z/, ':\1')
 
-      subject.xmlschema(t).should == "2012-01-01T00:00:00#{offset}"
-      subject.xmlschema(t_utc).should == "2012-01-01T00:00:00Z"
+      expect(subject.xmlschema(t)).to eq("2012-01-01T00:00:00#{offset}")
+      expect(subject.xmlschema(t_utc)).to eq("2012-01-01T00:00:00Z")
     end
   end
 
   describe "#markdown" do
     it "processes its input as markdown" do
       # bit of a stub test
-      subject.markdown("# Hi!").strip.should == "<h1>Hi!</h1>"
+      expect(subject.markdown("# Hi!").strip).to eq("<h1>Hi!</h1>")
     end
 
     it "uses curly single quotes properly" do
-      subject.markdown("# something's test").should include("something&rsquo;s")
+      expect(subject.markdown("# something's test")).to include("something&rsquo;s")
     end
   end
 end

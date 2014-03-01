@@ -6,7 +6,7 @@ describe Serif::MarkupRenderer do
   end
 
   it "renders language-free code blocks correctly" do
-    subject.render(<<END_SOURCE).should == <<END_OUTPUT.chomp
+    expect(subject.render(<<END_SOURCE)).to eq <<END_OUTPUT.chomp
 foo
 
 ```
@@ -20,7 +20,7 @@ END_OUTPUT
   end
 
   it "renders code blocks with a language correctly" do
-    subject.render(<<END_SOURCE).should == <<END_OUTPUT
+    expect(subject.render(<<END_SOURCE)).to eq <<END_OUTPUT
 foo
 
 ```ruby
@@ -38,7 +38,7 @@ END_OUTPUT
   # See vmg/redcarpet#57 and note that any filters that use this renderer
   # are tested elsewhere.
   it "renders quote marks properly" do
-    subject.render(<<END_SOURCE).should == <<END_OUTPUT
+    expect(subject.render(<<END_SOURCE)).to eq <<END_OUTPUT
 This "very" sentence's structure "isn't" necessary.
 END_SOURCE
 <p>This &ldquo;very&rdquo; sentence&rsquo;s structure &ldquo;isn&rsquo;t&rdquo; necessary.</p>

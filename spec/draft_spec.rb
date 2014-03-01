@@ -12,35 +12,35 @@ describe Serif::Draft do
       d = D.new(@site)
       d.slug = "my-blar-blar"
       orig_headers = d.headers
-      d.stub(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
+      allow(d).to receive(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
 
       Timecop.freeze(Time.parse("2020-02-09")) do
-        d.url.should == "/foo/2020/02/09/my-blar-blar"
+        expect(d.url).to eq("/foo/2020/02/09/my-blar-blar")
       end
     end
 
     it "can handle nil slug values" do
       d = D.new(@site)
-      d.slug.should be_nil
+      expect(d.slug).to be_nil
       orig_headers = d.headers
-      d.stub(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
+      allow(d).to receive(:headers) { orig_headers.merge(:permalink => "/foo/:year/:month/:day/:title") }
 
       Timecop.freeze(Time.parse("2020-02-09")) do
-        d.url.should == "/foo/2020/02/09/"
+        expect(d.url).to eq("/foo/2020/02/09/")
       end
     end
 
     it "defaults to the config file's permalink value" do
       d = D.new(@site)
       d.slug = "gablarhgle"
-      d.url.should == "/test-blog/gablarhgle"
+      expect(d.url).to eq("/test-blog/gablarhgle")
     end
 
     it "uses its permalink header value" do
       d = D.new(@site)
       d.slug = "anything"
-      d.stub(:headers) { { :permalink => "testage" } }
-      d.url.should == "testage"
+      allow(d).to receive(:headers) { { :permalink => "testage" } }
+      expect(d.url).to eq("testage")
     end
   end
 
@@ -53,8 +53,8 @@ describe Serif::Draft do
 
       D.rename(@site, "test-draft", "foo-bar")
       d = D.from_slug(@site, "foo-bar")
-      d.should_not be_nil
-      File.exist?(testing_dir("_drafts/foo-bar")).should be_true
+      expect(d).not_to be_nil
+      expect(File.exist?(testing_dir("_drafts/foo-bar"))).to be_true
 
       d.delete!
     end
@@ -84,7 +84,7 @@ describe Serif::Draft do
       draft.title = "Some draft title"
       draft.save("some content")
       draft.delete!
-      Dir[testing_dir("_trash/*-test-draft")].length.should == 1
+      expect(Dir[testing_dir("_trash/*-test-draft")].length).to eq(1)
     end
 
     it "creates the _trash directory if it doesn't exist" do
@@ -96,7 +96,7 @@ describe Serif::Draft do
       draft.save("some content")
       draft.delete!
 
-      File.exist?(testing_dir("_trash")).should be_true
+      expect(File.exist?(testing_dir("_trash"))).to be_true
     end
   end
 
@@ -109,7 +109,7 @@ describe Serif::Draft do
       draft.publish!
 
       published_path = testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
-      File.exist?(published_path).should be_true
+      expect(File.exist?(published_path)).to be_true
 
       # clean up
       FileUtils.rm_f(published_path)
@@ -121,7 +121,7 @@ describe Serif::Draft do
       draft.title = "Some draft title"
       draft.save("some content")
 
-      FileUtils.should_receive(:mkdir_p).with(testing_dir("_posts")).and_call_original
+      expect(FileUtils).to receive(:mkdir_p).with(testing_dir("_posts")).and_call_original
 
       begin
         draft.publish!
@@ -139,12 +139,12 @@ describe Serif::Draft do
 
       begin
         capture_stdout { @site.generate }
-        @site.posts.first.slug.should_not == draft.slug
-        @site.to_liquid["posts"].first.slug.should_not == draft.slug
+        expect(@site.posts.first.slug).not_to eq(draft.slug)
+        expect(@site.to_liquid["posts"].first.slug).not_to eq(draft.slug)
         draft.publish!
         capture_stdout { @site.generate }
-        @site.posts.first.slug.should == draft.slug
-        @site.to_liquid["posts"].first.slug.should == draft.slug
+        expect(@site.posts.first.slug).to eq(draft.slug)
+        expect(@site.to_liquid["posts"].first.slug).to eq(draft.slug)
       rescue
         # clean up
         FileUtils.rm_f(published_path)
@@ -158,7 +158,7 @@ describe Serif::Draft do
       draft.save("some content")
       draft.publish!
 
-      draft.path.should == testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
+      expect(draft.path).to eq(testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}"))
       draft.delete! # still deleteable, even though it's been moved
     end
 
@@ -171,10 +171,10 @@ describe Serif::Draft do
       draft.publish!
 
       # check the header on the object has been removed
-      draft.autopublish?.should be_false
+      expect(draft.autopublish?).to be_false
 
       # check the actual file doesn't have the header
-      Serif::Post.new(@site, draft.path).headers[:publish].should be_nil
+      expect(Serif::Post.new(@site, draft.path).headers[:publish]).to be_nil
 
       draft.delete!
     end
@@ -188,7 +188,7 @@ describe Serif::Draft do
       draft.save("some content")
       draft.autopublish = true
 
-      draft.headers[:publish].should == "now"
+      expect(draft.headers[:publish]).to eq("now")
 
       draft.delete!
     end
@@ -200,7 +200,7 @@ describe Serif::Draft do
       draft.save("some content")
       draft.autopublish = false
 
-      draft.headers.key?(:publish).should be_false
+      expect(draft.headers.key?(:publish)).to be_false
 
       draft.delete!
     end
@@ -210,31 +210,31 @@ describe Serif::Draft do
       draft.slug = "test-draft"
       draft.title = "Some draft title"
       draft.autopublish = false
-      draft.autopublish?.should be_false
+      expect(draft.autopublish?).to be_false
 
       draft.autopublish = true
-      draft.autopublish?.should be_true
+      expect(draft.autopublish?).to be_true
 
       draft.autopublish = false
-      draft.autopublish?.should be_false
+      expect(draft.autopublish?).to be_false
     end
   end
 
   describe "#autopublish?" do
     it "returns true if there is a 'publish: now' header, otherwise false" do
       draft = D.new(@site)
-      draft.autopublish?.should be_false
+      expect(draft.autopublish?).to be_false
       headers = draft.headers
-      draft.stub(:headers) { headers.merge(:publish => "now") }
-      draft.autopublish?.should be_true
+      allow(draft).to receive(:headers) { headers.merge(:publish => "now") }
+      expect(draft.autopublish?).to be_true
     end
 
     it "ignores leading and trailing whitespace around the value of the 'publish' header" do
       draft = D.new(@site)
-      draft.autopublish?.should be_false
+      expect(draft.autopublish?).to be_false
       headers = draft.headers
-      draft.stub(:headers) { headers.merge(:publish => " now  ") }
-      draft.autopublish?.should be_true
+      allow(draft).to receive(:headers) { headers.merge(:publish => " now  ") }
+      expect(draft.autopublish?).to be_true
     end
   end
 
@@ -243,7 +243,7 @@ describe Serif::Draft do
       liq = @site.drafts.sample.to_liquid
 
       ["title", "content", "slug", "type", "draft", "published", "url"].each do |e|
-        liq.key?(e).should be_true
+        expect(liq.key?(e)).to be_true
       end
     end
 
@@ -260,13 +260,13 @@ describe Serif::Draft do
       draft.slug = "test-draft"
       draft.title = "Some draft title"
 
-      D.exist?(@site, draft.slug).should be_false
-      File.exist?(testing_dir("_drafts/test-draft")).should be_false
+      expect(D.exist?(@site, draft.slug)).to be_false
+      expect(File.exist?(testing_dir("_drafts/test-draft"))).to be_false
 
       draft.save("some content")
 
-      D.exist?(@site, draft.slug).should be_true
-      File.exist?(testing_dir("_drafts/test-draft")).should be_true
+      expect(D.exist?(@site, draft.slug)).to be_true
+      expect(File.exist?(testing_dir("_drafts/test-draft"))).to be_true
 
       # clean up the file
       draft.delete!

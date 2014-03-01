@@ -7,49 +7,49 @@ describe Serif::Config do
 
   describe "#admin_username" do
     it "is the admin username defined in the config file" do
-      subject.admin_username.should == "test-changethisusername"
+      expect(subject.admin_username).to eq("test-changethisusername")
     end
   end
 
   describe "#admin_password" do
     it "is the admin password defined in the config file" do
-      subject.admin_password.should == "test-changethispassword"
+      expect(subject.admin_password).to eq("test-changethispassword")
     end
   end
 
   describe "#image_upload_path" do
     it "defaults to /images/:timestamp/_name" do
-      subject.stub(:yaml) { {} }
-      subject.image_upload_path.should == "/images/:timestamp_:name"
+      allow(subject).to receive(:yaml) { {} }
+      expect(subject.image_upload_path).to eq("/images/:timestamp_:name")
     end
   end
 
   describe "#permalink" do
     it "is the permalink format defined in the config file" do
-      subject.permalink.should == "/test-blog/:title"
+      expect(subject.permalink).to eq("/test-blog/:title")
     end
 
     it "defaults to /:title" do
-      subject.stub(:yaml) { {} }
-      subject.permalink.should == "/:title"
+      allow(subject).to receive(:yaml) { {} }
+      expect(subject.permalink).to eq("/:title")
     end
   end
 
   describe "#archive_url_format" do
     it "defaults to /archive/:year/:month" do
-      subject.stub(:yaml) { {} }
-      subject.archive_url_format.should == "/archive/:year/:month"
+      allow(subject).to receive(:yaml) { {} }
+      expect(subject.archive_url_format).to eq("/archive/:year/:month")
     end
 
     it "is the archive_url_format found in the config file" do
-      subject.archive_url_format.should == "/test-archive/:year/:month"
+      expect(subject.archive_url_format).to eq("/test-archive/:year/:month")
     end
   end
 
   describe "#archive_enabled?" do
     it "defaults to false" do
-      subject.stub(:yaml) { {} }
-      subject.archive_enabled?.should be_false
+      allow(subject).to receive(:yaml) { {} }
+      expect(subject.archive_enabled?).to be_false
     end
   end
 end
