@@ -128,11 +128,11 @@ class AdminServer
         autofocus = "title" unless params[:title]
         autofocus = "slug" unless params[:slug]
 
-        liquid :new_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
+        liquid :new_draft, locals: { draft_content: params[:markdown], conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
       else
         if Draft.exist?(site, params[:slug])
           error_message = "Draft already eixsts with the given slug #{params[:slug]}."
-          liquid :new_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
+          liquid :new_draft, locals: { draft_content: params[:markdown], conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, autofocus: autofocus }
         else
           content.save(params[:markdown])
           begin
@@ -179,10 +179,10 @@ class AdminServer
           error_message = "You must pick a URL to use"
         end
 
-        liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
+        liquid :edit_draft, locals: { draft_content: params[:markdown], conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
       elsif (conflicts = site.conflicts)
         error_message = "The site has a conflict and cannot be generated."
-        liquid :edit_draft, locals: { conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
+        liquid :edit_draft, locals: { draft_content: params[:markdown], conflicts: @conflicts, images_path: site.config.image_upload_path.gsub(/"/, '\"'), error_message: error_message, post: content, private_url: site.private_url(content) }
       else
         content.save(params[:markdown])
 

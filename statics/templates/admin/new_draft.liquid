@@ -22,7 +22,7 @@
 		</header>
 	</div>
 	<div id="content-areas">
-		<textarea data-attachify spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown"{% if autofocus == "markdown" %}{{ " autofocus" }}{% endif %}>{{ post.content | strip | escape }}</textarea>
+		<textarea data-attachify spellcheck="false" id="content" placeholder="Lorem ipsum dolor sit amet." name="markdown"{% if autofocus == "markdown" %}{{ " autofocus" }}{% endif %}>{{ draft_content | strip | escape }}</textarea>
 
 		<article id="entry" class="post" data-state="hidden"></article>
 	</div>
