@@ -9,7 +9,7 @@ if ENV["CI"]
 end
 
 SimpleCov.start do
-  add_filter "/test/"
+  add_filter "/spec/"
 end
 
 # run tests in production mode so that file digests are enabled
