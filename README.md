@@ -61,7 +61,7 @@ The quickest way to get changes contributed:
 1. Visit the [GitHub repository for Serif](https://github.com/aprescott/serif).
 2. [Fork the repository](https://help.github.com/articles/fork-a-repo).
 3. Check out a branch on the latest master for your change: `git checkout -b master new-feature` --- do not make changes on `master`! Make sure that anything added or changed has a test in the `test/` directory. Use the existing files as examples. All tests for new/changed behaviour should pass.
-4. [Send a pull request on GitHub](https://help.github.com/articles/fork-a-repo), including a description of what you've changed. (Note: your contribution will be assumed to be under the same terms of the project by default.)
+4. [Send a pull request on GitHub](https://help.github.com/articles/fork-a-repo), including a description of what you've changed.
 
 For more info on development, see the section at the bottom of this README.
 
