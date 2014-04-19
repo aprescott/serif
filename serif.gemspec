@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     "sinatra", "~> 1.3",
     "redhead", "~> 0.0.8",
     "liquid", "~> 2.4",
-    "reverse_markdown", "~> 0.4.3",
+    "reverse_markdown", nil,
     "nokogiri", "~> 1.5",
     "timeout_cache"
   ].each_slice(2) do |name, version|

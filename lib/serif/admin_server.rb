@@ -71,7 +71,7 @@ class AdminServer
         html_content = document.to_html
 
         html_content = "<blockquote>#{html_content}</blockquote>"
-        markdown = ReverseMarkdown.parse(html_content, github_style_code_blocks: true)
+        markdown = ReverseMarkdown.convert(html_content, github_flavored: true, unknown_tags: :bypass)
 
         # markdown URLs need to have any )s escaped
         markdown = "[#{title}](#{url.gsub(")", "\\)")}):\n\n#{markdown}"
