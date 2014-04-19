@@ -11,6 +11,19 @@ module DraftsSteps
     click_on "Save draft"
   end
 
+  step "I've saved a draft" do
+    step "I go to the new draft page"
+    step "I type up a new post"
+    step "I save the draft"
+  end
+
+  step "I should be able to see its contents" do
+    click_on "new-awesome-post"
+    expect(page).to have_content("My new post content.")
+    # TODO: ugh
+    FileUtils.rm_f testing_dir("_drafts/new-awesome-post")
+  end
+
   step "I should see the newly saved draft" do
     expect(page).to have_content("new-awesome-post")
     # TODO: ugh

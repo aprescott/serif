@@ -9,6 +9,10 @@ Scenario: Creating a new draft
    And I save the draft
   Then I should see the newly saved draft
 
+Scenario: Viewing a saved draft
+  When I've saved a draft
+  Then I should be able to see its contents
+
 Scenario Outline: Saving a partial draft
   When I go to the new draft page
    And I type up a post with the <content> missing
