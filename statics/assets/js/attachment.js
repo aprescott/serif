@@ -36,7 +36,7 @@ var createAttachment = function(file, element) {
 	$.each(placeholderValues, function(placeholder, value) {
 		s = s.replace(placeholder, value);
 	});
-	
+
 	var extension = file.name.substring(file.name.lastIndexOf('.') + 1);
 
 	var finalName = s;
@@ -88,7 +88,7 @@ var createAttachment = function(file, element) {
 		var text   = element.value;
 		var before = text.slice(0, pos);
 		var after  = text.slice(pos);
-		
+
 		// if there is only a single newline, add one more for a blank
 		// line.
 		if (/[^\n]\n$/.test(before)) {
@@ -99,7 +99,7 @@ var createAttachment = function(file, element) {
 		}
 
 	}
-	
+
 	$(element).insertAtCaret(absText);
 };
 

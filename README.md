@@ -425,30 +425,30 @@ These tags can be used in templates, in addition to the [standard Liquid filters
 ## List of filters
 
 * `date` with `'now'`
-  
+
   This is a standard filter, but there is a [workaround](https://github.com/Shopify/liquid/pull/117) for
   `{{ 'now' | date: "%Y" }}` to work, so you can use this in templates.
 
 * `markdown`
-  
+
   e.g., `{{ post.content | markdown }}`.
 
   This runs the given input through a Markdown + SmartyPants renderer, with fenced codeblocks enabled.
 
 * `smarty`
-  
+
   e.g., `{{ post.title | smarty }}`.
 
   This runs the given input through a SmartyPants processor, so quotes, dashes and ellipses come out better. Note that the **`markdown` filter already does SmartyPants** processing.
 
 * `strip`
-  
+
   Strips trailing and leading whitespace.
 
   e.g., `{{ " hello " | strip }}` will render as `hello`.
 
 * `xmlschema`
-  
+
   e.g., `{{ post.created | xmlschema }}`.
 
   Takes a Time value and returns an ISO8601-format string, as per Ruby's `Time#xmlschema` definition.
@@ -458,7 +458,7 @@ These tags can be used in templates, in addition to the [standard Liquid filters
   If the time value is in UTC: 2013-02-16T22:55:22Z
 
 * `encode_uri_component`
-  
+
   e.g., `example.com/foo?url=http://mysite.com{{ post.url | encode_uri_component }}`
 
   Intended to provide the functionality of JavaScript's `encode_uri_component()` function. Essentially:
@@ -467,9 +467,9 @@ These tags can be used in templates, in addition to the [standard Liquid filters
 ## List of tags
 
 * `file_digest <path> [prefix:<prefix>]`
-  
+
   (Note: For this tag to return anything, `ENV=production` must be set as an environment variable.)
-  
+
   Computes a hex digest of the contents of `<path>`, optionally prefixed with `<prefix>`. `<path>` is delimited by whitespace.
 
   Useful for URL fingerprinting for long-lived caching.
