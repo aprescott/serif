@@ -3,6 +3,7 @@
 * Fix a bug where draft content gets lost when there are errors saving. (#69)
 * Add Ruby 2.1.0 support. (#62)
 * Enable Markdown table parsing. (#61)
+* Improved quick draft HTML to Markdown conversion. (3754569c1)
 
 # v0.5.2
 
@@ -58,7 +59,7 @@
 * Add a `smarty` filter to do smarty processing without full Markdown. (#28)
 * Fix broken URL renames for drafts in the admin interface. (#31)
 
-# v0.2.3 
+# v0.2.3
 
 * Support drag-and-drop image uploading in the admin interface, with customisable paths. (#18)
 * Generate private preview files for drafts, and generate the site on every draft change. (#19, #24)
