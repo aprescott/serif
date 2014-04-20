@@ -24,6 +24,10 @@ require "time"
 require "date"
 require "timecop"
 require "turnip/capybara"
+require 'capybara/poltergeist'
+Capybara.configure do |config|
+  config.javascript_driver = :poltergeist
+end
 
 Dir[File.join(File.dirname(__FILE__), "support", "*")].each do |f|
   require f

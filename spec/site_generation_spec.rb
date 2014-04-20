@@ -39,7 +39,7 @@ describe Serif::Site do
 
     it "supports a smarty filter" do
       capture_stdout { subject.generate }
-      expect(File.read("_site/test-smarty-filter.html")).to match(/testing&rsquo;s for a &ldquo;heading&rsquo;s&rdquo; `with code` in it&hellip;/)
+      expect(File.read("_site/test-smarty-filter.html")).to match(/testing&#8217;s for a &#8220;heading&#8217;s&#8221; `with code` in it&#8230;/)
     end
 
     it "correctly handles file_digest calls" do

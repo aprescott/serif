@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
 
   [
     "rack", "~> 1.0",
-    "redcarpet", "~> 2.3",
+    "kramdown", "~> 1.3",
+    "rubypants", nil,
     "rouge", "~> 0.3.2",
     "sinatra", "~> 1.3",
     "redhead", "~> 0.0.8",
@@ -35,5 +36,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency("coveralls")
   s.add_development_dependency("turnip")
   s.add_development_dependency("capybara")
+  s.add_development_dependency("poltergeist")
   s.add_development_dependency("pry")
 end

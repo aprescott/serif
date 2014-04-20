@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require "spec_helper"
 
 describe Serif::Filters do
@@ -21,8 +23,8 @@ describe Serif::Filters do
   describe "#smarty" do
     it "runs the input through a SmartyPants processor" do
       expect(subject.smarty("Testing")).to eq("Testing")
-      expect(subject.smarty("Testing's")).to eq("Testing&rsquo;s")
-      expect(subject.smarty("\"Testing\" some \"text's\" input...")).to eq("&ldquo;Testing&rdquo; some &ldquo;text&rsquo;s&rdquo; input&hellip;")
+      expect(subject.smarty("Testing's")).to eq("Testing&#8217;s")
+      expect(subject.smarty(%{"Testing" some "text's" input...})).to eq("&#8220;Testing&#8221; some &#8220;text&#8217;s&#8221; input&#8230;")
     end
 
     it "does not do any markdown processing" do
@@ -31,7 +33,7 @@ describe Serif::Filters do
     end
 
     it "deals with HTML appropriately" do
-      expect(subject.smarty("<p>Testing's <span>span</span> testing</p>")).to eq("<p>Testing&rsquo;s <span>span</span> testing</p>")
+      expect(subject.smarty("<p>Testing's <span>span</span> testing</p>")).to eq("<p>Testing&#8217;s <span>span</span> testing</p>")
     end
   end
 
@@ -85,11 +87,11 @@ describe Serif::Filters do
   describe "#markdown" do
     it "processes its input as markdown" do
       # bit of a stub test
-      expect(subject.markdown("# Hi!").strip).to eq("<h1>Hi!</h1>")
+      expect(subject.markdown("# Hi!").strip).to eq(%{<h1 id="hi">Hi!</h1>})
     end
 
     it "uses curly single quotes properly" do
-      expect(subject.markdown("# something's test")).to include("something&rsquo;s")
+      expect(subject.markdown("# something's test").strip).to eq(%{<h1 id="somethings-test">something’s test</h1>})
     end
   end
 end
