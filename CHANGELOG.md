@@ -8,6 +8,7 @@
     - MathJax is supported so `$$` is a LaTeX delimiter.
     - Headings now have `id=` anchors as provided by kramdown.
     - Highlighting is still with Pygments (Rouge), not the default CodeRay.
+* Support for MathJax with some setup (see the wiki). (#75, #76)
 
 # v0.5.2
 
