@@ -442,6 +442,7 @@ body > nav ul li:last-child {
 								$("#entry").toggle();
 								$("#content").toggle();
 								$("#entry").attr("data-state", "active");
+								$("#entry").trigger("markdown-previewed")
 								previewButton.toggleClass("active");
 								previewButton.html("Markdown");
 							}
