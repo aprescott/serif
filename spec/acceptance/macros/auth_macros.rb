@@ -9,8 +9,13 @@ module AuthMacros
   private
 
   def basic_auth(user, password)
-    encoded_login = ["#{user}:#{password}"].pack("m*")
-    page.driver.header "Authorization", "Basic #{encoded_login}"
+    encoded_login = ["#{user}:#{password}"].pack("m*").gsub(/\r?\n/, "")
+
+    if page.driver.respond_to?(:header)
+      page.driver.header "Authorization", "Basic #{encoded_login}"
+    else
+      page.driver.headers = { "Authorization" => "Basic #{encoded_login}" }
+    end
   end
 end
 

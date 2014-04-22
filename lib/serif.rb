@@ -1,7 +1,8 @@
 require "time"
 
 require "liquid"
-require "redcarpet"
+require "kramdown"
+require "rubypants"
 require "rouge"
 require "redhead"
 require "timeout_cache"

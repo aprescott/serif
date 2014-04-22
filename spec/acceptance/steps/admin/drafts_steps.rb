@@ -1,7 +1,5 @@
 module DraftsSteps
-  step "I go to the new draft page" do
-    click_on "New draft"
-  end
+  include AdminNavigationMacros
 
   step "I type up a new post" do
     type_out_draft

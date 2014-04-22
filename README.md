@@ -160,7 +160,7 @@ Drafts go in `_drafts`, posts go in `_posts`. Simple enough.
 
 Posts must have filenames in the format of `YYYY-MM-DD-your-post`. Drafts do not have a date part, since they're drafts and not published.
 
-All files in these directories are assumed to be written in Markdown, with simple HTTP-style headers. The Markdown renderer is [Redcarpet](https://github.com/vmg/redcarpet) (with fenced code blocks enabled), with Smarty for punctuation tweaks, and Pygments to allow syntax highlighting (although you'll need your own CSS).
+All files in these directories are assumed to be written in Markdown, with simple HTTP-style headers. The Markdown renderer is [Kramdown](http://kramdown.gettalong.org/), with Smarty for punctuation tweaks, and Pygments to get syntax highlighting for [GitHub-flavoured fenced code blocks](https://help.github.com/articles/github-flavored-markdown#syntax-highlighting) (although you'll need your own CSS).
 
 Here's an example post:
 

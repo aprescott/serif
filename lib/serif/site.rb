@@ -10,15 +10,11 @@ module Filters
   end
 
   def smarty(text)
-    text.gsub!('`', '\\\\`')
-    Redcarpet::Render::SmartyPants.render(text)
+    RubyPants.new(text).to_html
   end
 
   def markdown(body)
-    renderer = Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true, tables: true)
-    html = renderer.render(body).strip
-
-    html
+    Serif::Markdown.render(body)
   end
 
   def xmlschema(input)

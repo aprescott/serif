@@ -247,7 +247,7 @@ class AdminServer
       content = params["content"]
 
       if request.xhr?
-        Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true, tables: true).render(content).strip
+        Serif::Markdown.render(content).strip
       end
     end
 

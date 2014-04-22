@@ -1,21 +1,26 @@
+# encoding: UTF-8
+
 require "spec_helper"
 
-describe Serif::MarkupRenderer do
-  subject do
-    Redcarpet::Markdown.new(Serif::MarkupRenderer, fenced_code_blocks: true)
-  end
+describe Serif::Markdown do
+  subject { Serif::Markdown }
 
   it "renders language-free code blocks correctly" do
-    expect(subject.render(<<END_SOURCE)).to eq <<END_OUTPUT.chomp
+    expect(subject.render(<<END_SOURCE)).to eq <<END_OUTPUT
 foo
 
 ```
 some code
 ```
+
+bar
 END_SOURCE
 <p>foo</p>
+
 <pre><code>some code
 </code></pre>
+
+<p>bar</p>
 END_OUTPUT
   end
 
@@ -26,22 +31,23 @@ foo
 ```ruby
 foo
 ```
+
+bar
 END_SOURCE
 <p>foo</p>
+
 <pre class="highlight"><code><span class="n">foo</span>
 </code></pre>
+
+<p>bar</p>
 END_OUTPUT
   end
 
-  # NOTE: The output here is not the desired output.
-  #
-  # See vmg/redcarpet#57 and note that any filters that use this renderer
-  # are tested elsewhere.
   it "renders quote marks properly" do
     expect(subject.render(<<END_SOURCE)).to eq <<END_OUTPUT
 This "very" sentence's structure "isn't" necessary.
 END_SOURCE
-<p>This &ldquo;very&rdquo; sentence&rsquo;s structure &ldquo;isn&rsquo;t&rdquo; necessary.</p>
+<p>This “very” sentence’s structure “isn’t” necessary.</p>
 END_OUTPUT
   end
 end

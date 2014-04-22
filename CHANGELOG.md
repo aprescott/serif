@@ -4,6 +4,10 @@
 * Add Ruby 2.1.0 support. (#62)
 * Enable Markdown table parsing. (#61)
 * Improved quick draft HTML to Markdown conversion. (3754569c1)
+* Replace Redcarpet with kramdown for Markdown rendering. Should be mostly a transparent change, but some things to note: (#74)
+    - MathJax is supported so `$$` is a LaTeX delimiter.
+    - Headings now have `id=` anchors as provided by kramdown.
+    - Highlighting is still with Pygments (Rouge), not the default CodeRay.
 
 # v0.5.2
 
