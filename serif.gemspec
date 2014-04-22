@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name         = "serif"
-  s.version      = "0.5.2"
+  s.version      = "0.6"
   s.authors      = ["Adam Prescott"]
   s.email        = ["adam@aprescott.com"]
   s.homepage     = "https://github.com/aprescott/serif"
@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.executables  = "serif"
   s.test_files   = Dir["test/*"]
   s.required_ruby_version = ">= 1.9.3"
+  s.licenses = ["MIT"]
 
   [
     "rack", "~> 1.0",

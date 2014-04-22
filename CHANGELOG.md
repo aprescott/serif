@@ -1,5 +1,9 @@
 # next release
 
+* ...
+
+# v0.6
+
 * Fix a bug where draft content gets lost when there are errors saving. (#69)
 * Add Ruby 2.1.0 support. (#62)
 * Enable Markdown table parsing. (#61)
