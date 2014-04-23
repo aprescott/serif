@@ -390,6 +390,7 @@ class Site
 
     FileUtils.mv("tmp/_site", ".") && FileUtils.rm_rf("tmp/_site")
     FileUtils.rmdir("tmp")
+    Dir["/tmp/_site.*"][0..-6].each { |d| FileUtils.rm_rf(d) }
   end
 
   private

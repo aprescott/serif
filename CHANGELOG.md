@@ -1,6 +1,6 @@
 # next release
 
-* ...
+* Prevent /tmp from filling up over time. (#77)
 
 # v0.6
 
