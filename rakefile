@@ -44,3 +44,11 @@ Dummy content #{n}}
 
   puts Benchmark.realtime { system({ "ENV" => ENV["ENV"] }, "#{d}/bin/serif generate") }
 end
+
+task :console do
+  require 'irb'
+  require 'irb/completion'
+  require 'serif'
+  ARGV.clear
+  IRB.start
+end
