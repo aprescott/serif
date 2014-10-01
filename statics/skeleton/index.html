@@ -4,6 +4,6 @@
 
 <ul>
 	{% for post in site.posts %}
-		<li><a href="{{ post.url | escape }}">{{ post.title | escape }}</a> (posted {{ post.created | xmlschema }})</li>
+		<li><a href="{{ post.url | escape }}">{{ post.title | smarty | escape_once }}</a> (posted {{ post.created | xmlschema }})</li>
 	{% endfor %}
 </ul>

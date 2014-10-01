@@ -1,6 +1,6 @@
 <!doctype html>
 <meta charset="UTF-8">
-<title>My site: {{ page.title }}</title>
+<title>My site: {{ post.title | smarty | escape_once }}</title>
 <h1>mysite.com</h1>
 
 {{ content }}

@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     "rouge", "~> 0.3.2",
     "sinatra", "~> 1.3",
     "redhead", "~> 0.0.8",
-    "liquid", "~> 2.4",
+    "liquid", "~> 3.0",
     "reverse_markdown", nil,
     "nokogiri", "~> 1.5",
     "timeout_cache"
