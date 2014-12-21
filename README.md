@@ -6,7 +6,7 @@ Serif is a static site generator and blogging system powered by markdown files a
 
 Serif releases you from managing a file system so you can focus on writing content.
 
-Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues), use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb), or join the Freenode#serif IRC channel at irc://irc.freenode.net/serif.
+Having problems with Serif? [Open an issue on GitHub](https://github.com/aprescott/serif/issues) or use the [Serif Google Group](https://groups.google.com/forum/#!forum/serif-rb).
 
 ## First time use
 
@@ -60,7 +60,7 @@ The quickest way to get changes contributed:
 
 1. Visit the [GitHub repository for Serif](https://github.com/aprescott/serif).
 2. [Fork the repository](https://help.github.com/articles/fork-a-repo).
-3. Check out a branch on the latest master for your change: `git checkout -b master new-feature` --- do not make changes on `master`! Make sure that anything added or changed has a test in the `test/` directory. Use the existing files as examples. All tests for new/changed behaviour should pass.
+3. Check out a branch on the latest master for your change: `git checkout -b master new-feature` --- do not make changes on `master`! Make sure that anything added or changed has a test in the `spec/` directory. Use the existing files as examples. All tests for new/changed behaviour should pass.
 4. [Send a pull request on GitHub](https://help.github.com/articles/fork-a-repo), including a description of what you've changed.
 
 For more info on development, see the section at the bottom of this README.
@@ -69,7 +69,7 @@ For more info on development, see the section at the bottom of this README.
 
 ## Installing
 
-Installation is via [RubyGems](https://rubygems.org/). If you don't have Ruby installed, I recommend using [RVM](https://rvm.io/).
+Installation is via [RubyGems](https://rubygems.org/). If you don't have Ruby installed and are new to Ruby, I recommend using [RVM](https://rvm.io/).
 
 ```bash
 $ gem install serif
