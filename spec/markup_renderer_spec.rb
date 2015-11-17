@@ -1,8 +1,4 @@
-# encoding: UTF-8
-
-require "spec_helper"
-
-describe Serif::Markdown do
+RSpec.describe Serif::Markdown do
   subject { Serif::Markdown }
 
   it "renders language-free code blocks correctly" do

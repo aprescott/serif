@@ -1,6 +1,4 @@
-require "spec_helper"
-
-describe Serif::ContentFile do
+RSpec.describe Serif::ContentFile do
   subject do
     Serif::Site.new(testing_dir)
   end
@@ -40,42 +38,42 @@ describe Serif::ContentFile do
     it "can handle a nil path" do
       c = Serif::ContentFile.new(subject)
       expect(c.path).to be_nil
-      expect(c.draft?).to be_true
-      expect(c.published?).to be_false
+      expect(c.draft?).to be_truthy
+      expect(c.published?).to be_falsey
     end
   end
 
   describe "draft?" do
     it "is true if the file is in the _drafts directory" do
       subject.drafts.each do |d|
-        expect(d.draft?).to be_true
-        expect(d.published?).to be_false
+        expect(d.draft?).to be_truthy
+        expect(d.published?).to be_falsey
       end
 
       d = subject.drafts.sample
       orig_path = d.path
       allow(d).to receive(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_drafts"))}/, testing_dir("_anything")) }
-      expect(d.draft?).to be_false
+      expect(d.draft?).to be_falsey
     end
   end
 
   describe "published?" do
     it "can handle a nil path" do
       d = Serif::Post.new(subject)
-      expect(d.draft?).to be_true
-      expect(d.published?).to be_false
+      expect(d.draft?).to be_truthy
+      expect(d.published?).to be_falsey
     end
 
     it "is true if the file is in the _posts directory" do
       subject.posts.each do |p|
-        expect(p.published?).to be_true
-        expect(p.draft?).to be_false
+        expect(p.published?).to be_truthy
+        expect(p.draft?).to be_falsey
       end
 
       p = subject.posts.sample
       orig_path = p.path
       allow(p).to receive(:path) { orig_path.gsub(/^#{Regexp.quote(testing_dir("_posts"))}/, testing_dir("_anything")) }
-      expect(p.published?).to be_false
+      expect(p.published?).to be_falsey
     end
   end
 

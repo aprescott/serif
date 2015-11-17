@@ -7,7 +7,7 @@ class Draft < ContentFile
   end
 
   def self.rename(site, original_slug, new_slug)
-    raise if File.exist?("#{site.directory}/#{dirname}/#{new_slug}")
+    raise "file exists" if File.exist?("#{site.directory}/#{dirname}/#{new_slug}")
     File.rename("#{site.directory}/#{dirname}/#{original_slug}", "#{site.directory}/#{dirname}/#{new_slug}")
   end
 

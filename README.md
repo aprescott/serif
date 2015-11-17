@@ -535,7 +535,7 @@ Variable       | Value
 ## Directory structure
 
 * `lib/serif/` is generally where files go.
-* `spec/` contains the test files. Any new files should have `require "spec_helper"` at the top of the, which pulls in `spec/test_helper.rb`.
+* `spec/` contains the test files.
 
 # Changes and what's new
 

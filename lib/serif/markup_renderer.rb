@@ -5,9 +5,7 @@ module Kramdown
         attr = el.attr.dup
         language = extract_code_language!(attr)
         if language
-          out = Rouge.highlight(el.value, language, "html")
-          out.sub!(/^(<pre class=\"highlight\">)/, '\1<code>')
-          out.sub!(/<\/pre>\z/, "</code></pre>\n")
+          Rouge.highlight(el.value, language, "html")
         else
           super
         end

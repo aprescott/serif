@@ -3,7 +3,6 @@ RSpec.configure do |config|
     example = Turnip::RSpec.fetch_current_example(self)
     feature_file = example.metadata[:file_path]
 
-    # turnip_file_path = Pathname.new(File.expand_path(feature_file)).realpath
     turnip_file_path = Pathname.new(feature_file).realpath
 
     # sadly Dir.pwd might have changed because of aprescott/serif#71, so we need

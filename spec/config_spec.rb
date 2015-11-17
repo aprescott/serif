@@ -1,6 +1,4 @@
-require "spec_helper"
-
-describe Serif::Config do
+RSpec.describe Serif::Config do
   subject do
     Serif::Config.new(testing_dir("_config.yml"))
   end
@@ -49,7 +47,7 @@ describe Serif::Config do
   describe "#archive_enabled?" do
     it "defaults to false" do
       allow(subject).to receive(:yaml) { {} }
-      expect(subject.archive_enabled?).to be_false
+      expect(subject.archive_enabled?).to be_falsey
     end
   end
 end

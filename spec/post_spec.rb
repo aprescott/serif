@@ -1,6 +1,4 @@
-require "spec_helper"
-
-describe Serif::Post do
+RSpec.describe Serif::Post do
   subject do
     Serif::Site.new(testing_dir)
   end
@@ -35,7 +33,7 @@ describe Serif::Post do
   end
 
   it "uses the config file's permalink value" do
-    expect(@posts.all? { |p| p.url == "/test-blog/#{p.slug}" }).to be_true
+    expect(@posts.all? { |p| p.url == "/test-blog/#{p.slug}" }).to be_truthy
   end
 
   describe "#inspect" do
@@ -52,32 +50,32 @@ describe Serif::Post do
 
     it "removes the 'update' header entirely if falsey assigned value" do
       @temporary_post.autoupdate = false
-      expect(@temporary_post.headers.key?(:update)).to be_false
+      expect(@temporary_post.headers.key?(:update)).to be_falsey
     end
 
     it "marks the post as autoupdate? == true" do
-      expect(@temporary_post.autoupdate?).to be_false
+      expect(@temporary_post.autoupdate?).to be_falsey
       @temporary_post.autoupdate = true
-      expect(@temporary_post.autoupdate?).to be_true
+      expect(@temporary_post.autoupdate?).to be_truthy
     end
   end
 
   describe "#autoupdate?" do
     it "returns true if there is an update: now header" do
       allow(@temporary_post).to receive(:headers) { { :update => "foo" } }
-      expect(@temporary_post.autoupdate?).to be_false
+      expect(@temporary_post.autoupdate?).to be_falsey
       allow(@temporary_post).to receive(:headers) { { :update => "now" } }
-      expect(@temporary_post.autoupdate?).to be_true
+      expect(@temporary_post.autoupdate?).to be_truthy
     end
 
     it "is ignorant of whitespace in the update header value" do
       allow(@temporary_post).to receive(:headers) { { :update => "now" } }
-      expect(@temporary_post.autoupdate?).to be_true
+      expect(@temporary_post.autoupdate?).to be_truthy
 
       (1..3).each do |left|
         (1..3).each do |right|
           allow(@temporary_post).to receive(:headers) { { :update => "#{" " * left}now#{" " * right}"} }
-          expect(@temporary_post.autoupdate?).to be_true
+          expect(@temporary_post.autoupdate?).to be_truthy
         end
       end
     end
@@ -110,11 +108,11 @@ describe Serif::Post do
     end
 
     it "marks the post as no longer auto-updating" do
-      expect(@temporary_post.autoupdate?).to be_false
+      expect(@temporary_post.autoupdate?).to be_falsey
       @temporary_post.autoupdate = true
-      expect(@temporary_post.autoupdate?).to be_true
+      expect(@temporary_post.autoupdate?).to be_truthy
       @temporary_post.update!
-      expect(@temporary_post.autoupdate?).to be_false
+      expect(@temporary_post.autoupdate?).to be_falsey
     end
   end
 
@@ -132,7 +130,7 @@ describe Serif::Post do
        "draft",
        "published",
        "basename"].each do |e|
-        expect(liq.key?(e)).to be_true
+        expect(liq.key?(e)).to be_truthy
       end
     end
   end

@@ -1,12 +1,10 @@
-require "spec_helper"
-
 class Serif::Commands
   def exit(code)
     "Fake exit with code #{code}"
   end
 end
 
-describe Serif::Commands do
+RSpec.describe Serif::Commands do
   def expect_method_call(arg, method)
     c = Serif::Commands.new([arg])
     expect(c).to receive(method)

@@ -1,6 +1,4 @@
-require "spec_helper"
-
-describe Serif::FileDigest do
+RSpec.describe Serif::FileDigest do
   def file_digest(markup)
     Serif::FileDigest.new("file_digest", markup, "no tokens needed")
   end

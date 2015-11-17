@@ -1,6 +1,4 @@
-require "spec_helper"
-
-describe Serif::Draft do
+RSpec.describe Serif::Draft do
   before :all do
     @site = Serif::Site.new(testing_dir)
     D = Serif::Draft
@@ -54,7 +52,7 @@ describe Serif::Draft do
       D.rename(@site, "test-draft", "foo-bar")
       d = D.from_slug(@site, "foo-bar")
       expect(d).not_to be_nil
-      expect(File.exist?(testing_dir("_drafts/foo-bar"))).to be_true
+      expect(File.exist?(testing_dir("_drafts/foo-bar"))).to be_truthy
 
       d.delete!
     end
@@ -70,7 +68,7 @@ describe Serif::Draft do
       draft2.title = "Some draft title"
       draft2.save("some content")
 
-      expect { D.rename(@site, draft2.slug, draft.slug) }.to raise_error
+      expect { D.rename(@site, draft2.slug, draft.slug) }.to raise_error(RuntimeError, "file exists")
 
       draft.delete!
       draft2.delete!
@@ -96,7 +94,7 @@ describe Serif::Draft do
       draft.save("some content")
       draft.delete!
 
-      expect(File.exist?(testing_dir("_trash"))).to be_true
+      expect(File.exist?(testing_dir("_trash"))).to be_truthy
     end
   end
 
@@ -109,7 +107,7 @@ describe Serif::Draft do
       draft.publish!
 
       published_path = testing_dir("_posts/#{Date.today.to_s}-#{draft.slug}")
-      expect(File.exist?(published_path)).to be_true
+      expect(File.exist?(published_path)).to be_truthy
 
       # clean up
       FileUtils.rm_f(published_path)
@@ -139,13 +137,14 @@ describe Serif::Draft do
 
       begin
         capture_stdout { @site.generate }
-        expect(@site.posts.first.slug).not_to eq(draft.slug)
-        expect(@site.to_liquid["posts"].first.slug).not_to eq(draft.slug)
+        expect(@site.posts.map(&:slug)).to_not include(draft.slug)
+        expect(@site.to_liquid["posts"].map(&:slug)).to_not include(draft.slug)
         draft.publish!
         capture_stdout { @site.generate }
-        expect(@site.posts.first.slug).to eq(draft.slug)
-        expect(@site.to_liquid["posts"].first.slug).to eq(draft.slug)
-      rescue
+        expect(@site.posts.map(&:slug)).to include(draft.slug)
+        sleep 1 # wait for the liquid cache to be invalidated
+        expect(@site.to_liquid["posts"].map(&:slug)).to include(draft.slug)
+      ensure
         # clean up
         FileUtils.rm_f(published_path)
       end
@@ -171,7 +170,7 @@ describe Serif::Draft do
       draft.publish!
 
       # check the header on the object has been removed
-      expect(draft.autopublish?).to be_false
+      expect(draft.autopublish?).to be_falsey
 
       # check the actual file doesn't have the header
       expect(Serif::Post.new(@site, draft.path).headers[:publish]).to be_nil
@@ -200,7 +199,7 @@ describe Serif::Draft do
       draft.save("some content")
       draft.autopublish = false
 
-      expect(draft.headers.key?(:publish)).to be_false
+      expect(draft.headers.key?(:publish)).to be_falsey
 
       draft.delete!
     end
@@ -210,31 +209,31 @@ describe Serif::Draft do
       draft.slug = "test-draft"
       draft.title = "Some draft title"
       draft.autopublish = false
-      expect(draft.autopublish?).to be_false
+      expect(draft.autopublish?).to be_falsey
 
       draft.autopublish = true
-      expect(draft.autopublish?).to be_true
+      expect(draft.autopublish?).to be_truthy
 
       draft.autopublish = false
-      expect(draft.autopublish?).to be_false
+      expect(draft.autopublish?).to be_falsey
     end
   end
 
   describe "#autopublish?" do
     it "returns true if there is a 'publish: now' header, otherwise false" do
       draft = D.new(@site)
-      expect(draft.autopublish?).to be_false
+      expect(draft.autopublish?).to be_falsey
       headers = draft.headers
       allow(draft).to receive(:headers) { headers.merge(:publish => "now") }
-      expect(draft.autopublish?).to be_true
+      expect(draft.autopublish?).to be_truthy
     end
 
     it "ignores leading and trailing whitespace around the value of the 'publish' header" do
       draft = D.new(@site)
-      expect(draft.autopublish?).to be_false
+      expect(draft.autopublish?).to be_falsey
       headers = draft.headers
       allow(draft).to receive(:headers) { headers.merge(:publish => " now  ") }
-      expect(draft.autopublish?).to be_true
+      expect(draft.autopublish?).to be_truthy
     end
   end
 
@@ -243,7 +242,7 @@ describe Serif::Draft do
       liq = @site.drafts.sample.to_liquid
 
       ["title", "content", "slug", "type", "draft", "published", "url"].each do |e|
-        expect(liq.key?(e)).to be_true
+        expect(liq.key?(e)).to be_truthy
       end
     end
 
@@ -260,13 +259,13 @@ describe Serif::Draft do
       draft.slug = "test-draft"
       draft.title = "Some draft title"
 
-      expect(D.exist?(@site, draft.slug)).to be_false
-      expect(File.exist?(testing_dir("_drafts/test-draft"))).to be_false
+      expect(D.exist?(@site, draft.slug)).to be_falsey
+      expect(File.exist?(testing_dir("_drafts/test-draft"))).to be_falsey
 
       draft.save("some content")
 
-      expect(D.exist?(@site, draft.slug)).to be_true
-      expect(File.exist?(testing_dir("_drafts/test-draft"))).to be_true
+      expect(D.exist?(@site, draft.slug)).to be_truthy
+      expect(File.exist?(testing_dir("_drafts/test-draft"))).to be_truthy
 
       # clean up the file
       draft.delete!

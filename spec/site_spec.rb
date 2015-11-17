@@ -1,6 +1,4 @@
-require "spec_helper"
-
-describe Serif::Site do
+RSpec.describe Serif::Site do
   subject do
     Serif::Site.new(testing_dir)
   end
@@ -103,8 +101,8 @@ describe Serif::Site do
   describe "#site_path" do
     it "should be relative, not absolute" do
       p = Pathname.new(subject.site_path("foo"))
-      expect(p.relative?).to be_true
-      expect(p.absolute?).to be_false
+      expect(p.relative?).to be_truthy
+      expect(p.absolute?).to be_falsey
     end
 
     it "takes a string and prepends _site to that path" do
@@ -128,17 +126,17 @@ describe Serif::Site do
     it "contains posts given in reverse chronological order" do
       archives = subject.archives
       archives[:posts].each_cons(2) do |a, b|
-        expect(a.created >= b.created).to be_true
+        expect(a.created >= b.created).to be_truthy
       end
 
       archives[:years].each do |year|
         year[:posts].each_cons(2) do |a, b|
-          expect(a.created >= b.created).to be_true
+          expect(a.created >= b.created).to be_truthy
         end
 
         year[:months].each do |month|
           month[:posts].each_cons(2) do |a, b|
-            expect(a.created >= b.created).to be_true
+            expect(a.created >= b.created).to be_truthy
           end
         end
       end
@@ -161,15 +159,15 @@ describe Serif::Site do
 
   describe "#bypass?" do
     it "is false if the filename has a .html extension" do
-      expect(subject.bypass?("foo.html")).to be_false
+      expect(subject.bypass?("foo.html")).to be_falsey
     end
 
     it "is false if the filename has an .xml extension" do
-      expect(subject.bypass?("foo.xml")).to be_false
+      expect(subject.bypass?("foo.xml")).to be_falsey
     end
 
     it "is true if the filename is neither xml nor html by extension" do
-      expect(subject.bypass?("foo.css")).to be_true
+      expect(subject.bypass?("foo.css")).to be_truthy
     end
   end
 
@@ -182,8 +180,8 @@ describe Serif::Site do
 
     it "should be relative, not absolute" do
       p = Pathname.new(subject.tmp_path("foo"))
-      expect(p.absolute?).to be_false
-      expect(p.relative?).to be_true
+      expect(p.absolute?).to be_falsey
+      expect(p.relative?).to be_truthy
     end
   end
 end

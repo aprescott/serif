@@ -1,8 +1,4 @@
-# encoding: UTF-8
-
-require "spec_helper"
-
-describe Serif::Filters do
+RSpec.describe Serif::Filters do
   subject do
     o = Object.new
     o.extend(Serif::Filters)
