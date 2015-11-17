@@ -1,3 +1,4 @@
+/.bundle
 /serif-*.gem
 /coverage
 /spec/*/_site
