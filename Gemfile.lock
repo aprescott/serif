@@ -2,13 +2,13 @@ PATH
   remote: .
   specs:
     serif (0.6)
-      kramdown
+      kramdown (>= 1.9.0)
       liquid (~> 2.0)
       nokogiri
       rack
       redhead
       reverse_markdown
-      rouge
+      rouge (>= 1.10.0)
       rubypants
       sinatra
       timeout_cache

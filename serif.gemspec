@@ -15,9 +15,9 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
 
   s.add_runtime_dependency "rack"
-  s.add_runtime_dependency "kramdown"
+  s.add_runtime_dependency "kramdown", ">= 1.9.0"
   s.add_runtime_dependency "rubypants"
-  s.add_runtime_dependency "rouge"
+  s.add_runtime_dependency "rouge", ">= 1.10.0"
   s.add_runtime_dependency "sinatra"
   s.add_runtime_dependency "redhead"
   s.add_runtime_dependency "liquid", "~> 2.0"
