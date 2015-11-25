@@ -1,7 +1,0 @@
-{% for year in site.archive.years %}
-	{% for month in year.months %}
-		<h1>
-			<a href="{{ month.archive_url }}">{{ month.date | date: "%B %Y" }}</a>
-		</h1>
-	{% endfor %}
-{% endfor %}

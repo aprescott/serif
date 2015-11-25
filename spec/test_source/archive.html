@@ -1,0 +1,15 @@
+{% for year in site.archive.years %}
+  <div class="year">
+    <div class="year-date">{{ year.date | date: "%Y" }} (post count: {{ year.posts | size }})</div>
+
+    {% for month in year.months %}
+      <div class="month">
+        <div class="month-date">{{ month.date | date: "%Y %B" }} (post count: {{ month.posts | size }})</div>
+
+        <h1>
+          <a class="archive-link" href="{{ month.archive_url }}">{{ month.date | date: "%B %Y" }}</a>
+        </h1>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}

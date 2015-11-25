@@ -1,114 +1,62 @@
 module Serif
-class Draft < ContentFile
-  attr_reader :autopublish
-
-  def self.dirname
-    "_drafts"
-  end
-
-  def self.rename(site, original_slug, new_slug)
-    raise "file exists" if File.exist?("#{site.directory}/#{dirname}/#{new_slug}")
-    File.rename("#{site.directory}/#{dirname}/#{original_slug}", "#{site.directory}/#{dirname}/#{new_slug}")
-  end
-
-  # Returns the URL that would be used for this post if it were
-  # to be published now.
-  def url
-    permalink_style = headers[:permalink] || site.config.permalink
-
-    parts = {
-      "title" => slug.to_s,
-      "year" => Time.now.year.to_s,
-      "month" => Time.now.month.to_s.rjust(2, "0"),
-      "day" => Time.now.day.to_s.rjust(2, "0")
-    }
-
-    output = permalink_style
-
-    parts.each do |placeholder, value|
-      output = output.gsub(Regexp.quote(":" + placeholder), value)
+  class Draft < ContentFile
+    def self.all(site)
+      super(site, "_drafts", self)
     end
 
-    output
-  end
+    def slug
+      @slug ||= File.basename(path)
+    end
 
-  def delete!
-    FileUtils.mkdir_p("#{site.directory}/_trash")
-    File.rename(@path, File.expand_path("#{site.directory}/_trash/#{Time.now.to_i}-#{slug}"))
-  end
+    def published?
+      false
+    end
 
-  def publish!
-    publish_time = Time.now
-    date = Time.now.strftime("%Y-%m-%d")
-    filename = "#{date}-#{slug}"
+    def url
+      permalink_style = headers[:permalink] || site.config.permalink
 
-    FileUtils.mkdir_p("#{site.directory}/#{Post.dirname}")
-    full_published_path = File.expand_path("#{site.directory}/#{Post.dirname}/#{filename}")
+      parts = {
+        "title" => slug.to_s,
+        "year" => Time.now.year.to_s,
+        "month" => Time.now.month.to_s.rjust(2, "0"),
+        "day" => Time.now.day.to_s.rjust(2, "0")
+      }
 
-    raise "conflict, post exists already" if File.exist?(full_published_path)
+      Serif::Placeholder.substitute(permalink_style, parts)
+    end
 
-    set_publish_time(publish_time)
+    def publish!
+      publish_time = Time.now
+      date = publish_time.strftime("%Y-%m-%d")
 
-    @source.headers.delete(:publish) if autopublish?
+      FileUtils.mkdir_p(site.source_path("_posts"))
 
-    save
+      published_filename = "#{date}-#{slug}"
+      published_path = site.source_path("_posts/#{published_filename}")
 
-    File.rename(path, full_published_path)
+      if File.exist?(published_path)
+        raise "found a conflict when trying to publish #{published_filename}: a file with that name exists already"
+      end
 
-    # update the path since the file has now changed
-    @path = Post.new(site, full_published_path).path
-  end
-
-  # if the assigned value is truthy, the "publish" header
-  # is set to "now", otherwise the header is removed.
-  def autopublish=(value)
-    if value
-      @source.headers[:publish] = "now"
-    else
+      @source.headers[:created] = publish_time.xmlschema
       @source.headers.delete(:publish)
+
+      save
+
+      FileUtils.mv(path, published_path)
     end
 
-    headers_changed!
-  end
-
-  # Checks the value of the "publish" header, and returns
-  # true if the value is "now", ignoring trailing and leading
-  # whitespace. Returns false, otherwise.
-  def autopublish?
-    publish_header = headers[:publish]
-    publish_header && publish_header.strip == "now"
-  end
-
-  def to_liquid
-    h = {
-      "title" => title,
-      "content" => content,
-      "slug" => slug,
-      "type" => "draft",
-      "draft" => draft?,
-      "published" => published?,
-      "url" => url
-    }
-
-    headers.each do |key, value|
-      h[key] = value
+    def autopublish?
+      headers[:publish].to_s.strip == "now"
     end
 
-    h
+    def render(site)
+      layout.render!(
+        "site" => site,
+        "draft_preview" => true,
+        "page" => { "title" => title },
+        "content" => template.render!("site" => site, "post" => self, "draft_preview" => true)
+      )
+    end
   end
-
-  def self.exist?(site, slug)
-    all(site).any? { |d| d.slug == slug }
-  end
-
-  def self.all(site)
-    files = Dir[File.join(site.directory, dirname, "*")].select { |f| File.file?(f) }.map { |f| File.expand_path(f) }
-    files.map { |f| new(site, f) }
-  end
-
-  def self.from_slug(site, slug)
-    path = File.expand_path(File.join(site.directory, dirname, slug))
-    new(site, path)
-  end
-end
 end

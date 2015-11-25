@@ -3,7 +3,11 @@ require "bundler/setup"
 
 # if we're running on Travis, use Coveralls, otherwise
 # let us generate SimpleCov output as normal.
-if ENV["CI"]
+#
+# Note that we only do this if USE_SHELL is off, because
+# otherwise the coverage can't capture lines executed by
+# shelling out to bin/serif.
+if ENV["CI"] && ENV["USE_SHELL"] == "no"
   require "coveralls"
   SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 end
@@ -12,48 +16,18 @@ SimpleCov.start do
   add_filter "/spec/"
 end
 
-# run tests in production mode so that file digests are enabled
-ENV["ENV"] = "production"
-
+require "nokogiri"
+require "rspec"
+require "rspec/its"
 require "pry-byebug"
+require "timecop"
 require "serif"
 require "serif/commands"
-require "fileutils"
-require "pathname"
-require "time"
-require "date"
-require "timecop"
-require "turnip/rspec"
-require "turnip/capybara"
-require 'capybara/poltergeist'
-Capybara.configure do |config|
-  config.javascript_driver = :poltergeist
-end
 
-Dir[File.join(File.dirname(__FILE__), "support", "*")].each do |f|
+ENV["USE_SHELL"] ||= "no"
+
+Dir[File.join(File.dirname(__FILE__), "support", "**/*.rb")].each do |f|
   require f
-end
-
-Dir[File.join(File.dirname(__FILE__), "acceptance", "macros", "*")].each do |f|
-  require f
-end
-
-def testing_dir(path = nil)
-  full_path = File.join(File.dirname(__FILE__), "site_dir")
-
-  path ? File.join(full_path, path) : full_path
-end
-
-def capture_stdout
-  begin
-    $orig_stdout = $stdout
-    $stdout = StringIO.new
-    yield
-    $stdout.rewind
-    return $stdout.string
-  ensure
-    $stdout = $orig_stdout
-  end
 end
 
 RSpec.configure do |config|
@@ -130,19 +104,11 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 
-  # TODO: Stop doing FileUtils.cd at runtime to avoid the need for this.
-  config.around :each do |example|
-    root_dir = File.expand_path(File.join(__FILE__, "..", ".."))
-
-    FileUtils.cd root_dir
-    example.run
-    FileUtils.cd root_dir
+  config.after(:suite) do
+    FileUtils.rm_rf testing_dir("_site")
   end
 
-  config.before :suite do
-    FileUtils.cd testing_dir
-    require "serif/admin_server"
-    Capybara.app = Serif::AdminServer::AdminApp
-    FileUtils.cd File.expand_path(File.join(__FILE__, "..", ".."))
+  config.after(:each) do
+    Timecop.return
   end
 end

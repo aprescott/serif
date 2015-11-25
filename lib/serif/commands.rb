@@ -3,99 +3,89 @@ require "serif"
 require "serif/server"
 
 module Serif
-class Commands
-  def initialize(argv)
-    @argv = argv.dup
-  end
-
-  def process
-    command = @argv.shift
-    case command
-    when "-h", "--help", nil
-      print_help
-      exit 0
-    when "admin"
-      initialize_admin_server(Dir.pwd)
-    when "generate"
-      generate_site(Dir.pwd)
-    when "dev"
-      initialize_dev_server(Dir.pwd)
-    when "new"
-      produce_skeleton(Dir.pwd)
+  class Commands
+    def initialize(argv)
+      @argv = argv.dup
     end
-  end
 
-  def initialize_admin_server(source_dir)
-    # need to cd to the directory before requiring the admin
-    # server, because otherwise Dir.pwd won't be right when
-    # the admin server class is defined at require time.
-    FileUtils.cd(source_dir)
-    require "serif/admin_server"
+    def process
+      command = @argv.shift
 
-    server = Serif::AdminServer.new(source_dir)
-    server.start
-  end
+      case command
+      when "-h", "--help", nil
+        print_help
+        exit 0
+      when "generate"
+        generate_site
+        exit 0
+      when "dev"
+        initialize_dev_server
+      when "new"
+        setup_new_site
 
-  def initialize_dev_server(source_dir)
-    FileUtils.cd(source_dir)
+        puts
+        puts "New site created! Generating site for the first time into _site/"
+        puts
 
-    server = Serif::DevelopmentServer.new(source_dir)
-    server.start
-  end
+        generate_site
 
-  def generate_site(source_dir)
+        puts
+        puts "Site generated."
+        exit 0
+      else
+        abort "Unknown command: #{command}"
+      end
+    end
 
-    site = Serif::Site.new(source_dir)
+    def initialize_dev_server
+      server = Serif::DevelopmentServer.new(Dir.pwd)
+      server.start
+    end
 
-    begin
-      site.generate
-    rescue Serif::PostConflictError => e
-      puts "Error! Unable to generate because there is a conflict."
-      puts
-      puts "Conflicts at:"
-      puts
+    def generate_site
+      site = Serif::Site.new(Dir.pwd)
 
-      site.conflicts.each do |url, ary|
-        puts url
-        ary.each do |e|
-          puts "\t#{e.path}"
+      begin
+        site.generate
+      rescue Serif::PostConflictError => e
+        puts "Error! Unable to generate because there is a conflict."
+        puts
+        puts "Conflicts at:"
+        puts
+
+        site.conflicts.each do |url, ary|
+          puts url
+          ary.each do |e|
+            puts "\t#{e.path}"
+          end
         end
+
+        exit 1
+      end
+    end
+
+    def setup_new_site
+      target_dir = Dir.pwd
+
+      if Dir[File.join(target_dir, "*")].length > 0
+        abort "Directory is not empty."
       end
 
-      exit 1
-    end
-  end
+      skeleton_dir = File.join(File.dirname(__FILE__), "..", "..", "site_template")
 
-  def verify_directory(dir)
-    unless Dir.exist?(dir)
-      puts "No such directory: #{dir}'"
-      exit 1
-    end
-  end
+      puts "Creating _posts"
+      FileUtils.mkdir(File.join(target_dir, "_posts"))
 
-  def produce_skeleton(dir)
-    if !Dir[File.join(dir, "*")].empty?
-      abort "Directory is not empty."
+      Dir.chdir(skeleton_dir) do
+        Dir["*"].each do |f|
+          puts "Creating #{f}"
+          FileUtils.cp_r(f, target_dir, verbose: false)
+        end
+      end
     end
 
-    FileUtils.cd(File.join(File.dirname(__FILE__), "..", "..", "statics", "skeleton"))
-    files = Dir["*"]
-    files.each do |f|
-      FileUtils.cp_r(f, dir, verbose: true)
-    end
-    FileUtils.mkdir(File.join(dir, "_posts"))
-
-    generate_site(dir)
-
-    puts
-    puts "*** NOTE ***"
-    puts
-    puts "You should now edit the username and password in _config.yml"
-    puts
-  end
-
-  def print_help
-    puts <<-END_HELP
+    def print_help
+      puts <<-END_HELP
   USAGE
 
     serif [-h | --help]
@@ -112,8 +102,6 @@ class Commands
     serif new         Create a site skeleton to get started. Will
                       only run if the current directory is empty.
 
-    serif admin       Start the admin server on localhost:4567.
-
     serif dev         Start a simple dev server on localhost:8000.
                       Serves up the generated static files, but loads
                       some files (like CSS) from source (instead of
@@ -126,14 +114,8 @@ class Commands
 
                           $ ENV=production serif generate
 
-                          $ ENV=production serif admin
-
-                      Note that this by and large doesn't change much,
-                      but in future it may provide extra features.
-
-                      The main benefit is that the `file_digest` tag
-                      will return a hex digest of the given file's
-                      contents only when ENV is set to production.
+                      This causes the `file_digest` Liquid tag to
+                      return a hex digest of the given file's contents.
 
   EXAMPLES
 
@@ -141,11 +123,7 @@ class Commands
 
       Generate the site.
 
-    $ serif admin
-
-      Start the admin server on localhost:4567.
-
   END_HELP
+    end
   end
-end
 end

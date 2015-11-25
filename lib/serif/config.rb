@@ -1,45 +1,31 @@
 require "yaml"
 
 module Serif
-class Config
-  def initialize(config_file)
-    @config_file = config_file
-  end
+  class Config
+    def initialize(config_file)
+      @config_file = config_file
+    end
 
-  def admin_username
-    yaml["admin"]["username"]
-  end
+    def permalink
+      yaml_config["permalink"] || "/:title"
+    end
 
-  def admin_password
-    yaml["admin"]["password"]
-  end
+    def archive_enabled?
+      archive_config["enabled"]
+    end
 
-  def image_upload_path
-    yaml["image_upload_path"] || "/images/:timestamp_:name"
-  end
+    def archive_url_format
+      archive_config["url_format"] || "/archive/:year/:month"
+    end
 
-  def permalink
-    yaml["permalink"] || "/:title"
-  end
+    private
 
-  def archive_enabled?
-    a = yaml["archive"]
+    def yaml_config
+      @yaml_config ||= YAML.load_file(@config_file)
+    end
 
-    if a
-      a["enabled"]
-    else
-      false
+    def archive_config
+      yaml_config["archive"] || {}
     end
   end
-
-  def archive_url_format
-    (yaml["archive"] || {})["url_format"] || "/archive/:year/:month"
-  end
-
-  private
-
-  def yaml
-    @yaml ||= YAML.load_file(@config_file)
-  end
-end
 end
