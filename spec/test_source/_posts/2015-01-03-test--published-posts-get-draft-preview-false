@@ -1,0 +1,4 @@
+title: No draft preview flag test
+created: 2015-01-03T12:30:30Z
+
+This post should be rendered without the draft_preview flag set.

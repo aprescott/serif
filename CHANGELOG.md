@@ -1,6 +1,11 @@
 # next release
 
 * Prevent /tmp from filling up over time. (#77)
+* Remove /tmp/_site snapshots altogether. (#82)
+* The admin interface is removed. (#82) When upgrading to this version, you should update your site. This includes:
+  * Remove any deployment webserver configuration (e.g., mapping `/admin` to the correct port).
+  * Update `_config.yml` since the entire `admin:` section is now unused.
+  * Remove `css/admin/admin.css` since it's now unused.
 
 # v0.6
 

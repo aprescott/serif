@@ -2,7 +2,6 @@
 /serif-*.gem
 /coverage
 /spec/*/_site
-/spec/*/_trash
 /spec/examples.txt
 /.rbx
 /docs

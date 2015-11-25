@@ -1,0 +1,4 @@
+permalink: /test-blog/:title
+archive:
+  enabled: yes
+  url_format: /test-archive/:year/:month

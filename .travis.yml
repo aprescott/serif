@@ -6,13 +6,15 @@ cache:
 language: ruby
 cache: bundler
 rvm:
-  - 2.0.0
   - 2.1
   - 2.2
   - ruby-head
 script:
   - bundle exec rspec
   - "bundle exec bundle-audit update && bundle exec bundle-audit check"
+env:
+  - USE_SHELL=no
+  - USE_SHELL=yes
 matrix:
   allow_failures:
     - rvm: ruby-head
