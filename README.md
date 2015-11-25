@@ -23,8 +23,6 @@ Now visit <http://localhost:8000/> to view the site.
 
 # Contents of this README
 
-* [Intro](#intro)
-* [License and contributing](#license-and-contributing)
 * [Basic usage](#basics)
 * [Content and site structure](#content-and-site-structure)
 * [Publishing drafts](#publishing-drafts)
@@ -34,30 +32,9 @@ Now visit <http://localhost:8000/> to view the site.
 * [Deploying](#deploying)
 * [Custom tags and filters](#custom-tags-and-filters)
 * [Template variables](#template-variables)
+* [License and contributing](#license-and-contributing)
 * [Developing Serif](#developing-serif)
 * [Changes and what's new](#changes-and-whats-new)
-
-# Intro
-
-Serif is a lot like Jekyll with a few extra moving parts. Its main aim is to provide two things:
-
-1. Simplicity: the source and generated content are just files that can be served by any web server.
-2. Ease of publishing, wherever you are.
-
-Serif is sort of a blend between Jekyll, [Second Crack](https://github.com/marcoarment/secondcrack) and ideas from [Svbtle](http://dcurt.is/codename-svbtle). There should be flexibility with writing content, such as using the web interface, `rsync`ing from a remote machine, or editing a draft file on the remote server and having everything happen for you.
-
-# License and contributing
-
-Serif is released under the MIT license. See LICENSE for details.
-
-The quickest way to get changes contributed:
-
-1. Visit the [GitHub repository for Serif](https://github.com/aprescott/serif).
-2. [Fork the repository](https://help.github.com/articles/fork-a-repo).
-3. Check out a branch on the latest master for your change: `git checkout -b master new-feature` --- do not make changes on `master`! Make sure that anything added or changed has a test in the `spec/` directory. Use the existing files as examples. All tests for new/changed behaviour should pass.
-4. [Send a pull request on GitHub](https://help.github.com/articles/fork-a-repo), including a description of what you've changed.
-
-For more info on development, see the section at the bottom of this README.
 
 # Basics
 
@@ -455,6 +432,17 @@ Variable       | Value
 `month`        | The month for the archive page being rendered. This is a Ruby `Date` instance.
 `posts`        | The list of posts for the month. Ordered by most-recently-published-first.
 `archive_page` | A flag set to `true`.
+
+# License and contributing
+
+Serif is released under the MIT license. See LICENSE for details.
+
+The quickest way to get changes contributed:
+
+1. Visit the [GitHub repository for Serif](https://github.com/aprescott/serif).
+2. [Fork the repository](https://help.github.com/articles/fork-a-repo).
+3. Check out a branch on the latest master for your change: `git checkout -b master new-feature` --- do not make changes on `master`! Make sure that anything added or changed has a test in the `spec/` directory. Use the existing files as examples. All tests for new/changed behaviour should pass.
+4. [Send a pull request on GitHub](https://help.github.com/articles/fork-a-repo), including a description of what you've changed.
 
 # Developing Serif
 
