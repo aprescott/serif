@@ -24,7 +24,7 @@ module Kramdown
         language = extract_code_language!(attr)
 
         if language
-          Rouge.highlight(el.value, language, "html")
+          %~<pre class="highlight"><code>#{Rouge.highlight(el.value, language, "html")}</code></pre>\n~
         else
           super
         end
